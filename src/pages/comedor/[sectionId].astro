@@ -5,7 +5,7 @@ import Layout from '../../layouts/Layout.astro'
 import { GASTRO_SECTIONS, Section } from '../../mock/data'
 
 export function getStaticPaths () {
-  return GASTRO_SECTIONS.map((section) => ({
+  return GASTRO_SECTIONS.filter((section) => section.id === 'desayunos-meriendas').map((section) => ({
     params: {
       sectionId: section.id
     },
