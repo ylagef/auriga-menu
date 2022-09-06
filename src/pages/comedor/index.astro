@@ -1,11 +1,11 @@
 ---
 import SectionLink from '../../components/SectionLink.astro'
 import Layout from '../../layouts/Layout.astro'
-import { Section, SECTIONS } from '../../mock/data'
+import { GASTRO_SECTIONS, Section } from '../../mock/data'
 ---
 
 <Layout title="Auriga gastrobar">
-  <div class="flex flex-col gap-4 items-center pt-8 w-fit mx-auto">
-    {SECTIONS.map((section: Section) => <SectionLink text={section.title} link={`/comedor/${section.id}`} />)}
+  <div class="flex flex-col gap-4 items-center w-fit mx-auto">
+    {GASTRO_SECTIONS.map((section: Section) => <SectionLink text={section.buttonText} link={`/comedor/${section.id}`} />)}
   </div>
 </Layout>

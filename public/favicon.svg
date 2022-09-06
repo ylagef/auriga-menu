@@ -1,13 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36">
-  <path fill="#000" d="M22.25 4h-8.5a1 1 0 0 0-.96.73l-5.54 19.4a.5.5 0 0 0 .62.62l5.05-1.44a2 2 0 0 0 1.38-1.4l3.22-11.66a.5.5 0 0 1 .96 0l3.22 11.67a2 2 0 0 0 1.38 1.39l5.05 1.44a.5.5 0 0 0 .62-.62l-5.54-19.4a1 1 0 0 0-.96-.73Z"/>
-  <path fill="url(#gradient)" d="M18 28a7.63 7.63 0 0 1-5-2c-1.4 2.1-.35 4.35.6 5.55.14.17.41.07.47-.15.44-1.8 2.93-1.22 2.93.6 0 2.28.87 3.4 1.72 3.81.34.16.59-.2.49-.56-.31-1.05-.29-2.46 1.29-3.25 3-1.5 3.17-4.83 2.5-6-.67.67-2.6 2-5 2Z"/>
-  <defs>
-    <linearGradient id="gradient" x1="16" x2="16" y1="32" y2="24" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#000"/>
-      <stop offset="1" stop-color="#000" stop-opacity="0"/>
-    </linearGradient>
-  </defs>
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 115 116" width="115" height="116">
+	<title>Background</title>
+	<defs>
+		<image  width="115" height="116" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHMAAAB0CAMAAACBmP1sAAAAAXNSR0IB2cksfwAAAWVQTFRFAAAA////ampqTk5O4+PjxsbGenp6/v7+W1tb5ubmzc3Nf39/YWFh6+vr1tbWfn5+YmJi0tLSeHh4bGxsdXV1dHR03NzcZGRk4uLi09PTZmZmzs7O1dXVWVlZ2dnZVlZWaWlpxcXF2NjYwsLCaGhot7e3Xl5e/f39ZWVloqKi5eXl9/f3YGBgkZGR8/PzWlpah4eHx8fH7OzsUFBQgICAvr6+6OjoREREsrKy5+fnPT09qqqq3d3d+/v7dnZ2paWlmpqaTExMp6entra2/Pz8Pz8/ampquLi4S0tL2NjY7+/vgoKCra2tc3Nz1NTUoaGhXV1djY2N+fn5srKyoKCgPj4+mpqa9vb28vLygYGBioqKbm5ue3t7a2tr0NDQUVFRV1dXv7+/qKiokpKSo6Ojpqamg4ODnZ2dhYWFVVVVY2NjwMDAyMjIQUFBX19fjo6OvLy8pKSk39/f7u7u9fX16urqvb29xFjfJAAAAHd0Uk5TAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvAAAA3wAAAAAAAAAAAAAAAAAAAAAAAABPAH8AAAAAAD8AAM8AAAAAAAAAbwCfAAAAAO8AAAAAAAAAAAAAAACPAAAAAAAAAAAAAAAAAAAAAADwEtgpAAADXUlEQVR4nOXa518TQRAG4CztFUSxgBQbihBRUVGxggiCFCkiioqKvcQWxfL3K7oDySW3dXbvg/Mx2Z1n3l/gLneXXM6pxEa5bXUtIaKjQsRHMzCFiI+KDNAMTCHioxmYQsRHMzCJqqmNh5JUVx/NJKgB2BYLJacRaIpkErMdf6o5DkrKjg1zZxSTkBb8rV0x0JJPc6N2RzCJ2ANZe8Ojm/+bZNYFNwloxWa1hUYrYgL7ApvUvg0l1R4Wpe4dpWZnUJOadwHRglLv/eXmgQjmQSSqKxxKnZuS5qHg5uEkCXSHQqnvkUrzaGCztpLcChqGFD3VzECfqComcCwESj17q5tBPlHZsi9f3cRxfpQ69qeQIYLKhidOppk4xY1Sv4FUkv+bEfU7nW7iDK9J5FkFiUHeoNTtnMrEeU6TyAtKEkOcQanXRbWJS/xmi4bEZb6g1OmKzsRVbrNVS+IaV1DqM6w3R67zms16EhjlCUpd6k1M3OA0x4xIjHMEpR43zcyJST7zVt7MxJR/UOowakgC01zmjDGJHt+gtF9xrmYPSuashdnrGVTuvm1BIu/3p0sTN9qYmPMKKvfOW5GY8Dnq0rwGR/ey8jkYyZ3dlqTP6YWmXbA1segcVO67Y00CS44mzTroYLoGlbumHUjcXfYyDU9iibrnFFTuue9EAi5Bac5xR3PFIajcsTziaD6wN2nHiiMJDFijcv3D9OtqXc26mjbn6mQ9sjRpRtV1ta4aLYPK1aseJPDYyqQJ1dfVurJ7OiDXPvEigacWJs3XoW+rrGGLoHJluye5ddPcPOaat2n+dECue+ZNAs8NTZptisF8YRhUrppkIE0vJGiyORbT7D6VXON6rk7WmIFJc71kMk2umOSKGddzdbLyfcbmKyYSeK0NSgtsLjg19cbQfMtH4p3GpJi6u6Y2pfs2Jt9tYCSB90qTJqrTN7KoDmVQ+V4NKwnMK0yap5PZVP1WQ75TYCaBD6kmTfOR3fyUGlS+/pmdTH/0QrOkPvrzqLTLUXp5ZqlQKHxZLRaL/V+L/+rb0Nr6d03bHz/XFwbrk/VrsVhsLdCdsaQp4tT/YooMyExMkQGZiSmSZMXBia+yMHPlRhQyocQxc1XNsGRZtEgxy7LFIkvCRYtZki6auIX+BuOeof0MoanlAAAAAElFTkSuQmCC"/>
+	</defs>
 	<style>
-    @media (prefers-color-scheme:dark){:root{filter:invert(100%)}}
-  </style>
+	</style>
+	<g id="Background">
+		<use id="Path 2" href="#img1" x="0" y="0"/>
+	</g>
 </svg>
