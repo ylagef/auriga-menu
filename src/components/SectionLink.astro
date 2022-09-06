@@ -1,0 +1,22 @@
+---
+export interface Props {
+  text: string
+  link: string
+}
+
+const { text, link } = Astro.props
+---
+
+<a href={link} class="py-3 px-8 bg-[#DAAB34] rounded w-full text-center">{text}</a>
+
+<!-- <li class="link-card">
+  <a href={href}>
+    <h2>
+      {title}
+      <span>&rarr;</span>
+    </h2>
+    <p>
+      {body}
+    </p>
+  </a>
+</li> -->
