@@ -3,13 +3,7 @@ module.exports = {
     browser: true,
     es2021: true
   },
-  // ...
-  extends: [
-    // ...
-    'standard',
-    'plugin:astro/recommended'
-  ],
-  // ...
+  extends: ['plugin:astro/recommended', 'standard', 'plugin:@typescript-eslint/eslint-recommended', 'plugin:@typescript-eslint/recommended'],
   plugins: ['@typescript-eslint', 'simple-import-sort'],
   overrides: [
     {
@@ -26,8 +20,6 @@ module.exports = {
       rules: {
         'simple-import-sort/exports': 'error',
         'simple-import-sort/imports': 'error',
-        'no-undef': 'warn',
-        'no-unused-vars': 'warn',
         camelcase: 'warn',
         indent: [
           'error',
@@ -39,6 +31,5 @@ module.exports = {
         'no-tabs': 0
       }
     }
-    // ...
   ]
 }
