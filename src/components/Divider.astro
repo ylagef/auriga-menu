@@ -1,4 +1,9 @@
 ---
+export interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
 ---
 
-<span class="my-4 mx-auto w-4/5 border-b border-dark-text/20"></span>
+<span class={`my-4 mx-auto w-4/5 border-b ${theme === 'light' ? 'border-light-text/20' : 'border-dark-text/20'}`}></span>

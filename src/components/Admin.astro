@@ -1,0 +1,21 @@
+---
+import Card from '@components/Card.astro'
+import Layout from '@layouts/Layout.astro'
+---
+
+<Layout title="Admin">
+  <slot />
+</Layout>
+
+<script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script is:inline>
+  window.netlifyIdentity.on('login', (user) => {
+    console.log('login', user)
+    window.netlifyIdentity.close()
+  })
+
+  window.netlifyIdentity.on('init', (init) => {
+    console.log('Netlify initialized', init)
+    if (!init) window.netlifyIdentity.open()
+  })
+</script>
