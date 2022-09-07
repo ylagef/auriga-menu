@@ -12,7 +12,9 @@
     "format:all": "eslint . --fix && prettier . --write"
   },
   "dependencies": {
-    "astro": "^1.1.5"
+    "astro": "^1.1.5",
+    "astro-i18next": "^1.0.0-beta.9",
+    "i18next-fs-backend": "^1.1.5"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^1.0.0",
