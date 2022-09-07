@@ -30,12 +30,12 @@ export default function BurgerMenu() {
   if (!sectionSlug) return null
 
   return (
-    <div className="w-screen h-full absolute overflow-x-hidden top-0 left-0">
+    <div className={`w-screen absolute overflow-x-hidden top-0 left-0 ${isOpen ? 'h-full' : 'h-20'}`}>
       <button id="menu" className="absolute top-4 right-4 py-2 px-4 rounded w-fit z-30" onClick={handleOpen}>
         <MenuIcon opened={isOpen} />
       </button>
 
-      <div className={`absolute top-0 z-20 w-screen h-full bg-black/80 p-4 transition-[left] overflow-y-auto ${isOpen ? 'left-0' : 'left-full'}`}>
+      <div className={`absolute top-0 w-screen h-full bg-black/80 p-4 transition-[left] overflow-y-auto ${isOpen ? 'left-0' : 'left-full'}`}>
         <div className="flex flex-col items-center gap-4 mt-16">
           {sections?.map((section) => (
             <a key={section.id} href={`/${zone}/${section.id}`} className="text-light-text font-medium text-xl">
