@@ -2,10 +2,16 @@
 import SectionLink from '../../components/SectionLink.astro'
 import Layout from '../../layouts/Layout.astro'
 import { RESTAURANT } from '../../mock/auriga'
+
+const { name, zones } = RESTAURANT
 ---
 
-<Layout title={RESTAURANT.name}>
+<Layout title={name}>
   <div class="flex flex-col gap-4 items-center w-fit mx-auto">
-    {RESTAURANT.zones.restaurante.sections.map((section) => <SectionLink text={section.buttonText} link={`/restaurante/${section.id}`} />)}
+    {
+      zones.restaurante.sections
+        .sort((a, z) => a.order - z.order)
+        .map((section) => <SectionLink text={section.buttonText} link={`/restaurante/${section.id}`} />)
+    }
   </div>
 </Layout>
