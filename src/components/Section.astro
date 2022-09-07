@@ -14,6 +14,7 @@ export interface Props {
 const {
   section: { schedules, sectionTitle, categories, menu, products, extraServices }
 } = Astro.props
+console.log({ schedules, sectionTitle, categories, menu, products, extraServices })
 ---
 
 <Card>
@@ -31,11 +32,11 @@ const {
 
   {extraServices && <ExtraServices extraServices={extraServices} />}
 
-  <Divider theme="dark">
-    {categories && <Categories categories={categories} />}
+  <Divider theme="dark" />
 
-    {products && <Products products={products} />}
+  {categories && <Categories categories={categories} />}
 
-    {menu && <Menu menu={menu} />}
-  </Divider>
+  {products && <Products products={products} />}
+
+  {menu && <Menu menu={menu} />}
 </Card>
