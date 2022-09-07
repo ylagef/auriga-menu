@@ -5,8 +5,8 @@ import { Section } from 'src/types'
 
 function BurgerMenu() {
   const [isOpen, setIsOpen] = useState(false)
-  const [zone, setZone] = useState(null)
-  const [section, setSection] = useState(null)
+  const [zone, setZone] = useState<string>(null)
+  const [sectionSlug, setSectionSlug] = useState<string>(null)
   const [sections, setSections] = useState<Section[]>([])
 
   const handleOpen = () => {
@@ -24,10 +24,10 @@ function BurgerMenu() {
 
   useEffect(() => {
     setZone(window.location.pathname.split('/')[1])
-    setSection(window.location.pathname.split('/')[2])
+    setSectionSlug(window.location.pathname.split('/')[2])
   }, [])
 
-  if (!section) return null
+  if (!sectionSlug) return null
 
   return (
     <div className="w-screen h-full absolute overflow-x-hidden top-0 left-0">
