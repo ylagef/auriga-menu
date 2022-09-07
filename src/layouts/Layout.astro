@@ -1,5 +1,6 @@
 ---
 import BurgerMenu from '@components/BurgerMenu'
+import Footer from '@components/Footer.astro'
 import i18next from 'i18next'
 
 import { RESTAURANT } from '../mock/auriga'
@@ -31,15 +32,8 @@ const { title } = Astro.props
       <slot />
     </main>
 
-    <footer class="text-xs text-center py-4 text-white">
-      <div class="w-fit m-auto opacity-90">
-        <span class="font-semibold">Rúa das Laxas, 4, 32005, Ourense</span>
-        <div class="w-full flex justify-between">
-          <span>09:00 - 00:30</span>
-          <a href="tel:988 61 45 04">988 61 45 04</a>
-        </div>
-      </div>
-    </footer>
+    <Footer />
+
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
 
@@ -139,6 +133,7 @@ const { title } = Astro.props
     </style>
   </body>
 </html>
+
 <script is:inline>
   const vh = window.innerHeight * 0.01
   document.documentElement.style.setProperty('--vh', `${vh}px`)
