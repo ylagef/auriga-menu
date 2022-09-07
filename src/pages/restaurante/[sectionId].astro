@@ -21,14 +21,10 @@ export function getStaticPaths() {
   }))
 }
 
-export interface Params {
-  section: Section['id']
-}
 export interface Props {
   section: Section
 }
 
-const { sectionId } = Astro.params
 const {
   section: { schedules, sectionTitle, categories, menu, products, extraServices }
 } = Astro.props

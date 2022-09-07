@@ -3,7 +3,7 @@ import MenuIcon from 'src/icons/MenuIcon'
 import { RESTAURANT } from 'src/mock/auriga'
 import { Section } from 'src/types'
 
-function BurgerMenu() {
+export default function BurgerMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const [zone, setZone] = useState<string>(null)
   const [sectionSlug, setSectionSlug] = useState<string>(null)
@@ -47,5 +47,3 @@ function BurgerMenu() {
     </div>
   )
 }
-
-export default BurgerMenu
