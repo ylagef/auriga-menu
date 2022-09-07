@@ -4,9 +4,8 @@ export const RESTAURANT: Restaurant = {
   id: 'auriga',
   name: 'Auriga gastrobar',
   shortName: 'Auriga',
-  zones: [
-    {
-      id: 'restaurante',
+  zones: {
+    restaurante: {
       name: 'Restaurante',
       sections: [
         {
@@ -15,7 +14,6 @@ export const RESTAURANT: Restaurant = {
           buttonText: 'Menú',
           sectionTitle: 'Menú del día',
           menu: {
-            title: 'Menú del día',
             courses: [
               {
                 id: 'aperitivos',
@@ -143,7 +141,31 @@ export const RESTAURANT: Restaurant = {
           buttonText: 'Masas y panes',
           sectionTitle: 'Con pan y mucha miga',
           schedules: [SCHEDULES.UNINTERRUPTED],
-          categories: []
+          products: [
+            {
+              id: 'nuestra-burger',
+              order: 0,
+              name: 'Nuestra burger',
+              description: 'Burger de ternera, queso, bacon, tomate, lechuga, cebolla y salsa de tomate',
+              price: 7,
+              allergens: [ALLERGENS.GLUTEN, ALLERGENS.LACTOSE, ALLERGENS.EGGS, ALLERGENS.SULPHITES]
+            },
+            {
+              id: 'bocatin-calamares',
+              order: 1,
+              name: 'Bocata de calamares',
+              description: 'Calamares a la romana, lechuga, tomate y salsa de tomate',
+              price: 7,
+              allergens: [ALLERGENS.GLUTEN, ALLERGENS.LACTOSE, ALLERGENS.EGGS, ALLERGENS.SULPHITES]
+            },
+            {
+              id: 'bocata-pepitoria',
+              order: 2,
+              name: 'Bocata de pepitoria',
+              description: 'Pepitoria, lechuga, tomate y salsa de tomate',
+              price: 7
+            }
+          ]
         },
         {
           id: 'pintxos',
@@ -193,10 +215,9 @@ export const RESTAURANT: Restaurant = {
         }
       ]
     },
-    {
-      id: 'comedor',
+    comedor: {
       name: 'Comedor',
       sections: []
     }
-  ]
+  }
 }

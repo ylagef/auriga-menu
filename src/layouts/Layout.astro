@@ -1,4 +1,9 @@
 ---
+import { HeadHrefLangs } from 'astro-i18next/components'
+import i18next from 'i18next'
+
+import { RESTAURANT } from '../mock/auriga'
+
 export interface Props {
   title: string
 }
@@ -7,24 +12,26 @@ const { title } = Astro.props
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="text-dark-text">
+<html lang={i18next.language} class="text-dark-text">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <HeadHrefLangs />
   </head>
   <body class="m-0 h-screen relative bg-black z-10 p-2 flex flex-col overflow-y-auto">
-    <div class="flex justify-center p-6">
-      <img class="max-h-20 max-w-[70%] h-fit" src="/assets/images/auriga-logo.svg" alt="Auriga gastrobar logo" />
+    <div id="logo-container" class="flex justify-center p-6">
+      <img class="max-h-20 max-w-[70%] h-fit" src={`/assets/images/${RESTAURANT.id}-logo.svg`} alt={`${RESTAURANT.name} logo`} />
     </div>
+
     <main class="flex-grow">
       <slot />
     </main>
 
     <footer class="text-xs text-center py-4 text-white">
-      <div class="w-fit m-auto opacity-80">
+      <div class="w-fit m-auto opacity-90">
         <span class="font-semibold">Rúa das Laxas, 4, 32005, Ourense</span>
         <div class="w-full flex justify-between">
           <span>09:00 - 00:30</span>
@@ -37,6 +44,7 @@ const { title } = Astro.props
 
       html {
         font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
       }
 
       body::before {
@@ -60,7 +68,7 @@ const { title } = Astro.props
     </style>
     <style is:global>
       h1 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         font-weight: 700;
       }
       h2 {
@@ -79,6 +87,9 @@ const { title } = Astro.props
       p {
         font-size: 1rem;
         font-weight: 400;
+      }
+      small {
+        font-size: 0.9rem;
       }
     </style>
   </body>

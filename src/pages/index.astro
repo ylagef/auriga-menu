@@ -1,15 +1,18 @@
 ---
+import { t } from 'i18next'
+
 import Layout from '../layouts/Layout.astro'
+import { RESTAURANT } from '../mock/auriga'
 ---
 
-<Layout title="Auriga gastrobar">
-  <div class="h-full flex justify-center p-8">
-    <img class="max-h-20 max-w-[70%] h-fit" src="/assets/images/auriga-logo.svg" alt="Auriga gastrobar logo" />
-  </div>
-</Layout>
+<Layout title={RESTAURANT.name} />
 
-<style>
+<style is:global>
+  #logo-container {
+    flex-grow: 1;
+    align-items: center;
+  }
   main {
-    backdrop-filter: blur(4px);
+    display: none;
   }
 </style>

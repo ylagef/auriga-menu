@@ -39,10 +39,10 @@ export interface Product {
   allergens?: ALLERGENS[]
 }
 
-export interface Category {
+export interface CategoryI {
   id: string
   order: number
-  title: string
+  title?: string
   extraServices?: EXTRA_SERVICES[]
   products: Product[]
 }
@@ -54,7 +54,6 @@ export interface Course {
 }
 
 export interface Menu {
-  title: string
   courses: Course[]
   extraServices: EXTRA_SERVICES[]
   price: number
@@ -67,12 +66,12 @@ export interface Section {
   sectionTitle?: string
   schedules?: string[]
   extraServices?: string[]
-  categories?: Category[]
+  categories?: CategoryI[]
+  products?: Product[]
   menu?: Menu
 }
 
 export interface Zone {
-  id: string
   name?: string
   sections: Section[]
 }
@@ -81,5 +80,5 @@ export interface Restaurant {
   id: string
   name: string
   shortName?: string
-  zones: Zone[]
+  zones: { [key: string]: Zone }
 }

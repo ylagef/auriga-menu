@@ -1,0 +1,50 @@
+---
+import { t } from 'i18next'
+
+import { CategoryI, Product } from '../types'
+import { Allergen } from './Allergen'
+
+export interface Props {
+  category: CategoryI
+}
+
+const { category } = Astro.props
+---
+
+<div>
+  <h2 class="text-center pb-2">{category.title}</h2>
+
+  {
+    category.extraServices && (
+      <div class="flex flex-col gap-1">
+        {category.extraServices.map((extraService) => (
+          <small class="text-center">{extraService}</small>
+        ))}
+      </div>
+    )
+  }
+
+  <div class="flex flex-col py-4 gap-6">
+    {
+      category.products.map((product: Product) => (
+        <div class="flex justify-between items-center">
+          <div class="flex flex-col pr-4 gap-2">
+            <p>{product.name}</p>
+
+            {product.description && <small class="text-dark-text/70">{product.description}</small>}
+
+            <div class="flex flex-row gap-2">
+              {product.allergens
+                ?.sort((a, b) => a.localeCompare(b))
+                .map((allergen) => (
+                  <Allergen client:visible allergen={allergen} text={t(`allergens.${allergen}`)} />
+                ))}
+            </div>
+          </div>
+
+          <p class="text-center">{typeof product.price === 'number' ? product.price.toFixed(2) : product.price}€</p>
+        </div>
+      ))
+    }
+  </div>
+</div>

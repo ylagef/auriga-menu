@@ -3,8 +3,14 @@ module.exports = {
     browser: true,
     es2021: true
   },
-  extends: ['plugin:astro/recommended', 'standard', 'plugin:@typescript-eslint/eslint-recommended', 'plugin:@typescript-eslint/recommended'],
-  plugins: ['@typescript-eslint', 'simple-import-sort'],
+  extends: [
+    'plugin:astro/recommended',
+    'standard',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended'
+  ],
+  plugins: ['@typescript-eslint', 'simple-import-sort', 'prettier'],
   overrides: [
     {
       // Define the configuration for `.astro` file.

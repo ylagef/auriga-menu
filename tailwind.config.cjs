@@ -9,7 +9,7 @@ module.exports = {
         'card-bg': '#dedede'
       },
       fontSize: {
-        xxs: '.85rem' // 14px
+        xxs: '.8rem'
       }
     }
   },
