@@ -29,7 +29,7 @@ export enum ALLERGENS {
   SULPHITES = 'sulphites'
 }
 
-export interface Product {
+export interface ProductI {
   id: string
   order: number
   name: string
@@ -44,7 +44,7 @@ export interface CategoryI {
   order: number
   title?: string
   extraServices?: EXTRA_SERVICES[]
-  products: Product[]
+  products: ProductI[]
 }
 
 export interface Course {
@@ -67,7 +67,7 @@ export interface Section {
   schedules?: string[]
   extraServices?: string[]
   categories?: CategoryI[]
-  products?: Product[]
+  products?: ProductI[]
   menu?: Menu
 }
 

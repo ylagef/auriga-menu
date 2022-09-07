@@ -174,7 +174,81 @@ export const RESTAURANT: Restaurant = {
           sectionTitle: 'Somos una ración',
           schedules: [SCHEDULES.UNINTERRUPTED],
           extraServices: [EXTRA_SERVICES.BREAD, EXTRA_SERVICES.GLUTEN_FREE_BREAD],
-          categories: []
+          products: [
+            {
+              id: 'Croquetas',
+              order: 0,
+              name: 'Croquetas hechas aquí',
+              description: 'De calamares en su tinta',
+              price: 7.0,
+              options: ['De jamón y arzúa', 'De calamares en su tinta'],
+              allergens: [ALLERGENS.LACTOSE, ALLERGENS.FISH]
+            },
+            {
+              id: 'Huevos',
+              order: 1,
+              name: 'Huevos BT',
+              description: 'Huevos BT, champiñones, crujiente de jamón y nuestra salsa',
+              price: 9.5,
+              allergens: [ALLERGENS.GLUTEN, ALLERGENS.LACTOSE, ALLERGENS.EGGS]
+            },
+            {
+              id: 'Tartar',
+              order: 2,
+              name: 'Tartar de atún rojo',
+              description: 'Atún rojo, guacamole de fresa, fresas ácidas y nuestras chips',
+              price: 14.5,
+              allergens: [ALLERGENS.GLUTEN, ALLERGENS.LACTOSE]
+            },
+            {
+              id: 'Alitas',
+              order: 2,
+              name: 'Alitas Koreanas',
+              description: 'Fritas y especiadas ',
+              price: 11.5,
+              allergens: [ALLERGENS.GLUTEN, ALLERGENS.LACTOSE]
+            },
+            {
+              id: 'Patatas',
+              order: 2,
+              name: 'Patatas Gajo',
+              description: 'Con salsa brava de chipottle',
+              price: 6.0,
+              allergens: [ALLERGENS.GLUTEN, ALLERGENS.LACTOSE]
+            },
+            {
+              id: 'Brochetas',
+              order: 2,
+              name: 'Brochetas de pollo',
+              description: 'Pollo marinado a la brasa, guacamole y totopos  ',
+              price: 9.0,
+              allergens: [ALLERGENS.GLUTEN, ALLERGENS.LACTOSE]
+            },
+            {
+              id: 'Morro',
+              order: 2,
+              name: 'Morro Nikkei',
+              description: 'Frito estilo nikkei ',
+              price: 9.0,
+              allergens: [ALLERGENS.GLUTEN, ALLERGENS.LACTOSE]
+            },
+            {
+              id: 'Nuestras',
+              order: 2,
+              name: 'Nuestras almóndigas',
+              description: 'Con salsa Tikka Massala y totopos',
+              price: 12.5,
+              allergens: [ALLERGENS.GLUTEN, ALLERGENS.LACTOSE]
+            },
+            {
+              id: 'Costilla',
+              order: 2,
+              name: 'Costilla',
+              description: 'Cocinada a BT, deshuesada, marcada en la parrilla y con salsa teriyaki de mango',
+              price: 12.5,
+              allergens: [ALLERGENS.GLUTEN, ALLERGENS.LACTOSE]
+            }
+          ]
         },
         {
           id: 'raciones',

@@ -3,7 +3,9 @@ import Card from '../../components/Card.astro'
 import Categories from '../../components/Categories.astro'
 import Category from '../../components/Category.astro'
 import Divider from '../../components/Divider.astro'
+import ExtraServices from '../../components/ExtraServices.astro'
 import Menu from '../../components/Menu.astro'
+import Products from '../../components/Products.astro'
 import Layout from '../../layouts/Layout.astro'
 import { RESTAURANT } from '../../mock/auriga'
 import { Section } from '../../types'
@@ -28,7 +30,7 @@ export interface Props {
 
 const { sectionId } = Astro.params
 const {
-  section: { schedules, sectionTitle, categories, menu }
+  section: { schedules, sectionTitle, categories, menu, products, extraServices }
 } = Astro.props
 ---
 
@@ -46,9 +48,13 @@ const {
       )
     }
 
+    {extraServices && <ExtraServices extraServices={extraServices} />}
+
     <Divider />
 
     {categories && <Categories categories={categories} />}
+
+    {products && <Products products={products} />}
 
     {menu && <Menu menu={menu} />}
   </Card>
