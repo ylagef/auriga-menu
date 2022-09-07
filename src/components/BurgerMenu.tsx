@@ -15,7 +15,7 @@ export default function BurgerMenu() {
 
   useEffect(() => {
     if (!zone) return
-    setSections(RESTAURANT.zones[zone].sections)
+    setSections(RESTAURANT.zones[zone]?.sections)
   }, [zone])
 
   useEffect(() => {
