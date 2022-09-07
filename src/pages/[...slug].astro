@@ -39,10 +39,11 @@ export interface Props {
 
 const { name } = RESTAURANT
 
+const { slug } = Astro.params
 const { zone, section } = Astro.props
 ---
 
 <Layout title={name}>
-  {zone && <Zone zone={zone} />}
+  {zone && <Zone zone={zone} slug={slug} />}
   {section && <Section section={section} />}
 </Layout>
