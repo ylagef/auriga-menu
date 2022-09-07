@@ -31,11 +31,11 @@ const {
 
   {extraServices && <ExtraServices extraServices={extraServices} />}
 
-  <Divider />
+  <Divider theme="dark">
+    {categories && <Categories categories={categories} />}
 
-  {categories && <Categories categories={categories} />}
+    {products && <Products products={products} />}
 
-  {products && <Products products={products} />}
-
-  {menu && <Menu menu={menu} />}
+    {menu && <Menu menu={menu} />}
+  </Divider>
 </Card>

@@ -1,0 +1,14 @@
+---
+import Admin from '@components/Admin.astro'
+import Divider from '@components/Divider.astro'
+
+export function getStaticPaths() {
+  return [{ params: { section: 'zonas' } }, { params: { section: 'secciones' } }, { params: { section: 'categorias' } }]
+}
+---
+
+<Admin>
+  <h1 class="text-center">Zonas</h1>
+
+  <Divider theme="dark" />
+</Admin>
