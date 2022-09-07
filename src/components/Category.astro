@@ -1,0 +1,21 @@
+---
+import type { CategoryI } from '../types'
+import ExtraServices from './ExtraServices.astro'
+import Products from './Products.astro'
+
+export interface Props {
+  category: CategoryI
+}
+
+const {
+  category: { title, extraServices, products }
+} = Astro.props
+---
+
+<div>
+  <h2 class="text-center pb-2">{title}</h2>
+
+  {extraServices && <ExtraServices extraServices={extraServices} />}
+
+  <Products products={products} />
+</div>
