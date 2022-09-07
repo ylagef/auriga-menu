@@ -1,0 +1,28 @@
+---
+import { t } from 'i18next'
+
+import type { ALLERGENS } from '../types'
+import Allergen from './Allergen'
+
+export interface Props {
+  allergens: ALLERGENS[]
+}
+
+const { allergens } = Astro.props
+---
+
+<div class="flex flex-row gap-2">
+  {
+    allergens
+      .sort((a, b) => {
+        return a.localeCompare(b)
+      })
+      .map((allergen) => {
+        return (
+          <div>
+            <Allergen allergen={allergen} text={t(`allergens.${allergen}`)} client:load />
+          </div>
+        )
+      })
+  }
+</div>

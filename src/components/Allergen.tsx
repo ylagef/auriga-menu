@@ -1,12 +1,12 @@
-import { ALLERGENS } from '../types'
 import { useState, useEffect } from 'react'
+import type { ALLERGENS } from '../types'
 
 export interface Props {
   allergen: ALLERGENS
   text: string
 }
 
-export function Allergen({ allergen, text }: Props) {
+export default function Allergen({ allergen, text }: Props): JSX.Element {
   const [allergenOpen, setAllergenOpen] = useState<ALLERGENS>(null)
 
   useEffect(() => {
@@ -17,6 +17,7 @@ export function Allergen({ allergen, text }: Props) {
     }, 3000)
     return () => clearTimeout(timeout)
   }, [allergenOpen])
+
   return (
     <div
       className="flex items-center overflow-x-hidden"
@@ -24,7 +25,7 @@ export function Allergen({ allergen, text }: Props) {
         setAllergenOpen((prev) => (prev === allergen ? null : allergen))
       }}
     >
-      <img className="h-6" src={`/assets/images/allergens/${allergen}.png`} alt={allergen} />
+      <img className="h-6" src={`/assets/images/allergens/${allergen}.png`} alt={text} />
       <small className={`${allergenOpen === allergen ? 'w-screen pl-2' : 'w-0'} transition-all max-w-fit`}>{text}</small>
     </div>
   )

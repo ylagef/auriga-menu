@@ -65,7 +65,7 @@ export interface Section {
   buttonText: string
   sectionTitle?: string
   schedules?: string[]
-  extraServices?: string[]
+  extraServices?: EXTRA_SERVICES[]
   categories?: CategoryI[]
   products?: ProductI[]
   menu?: Menu

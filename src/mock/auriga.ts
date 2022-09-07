@@ -179,7 +179,6 @@ export const RESTAURANT: Restaurant = {
               id: 'Croquetas',
               order: 0,
               name: 'Croquetas hechas aquí',
-              description: 'De calamares en su tinta',
               price: 7.0,
               options: ['De jamón y arzúa', 'De calamares en su tinta'],
               allergens: [ALLERGENS.LACTOSE, ALLERGENS.FISH]

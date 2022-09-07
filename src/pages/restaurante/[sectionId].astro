@@ -1,14 +1,14 @@
 ---
-import Card from '../../components/Card.astro'
-import Categories from '../../components/Categories.astro'
-import Category from '../../components/Category.astro'
-import Divider from '../../components/Divider.astro'
-import ExtraServices from '../../components/ExtraServices.astro'
-import Menu from '../../components/Menu.astro'
-import Products from '../../components/Products.astro'
-import Layout from '../../layouts/Layout.astro'
+import Card from '@components/Card.astro'
+import Categories from '@components/Categories.astro'
+import Divider from '@components/Divider.astro'
+import ExtraServices from '@components/ExtraServices.astro'
+import Menu from '@components/Menu.astro'
+import Products from '@components/Products.astro'
+import Layout from '@layouts/Layout.astro'
+
 import { RESTAURANT } from '../../mock/auriga'
-import { Section } from '../../types'
+import type { Section } from '../../types'
 
 export function getStaticPaths() {
   return RESTAURANT.zones.restaurante.sections.map((section) => ({

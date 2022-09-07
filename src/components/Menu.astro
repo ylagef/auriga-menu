@@ -1,7 +1,7 @@
 ---
 import { t } from 'i18next'
 
-import { Menu } from '../types'
+import type { Menu } from '../types'
 
 export interface Props {
   menu: Menu
@@ -14,21 +14,27 @@ const {
 
 <div class="flex flex-col gap-8">
   {
-    courses.map((course) => (
-      <div class="flex flex-col gap-2">
-        <h2 class="text-center">{course.name}</h2>
+    courses.map((course) => {
+      return (
+        <div class="flex flex-col gap-2">
+          <h2 class="text-center">{course.name}</h2>
 
-        <div class="flex flex-col gap-2 items-center">
-          {course.products.map((product) => (
-            <p>{product}</p>
-          ))}
+          <div class="flex flex-col gap-2 items-center">
+            {course.products.map((product) => (
+              <p>{product}</p>
+            ))}
+          </div>
         </div>
-      </div>
-    ))
+      )
+    })
   }
 
   <div class="flex flex-col gap-2 items-center">
-    {extraServices.map((extraService) => <h4 class="text-center">{extraService}</h4>)}
+    {
+      extraServices.map((extraService) => {
+        return <h4 class="text-center">{extraService}</h4>
+      })
+    }
   </div>
 
   <h2 class="text-center text-4xl">{price.toFixed(2)}€</h2>
