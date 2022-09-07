@@ -8,7 +8,15 @@ import Layout from '@layouts/Layout.astro'
     <h1>Admin</h1>
   </Card>
 </Layout>
+<script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script is:inline>
-  console.log('Open netlify')
-  window.netlifyIdentity.open()
+  window.netlifyIdentity.on('login', (user) => {
+    console.log('login', user)
+    window.netlifyIdentity.close()
+  })
+
+  window.netlifyIdentity.on('init', (init) => {
+    console.log('Netlify initialized', init)
+    if (!init) window.netlifyIdentity.open()
+  })
 </script>
