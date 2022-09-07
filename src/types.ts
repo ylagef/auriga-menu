@@ -59,7 +59,7 @@ export interface Menu {
   price: number
 }
 
-export interface Section {
+export interface SectionI {
   id: string
   order: number
   buttonText: string
@@ -71,14 +71,14 @@ export interface Section {
   menu?: Menu
 }
 
-export interface Zone {
+export interface ZoneI {
   name?: string
-  sections: Section[]
+  sections: SectionI[]
 }
 
 export interface Restaurant {
   id: string
   name: string
   shortName?: string
-  zones: { [key: string]: Zone }
+  zones: { [key: string]: ZoneI }
 }

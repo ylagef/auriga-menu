@@ -290,7 +290,40 @@ export const RESTAURANT: Restaurant = {
     },
     comedor: {
       name: 'Comedor',
-      sections: []
+      sections: [
+        {
+          id: 'menu',
+          order: 0,
+          buttonText: 'Menú',
+          sectionTitle: 'Menú del día',
+          menu: {
+            courses: [
+              {
+                id: 'aperitivos',
+                name: 'Aperitivos',
+                products: ['Mayonesa de naranja y zanahoria']
+              },
+              {
+                id: 'entrantes',
+                name: 'Entrantes',
+                products: ['Ensalada de tomate y queso de cabra', 'Ensalada de quinoa y verduras']
+              },
+              {
+                id: 'segundos-elegir',
+                name: 'Segundos a elegir',
+                products: ['Pasta con salsa de tomate y albahaca', 'Meiga a la brasa con patatas']
+              },
+              {
+                id: 'postres',
+                name: 'Postres',
+                products: ['Tarta de queso']
+              }
+            ],
+            extraServices: [EXTRA_SERVICES.BREAD_WATER_COFFEE],
+            price: 12.9
+          }
+        }
+      ]
     }
   }
 }

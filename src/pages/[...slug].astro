@@ -1,0 +1,48 @@
+---
+import Section from '@components/Section.astro'
+import Zone from '@components/Zone.astro'
+import { SectionI, ZoneI } from 'src/types'
+
+import Layout from '../layouts/Layout.astro'
+import { RESTAURANT } from '../mock/auriga'
+
+export function getStaticPaths() {
+  return Object.entries(RESTAURANT.zones).map(([key, zone]) => {
+    const test = [
+      {
+        params: {
+          slug: key
+        },
+        props: {
+          zone
+        }
+      },
+      ...zone.sections.map((section) => {
+        return {
+          params: {
+            slug: `${key}/${section.id}`
+          },
+          props: {
+            section
+          }
+        }
+      })
+    ]
+    return test
+  })
+}
+
+export interface Props {
+  zone?: ZoneI
+  section?: SectionI
+}
+
+const { name } = RESTAURANT
+
+const { zone, section } = Astro.props
+---
+
+<Layout title={name}>
+  {zone && <Zone zone={zone} />}
+  {section && <Section section={section} />}
+</Layout>
