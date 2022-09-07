@@ -32,10 +32,6 @@ export function getStaticPaths() {
   })
 }
 
-export interface Props {
-  zone?: ZoneI
-  section?: SectionI
-}
 export interface Params {
   slug: string
 }
@@ -47,6 +43,6 @@ const { zone, section } = Astro.props
 ---
 
 <Layout title={name}>
-  {zone && <Zone zone={zone} slug={slug} />}
+  {zone && <Zone zone={zone} slug={slug.toString()} />}
   {section && <Section section={section} />}
 </Layout>
