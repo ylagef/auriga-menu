@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
+import { translations } from 'src/locales/translations'
 
 import type { ALLERGENS } from '../types'
 
 export interface Props {
   allergen: ALLERGENS
-  text: string
 }
 
-export default function Allergen({ allergen, text }: Props): JSX.Element {
+export default function Allergen({ allergen }: Props): JSX.Element {
   const [allergenOpen, setAllergenOpen] = useState<ALLERGENS>(null)
 
   useEffect(() => {
@@ -26,8 +26,8 @@ export default function Allergen({ allergen, text }: Props): JSX.Element {
         setAllergenOpen((prev) => (prev === allergen ? null : allergen))
       }}
     >
-      <img className="h-6" src={`/assets/images/allergens/${allergen}.png`} alt={text} />
-      <small className={`${allergenOpen === allergen ? 'w-screen pl-2' : 'w-0'} transition-all max-w-fit`}>{text}</small>
+      <img className="h-6" src={`/assets/images/allergens/${allergen}.png`} alt={translations.allergens[allergen]} />
+      <small className={`${allergenOpen === allergen ? 'w-screen pl-2' : 'w-0'} transition-all max-w-fit`}>{translations.allergens[allergen]}</small>
     </div>
   )
 }

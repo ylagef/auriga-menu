@@ -3,6 +3,7 @@ import Admin from '@components/Admin.astro'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import Divider from '@components/Divider.astro'
+import { RESTAURANT } from 'src/mock/auriga'
 
 const cookies = Astro.request.headers.get('cookie')
 const token = cookies
@@ -11,18 +12,17 @@ const token = cookies
   .split('=')[1]
 
 if (!token) return Astro.redirect('/admin/login')
+
+const zones = RESTAURANT.zones
 ---
 
 <Admin>
   <div class="flex flex-col">
-    <h1 class="text-center text-light-text">Administración</h1>
-
-    <Divider theme="light" />
-
     <ButtonLinksContainer>
-      <ButtonLink href="/admin/zonas">Zonas</ButtonLink>
-      <ButtonLink href="/admin/secciones">Secciones</ButtonLink>
-      <ButtonLink href="/admin/categorias">Categorías</ButtonLink>
+      {Object.entries(zones).map(([key, zone]) => <ButtonLink href={`/admin/${key}`}>{zone.name}</ButtonLink>)}
+
+      <Divider theme="light" />
+      <ButtonLink href="#">CREAR</ButtonLink>
     </ButtonLinksContainer>
   </div>
 </Admin>
