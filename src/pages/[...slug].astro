@@ -11,7 +11,7 @@ const { slug } = Astro.params
 const [zoneSlug, sectionSlug] = slug.toString().split('/')
 
 const zone = RESTAURANT.zones[zoneSlug]
-const section = zone.sections.find((section) => section.id === sectionSlug)
+const section = zone?.sections.find((section) => section.id === sectionSlug)
 ---
 
 <Layout title={name}>
