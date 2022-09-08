@@ -1,6 +1,8 @@
 ---
 import Card from '@components/Card.astro'
 import Layout from '@layouts/Layout.astro'
+
+import Divider from './Divider.astro'
 ---
 
 <Layout
@@ -11,9 +13,17 @@ import Layout from '@layouts/Layout.astro'
     }
   ]}
 >
-  <button id="logout-button" class="hidden text-light-text absolute top-6 left-4 py-2 px-4">Cerrar sesión</button>
+  <div class="flex flex-col">
+    <Card>
+      <div id="logged-container" class="flex items-center flex-col gap-2">
+        <h1>ADMIN</h1>
+        <button class="pb-2">Cerrar sesión</button>
+      </div>
+      <Divider theme="dark" />
 
-  <slot />
+      <slot />
+    </Card>
+  </div>
 </Layout>
 
 <script is:inline>
@@ -31,8 +41,8 @@ import Layout from '@layouts/Layout.astro'
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
   }
 
-  function handleLogoutButton(display) {
-    document.getElementById('logout-button').style.display = display ? 'block' : 'none'
+  function showLoggedContainer(token) {
+    document.getElementById('logged-container').style.display = token ? 'flex' : 'none'
   }
 
   netlifyIdentity.setLocale('es')
@@ -41,7 +51,7 @@ import Layout from '@layouts/Layout.astro'
     console.log('Netlify:initialized', data)
 
     const token = data?.token?.access_token
-    handleLogoutButton(token)
+    showLoggedContainer(token)
     if (token) {
       setCookie('netlify-token', token)
     }
@@ -51,7 +61,7 @@ import Layout from '@layouts/Layout.astro'
     console.log('Netlify:login', user)
 
     const token = user?.token?.access_token
-    handleLogoutButton(token)
+    showLoggedContainer(token)
     if (token) setCookie('netlify-token', token)
 
     if (window.location.pathname === '/admin/login') window.location.href = '/admin'
@@ -61,7 +71,7 @@ import Layout from '@layouts/Layout.astro'
     console.log('Netlify:logout', user)
 
     eraseCookie('netlify-token')
-    handleLogoutButton(false)
+    showLoggedContainer(false)
 
     if (window.location.pathname !== '/admin/login') window.location.href = '/admin/login'
   })

@@ -1,0 +1,64 @@
+---
+import Admin from '@components/Admin.astro'
+import ZoneEditor from '@components/ZoneEditor'
+import { RESTAURANT } from 'src/mock/auriga'
+
+const cookies = Astro.request.headers.get('cookie')
+const token = cookies
+  ?.split(';')
+  .find((c) => c.trim().startsWith('netlify-token='))
+  .split('=')[1]
+
+if (!token) {
+  console.log('Token not found - redirect to admin')
+  return Astro.redirect('/admin/login')
+}
+
+const { zones } = RESTAURANT
+const { path } = Astro.params
+const [zoneId] = path.toString().split('/')
+console.log({ path, zoneId })
+if (!Object.keys(zones).includes(zoneId)) return Astro.redirect('/admin')
+
+const zone = zones[zoneId]
+
+// const categories = zoneId ? zones[zoneId].categories : []
+// const category = categoryId ? zones[zoneId].categories.find((c) => c.id === categoryId) : null
+---
+
+<Admin>
+  <ZoneEditor client:visible zone={zone} />
+  <!-- <ButtonLinksContainer>
+    {!category && categories?.map((category) => <ButtonLink href={`/admin/${zoneId}/${category.id}`}>{category.buttonText}</ButtonLink>)} -->
+
+  <!-- {
+      category?.sections?.map((section) => (
+        <div class="flex flex-col gap-4">
+          {section.title && <h2 class="text-light-text text-center">{section.title}</h2>}
+          <ButtonLinksContainer>
+            {section.products.map((product) => (
+              <ButtonLink href={`/admin/${zoneId}/${categoryId}/${product.id}`}>{product.name}</ButtonLink>
+            ))}
+          </ButtonLinksContainer>
+        </div>
+      ))
+    }
+    {category?.products?.map((product) => <ButtonLink href={`/admin/${zoneId}/${categoryId}/${product.id}`}>{product.name}</ButtonLink>)}
+    {
+      category?.menu?.courses.map((course) => (
+        <div class="flex flex-col gap-4">
+          {course.name && <h2 class="text-light-text text-center">{course.name}</h2>}
+          <ButtonLinksContainer>
+            {course.products.map((product) => (
+              <ButtonLink href="#">{product}</ButtonLink>
+            ))}
+          </ButtonLinksContainer>
+        </div>
+      ))
+    } -->
+
+  <!-- <Divider theme="light" />
+
+    <ButtonLink href="#">AÑADIR</ButtonLink>
+  </ButtonLinksContainer> -->
+</Admin>
