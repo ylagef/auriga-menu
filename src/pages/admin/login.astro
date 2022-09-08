@@ -5,9 +5,9 @@ import Admin from '@components/Admin.astro'
 <Admin />
 
 <script is:inline>
-  document.onreadystatechange = () => {
-    if (document.readyState === 'complete') {
-      window.netlifyIdentity.open()
-    }
-  }
+  window.netlifyIdentity.on('init', () => {
+    console.log('Netlify:initialized:login', window.netlifyIdentity)
+
+    window.netlifyIdentity.open()
+  })
 </script>

@@ -5,20 +5,14 @@ import Layout from '@layouts/Layout.astro'
 import Divider from './Divider.astro'
 ---
 
-<Layout
-  title="Admin"
-  scripts={[
-    {
-      src: 'https://identity.netlify.com/v1/netlify-identity-widget.js'
-    }
-  ]}
->
-  <div class="flex flex-col">
+<Layout title="Admin">
+  <div class="hidden flex-col" id="logged-container">
     <Card>
-      <div id="logged-container" class="flex items-center flex-col gap-2">
+      <div class="flex items-center flex-col gap-2">
         <h1>ADMIN</h1>
-        <button class="pb-2">Cerrar sesión</button>
+        <button id="logout-button" class="pb-2">Cerrar sesión</button>
       </div>
+
       <Divider theme="dark" />
 
       <slot />
@@ -26,6 +20,7 @@ import Divider from './Divider.astro'
   </div>
 </Layout>
 
+<script is:inline type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script is:inline>
   function setCookie(name, value, days) {
     let expires = ''
@@ -45,7 +40,7 @@ import Divider from './Divider.astro'
     document.getElementById('logged-container').style.display = token ? 'flex' : 'none'
   }
 
-  netlifyIdentity.setLocale('es')
+  window.netlifyIdentity.setLocale('es')
 
   window.netlifyIdentity.on('init', (data) => {
     console.log('Netlify:initialized', data)
