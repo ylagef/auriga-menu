@@ -885,7 +885,7 @@ astro-eslint-parser@^0.6.0:
     eslint-visitor-keys "^3.0.0"
     espree "^9.0.0"
 
-astro@^1.1.6:
+astro@^1.1.7:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/astro/-/astro-1.1.7.tgz#faabc2688d8c3095f7a74f81d4fdfafdef9f66f6"
   integrity sha512-bQr95BIgD6Eu0exGOY26TxxKahZ3FiiEOpu3oUzsdM9kgeWUW8Mtjz3BKD+klZS9x0z3NYWOueCgxqe+vij8Vg==
