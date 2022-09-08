@@ -32,7 +32,7 @@ import Layout from '@layouts/Layout.astro'
   netlifyIdentity.setLocale('es')
 
   window.netlifyIdentity.on('init', (data) => {
-    console.log('Netlify initialized', data)
+    console.log('Netlify:initialized', data)
     const token = data?.token?.access_token
     handleLogoutButton(token)
     if (token) {
@@ -41,7 +41,7 @@ import Layout from '@layouts/Layout.astro'
   })
 
   window.netlifyIdentity.on('login', (user) => {
-    console.log('login', user)
+    console.log('Netlify:login', user)
     const token = user?.token?.access_token
     handleLogoutButton(token)
     if (token) setCookie('netlify-token', token)
@@ -50,11 +50,10 @@ import Layout from '@layouts/Layout.astro'
   })
 
   window.netlifyIdentity.on('logout', (user) => {
-    console.log('logout', user)
+    console.log('Netlify:logout', user)
     eraseCookie('netlify-token')
     handleLogoutButton(false)
 
-    console.log('navigate login')
     if (window.location.pathname !== '/admin/login') window.location.href = '/admin/login'
   })
 

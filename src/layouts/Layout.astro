@@ -20,7 +20,7 @@ const { title } = Astro.props
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="m-0 relative bg-black z-10 p-2 flex flex-col overflow-y-auto">
+  <body class="m-0 relative bg-black z-10 flex flex-col overflow-y-auto">
     <BurgerMenu client:load />
 
     <div id="logo-container" class="flex justify-center p-6">
