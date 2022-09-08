@@ -1,5 +1,5 @@
 ---
-import Section from '@components/Section.astro'
+import Category from '@components/Category.astro'
 import Zone from '@components/Zone.astro'
 
 import Layout from '../layouts/Layout.astro'
@@ -11,10 +11,10 @@ const { slug } = Astro.params
 const [zoneSlug, sectionSlug] = slug.toString().split('/')
 
 const zone = RESTAURANT.zones[zoneSlug]
-const section = zone?.sections.find((section) => section.id === sectionSlug)
+const category = zone?.categories.find((category) => category.id === sectionSlug)
 ---
 
 <Layout title={name}>
-  {zone && !section && <Zone zone={zone} slug={slug.toString()} />}
-  {section && <Section section={section} />}
+  {zone && !category && <Zone zone={zone} slug={slug.toString()} />}
+  {category && <Category category={category} />}
 </Layout>

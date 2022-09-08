@@ -1,7 +1,8 @@
 ---
 import Admin from '@components/Admin.astro'
+import ButtonLink from '@components/ButtonLink.astro'
+import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import Divider from '@components/Divider.astro'
-import SectionLink from '@components/SectionLink.astro'
 
 const cookies = Astro.request.headers.get('cookie')
 const token = cookies
@@ -18,10 +19,10 @@ if (!token) return Astro.redirect('/admin/login')
 
     <Divider theme="light" />
 
-    <div class="flex flex-col gap-4 items-center w-fit mx-auto">
-      <SectionLink link="/admin/zonas" text="Zonas" />
-      <SectionLink link="/admin/secciones" text="Secciones" />
-      <SectionLink link="/admin/categorias" text="Categorías" />
-    </div>
+    <ButtonLinksContainer>
+      <ButtonLink href="/admin/zonas">Zonas</ButtonLink>
+      <ButtonLink href="/admin/secciones">Secciones</ButtonLink>
+      <ButtonLink href="/admin/categorias">Categorías</ButtonLink>
+    </ButtonLinksContainer>
   </div>
 </Admin>
