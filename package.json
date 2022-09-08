@@ -9,7 +9,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky install",
-    "format:all": "eslint . --fix && prettier . --write"
+    "format:all": "eslint . --fix && prettier . --write",
+    "deploy:dev": "yarn build && netlify deploy",
+    "deploy:prod": "yarn build && netlify deploy --prod"
   },
   "dependencies": {
     "astro": "^1.1.7"
