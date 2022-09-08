@@ -7,12 +7,12 @@ export const RESTAURANT: Restaurant = {
   zones: {
     restaurante: {
       name: 'Restaurante',
-      sections: [
+      categories: [
         {
           id: 'menu',
           order: 0,
           buttonText: 'Menú',
-          sectionTitle: 'Menú del día',
+          categoryTitle: 'Menú del día',
           menu: {
             courses: [
               {
@@ -44,9 +44,9 @@ export const RESTAURANT: Restaurant = {
           id: 'desayunos-meriendas',
           order: 1,
           buttonText: 'Desayunos y meriendas',
-          sectionTitle: 'Desayunos y meriendas',
+          categoryTitle: 'Desayunos y meriendas',
           schedules: [SCHEDULES.BREAKFAST, SCHEDULES.SNACK],
-          categories: [
+          sections: [
             {
               id: 'clasicas',
               order: 0,
@@ -139,7 +139,7 @@ export const RESTAURANT: Restaurant = {
           id: 'masas-panes',
           order: 2,
           buttonText: 'Masas y panes',
-          sectionTitle: 'Con pan y mucha miga',
+          categoryTitle: 'Con pan y mucha miga',
           schedules: [SCHEDULES.UNINTERRUPTED],
           products: [
             {
@@ -171,7 +171,7 @@ export const RESTAURANT: Restaurant = {
           id: 'pintxos',
           order: 3,
           buttonText: 'Pintxos',
-          sectionTitle: 'Somos una ración',
+          categoryTitle: 'Somos una ración',
           schedules: [SCHEDULES.UNINTERRUPTED],
           extraServices: [EXTRA_SERVICES.BREAD, EXTRA_SERVICES.GLUTEN_FREE_BREAD],
           products: [
@@ -255,47 +255,47 @@ export const RESTAURANT: Restaurant = {
           buttonText: 'Raciones',
           schedules: [SCHEDULES.UNINTERRUPTED],
           extraServices: [EXTRA_SERVICES.BREAD, EXTRA_SERVICES.GLUTEN_FREE_BREAD],
-          categories: []
+          sections: []
         },
         {
           id: 'postres',
           order: 5,
           buttonText: 'Postres',
-          sectionTitle: 'Los dulces',
+          categoryTitle: 'Los dulces',
           schedules: [SCHEDULES.UNINTERRUPTED],
-          categories: []
+          sections: []
         },
         {
           id: 'recomendaciones',
           order: 6,
           buttonText: 'Recomendaciones',
-          sectionTitle: 'Lo que hoy nos inspira',
-          categories: []
+          categoryTitle: 'Lo que hoy nos inspira',
+          sections: []
         },
         {
           id: 'vinos',
           order: 7,
           buttonText: 'Vinos',
-          sectionTitle: 'Vinos',
-          categories: []
+          categoryTitle: 'Vinos',
+          sections: []
         },
         {
           id: 'cocteleria',
           order: 8,
           buttonText: 'Coctelería',
-          sectionTitle: 'Coctelería',
-          categories: []
+          categoryTitle: 'Coctelería',
+          sections: []
         }
       ]
     },
     comedor: {
       name: 'Comedor',
-      sections: [
+      categories: [
         {
           id: 'menu',
           order: 0,
           buttonText: 'Menú',
-          sectionTitle: 'Menú del día',
+          categoryTitle: 'Menú del día',
           menu: {
             courses: [
               {

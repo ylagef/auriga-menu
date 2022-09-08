@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import MenuIcon from 'src/icons/MenuIcon'
 import { RESTAURANT } from 'src/mock/auriga'
-import { SectionI } from 'src/types'
+import { CategoryI } from 'src/types'
 
 export default function BurgerMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const [zone, setZone] = useState<string>(null)
   const [sectionSlug, setSectionSlug] = useState<string>(null)
-  const [sections, setSections] = useState<SectionI[]>([])
+  const [sections, setSections] = useState<CategoryI[]>([])
 
   const handleOpen = () => {
     setIsOpen((prev) => !prev)
@@ -15,7 +15,7 @@ export default function BurgerMenu() {
 
   useEffect(() => {
     if (!zone) return
-    setSections(RESTAURANT.zones[zone]?.sections)
+    setSections(RESTAURANT.zones[zone]?.categories)
   }, [zone])
 
   useEffect(() => {

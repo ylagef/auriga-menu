@@ -1,7 +1,7 @@
 ---
+import ButtonLink from '@components/ButtonLink.astro'
+import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import { ZoneI } from 'src/types'
-
-import SectionLink from './SectionLink.astro'
 
 export interface Props {
   zone: ZoneI
@@ -11,6 +11,10 @@ export interface Props {
 const { zone, slug } = Astro.props
 ---
 
-<div class="flex flex-col gap-4 items-center w-fit mx-auto">
-  {zone.sections.sort((a, z) => a.order - z.order).map((section) => <SectionLink text={section.buttonText} link={`/${slug}/${section.id}`} />)}
-</div>
+<ButtonLinksContainer>
+  {
+    zone.categories
+      .sort((a, z) => a.order - z.order)
+      .map((category) => <ButtonLink href={`/${slug}/${category.id}`}>{category.buttonText}</ButtonLink>)
+  }
+</ButtonLinksContainer>

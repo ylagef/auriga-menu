@@ -1,21 +1,42 @@
 ---
-import type { CategoryI } from '../types'
-import ExtraServices from './ExtraServices.astro'
-import Products from './Products.astro'
+import Card from '@components/Card.astro'
+import Divider from '@components/Divider.astro'
+import ExtraServices from '@components/ExtraServices.astro'
+import Menu from '@components/Menu.astro'
+import Products from '@components/Products.astro'
+import Sections from '@components/Sections.astro'
+import { CategoryI } from 'src/types'
 
 export interface Props {
   category: CategoryI
 }
 
+console.log(Astro.props)
 const {
-  category: { title, extraServices, products }
+  category: { schedules, categoryTitle, sections, menu, products, extraServices }
 } = Astro.props
 ---
 
-<div>
-  <h2 class="text-center pb-2">{title}</h2>
+<Card>
+  <h1 class="text-center">{categoryTitle}</h1>
+
+  {
+    schedules && (
+      <div class="flex flex-col gap-1 py-4">
+        {schedules.map((schedule) => (
+          <small class="text-center">{schedule}</small>
+        ))}
+      </div>
+    )
+  }
 
   {extraServices && <ExtraServices extraServices={extraServices} />}
 
-  <Products products={products} />
-</div>
+  <Divider theme="dark" />
+
+  {sections && <Sections sections={sections} />}
+
+  {products && <Products products={products} />}
+
+  {menu && <Menu menu={menu} />}
+</Card>
