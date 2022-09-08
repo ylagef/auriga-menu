@@ -6,7 +6,7 @@ interface Props {
   sections: SectionI[]
 }
 
-function SectionsEditor({ sections }: Props) {
+export default function SectionsEditor({ sections }: Props) {
   return (
     <div className="pl-4">
       {sections?.map((section) => (
@@ -22,5 +22,3 @@ function SectionsEditor({ sections }: Props) {
     </div>
   )
 }
-
-export default SectionsEditor

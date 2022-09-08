@@ -4,7 +4,7 @@ interface Props {
   menu: Menu
 }
 
-function MenuEditor({ menu }: Props) {
+export default function MenuEditor({ menu }: Props) {
   return (
     <div>
       <h3>{menu.price}€</h3>
@@ -28,5 +28,3 @@ function MenuEditor({ menu }: Props) {
     </div>
   )
 }
-
-export default MenuEditor

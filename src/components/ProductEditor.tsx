@@ -6,7 +6,7 @@ interface Props {
   product: ProductI
 }
 
-function ProductEditor({ product }: Props) {
+export default function ProductEditor({ product }: Props) {
   return (
     <div className="pl-4">
       <p className="font-medium">{product.name}</p>
@@ -30,5 +30,3 @@ function ProductEditor({ product }: Props) {
     </div>
   )
 }
-
-export default ProductEditor
