@@ -1,9 +1,13 @@
 ---
 import Admin from '@components/Admin.astro'
 import Divider from '@components/Divider.astro'
+import { RESTAURANT } from 'src/mock/auriga'
+import { ZoneI } from 'src/types'
 
-export function getStaticPaths() {
-  return [{ params: { section: 'zonas' } }, { params: { section: 'secciones' } }, { params: { section: 'categorias' } }]
+enum SECTIONS {
+  ZONAS = 'zonas',
+  CATEGORIAS = 'categorias',
+  PRODUCTOS = 'productos'
 }
 
 const cookies = Astro.request.headers.get('cookie')
@@ -12,16 +16,20 @@ const token = cookies
   .find((c) => c.trim().startsWith('netlify-token='))
   .split('=')[1]
 
-console.log({ token })
-
 if (!token) {
-  console.log('Token not found')
+  console.log('Token not found - redirect to admin')
   return Astro.redirect('/admin')
 }
+
+const { section } = Astro.params
+const zones = section === SECTIONS.ZONAS ? Object.values(RESTAURANT.zones) : undefined
+console.log({ section, zones })
 ---
 
 <Admin>
   <h1 class="text-center">Zonas</h1>
 
   <Divider theme="dark" />
+
+  {zones?.map((zone) => <div>{zone.name}</div>)}
 </Admin>

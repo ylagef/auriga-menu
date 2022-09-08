@@ -4,7 +4,7 @@ import Layout from '@layouts/Layout.astro'
 ---
 
 <Layout title="Admin">
-  <button id="logout-button" class="hidden text-light-text absolute top-4 left-4">Cerrar sesión</button>
+  <button id="logout-button" class="hidden text-light-text absolute top-6 left-4 py-2 px-4">Cerrar sesión</button>
 
   <slot />
 </Layout>
@@ -28,6 +28,7 @@ import Layout from '@layouts/Layout.astro'
   function handleLogoutButton(display) {
     document.getElementById('logout-button').style.display = display ? 'block' : 'none'
   }
+
   netlifyIdentity.setLocale('es')
 
   window.netlifyIdentity.on('init', (data) => {
@@ -45,7 +46,7 @@ import Layout from '@layouts/Layout.astro'
     handleLogoutButton(token)
     if (token) setCookie('netlify-token', token)
 
-    if (window.location.pathname !== '/admin') window.location.href = '/admin'
+    if (window.location.pathname === '/admin/login') window.location.href = '/admin'
   })
 
   window.netlifyIdentity.on('logout', (user) => {
