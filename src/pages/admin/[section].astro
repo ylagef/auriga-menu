@@ -2,7 +2,6 @@
 import Admin from '@components/Admin.astro'
 import Divider from '@components/Divider.astro'
 import { RESTAURANT } from 'src/mock/auriga'
-import { ZoneI } from 'src/types'
 
 enum SECTIONS {
   ZONAS = 'zonas',
@@ -23,7 +22,6 @@ if (!token) {
 
 const { section } = Astro.params
 const zones = section === SECTIONS.ZONAS ? Object.values(RESTAURANT.zones) : undefined
-console.log({ section, zones })
 ---
 
 <Admin>

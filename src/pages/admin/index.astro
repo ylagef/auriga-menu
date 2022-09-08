@@ -9,7 +9,6 @@ const token = cookies
   .find((c) => c.trim().startsWith('netlify-token='))
   .split('=')[1]
 
-console.log('Admin:index', { token })
 if (!token) return Astro.redirect('/admin/login')
 ---
 
