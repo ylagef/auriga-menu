@@ -3,13 +3,19 @@ import Card from '@components/Card.astro'
 import Layout from '@layouts/Layout.astro'
 ---
 
-<Layout title="Admin">
+<Layout
+  title="Admin"
+  scripts={[
+    {
+      src: 'https://identity.netlify.com/v1/netlify-identity-widget.js'
+    }
+  ]}
+>
   <button id="logout-button" class="hidden text-light-text absolute top-6 left-4 py-2 px-4">Cerrar sesión</button>
 
   <slot />
 </Layout>
 
-<script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script is:inline>
   function setCookie(name, value, days) {
     let expires = ''
