@@ -11,8 +11,6 @@ import Layout from '@layouts/Layout.astro'
     }
   ]}
 >
-  <div data-netlify-identity-menu></div>
-
   <button id="logout-button" class="hidden text-light-text absolute top-6 left-4 py-2 px-4">Cerrar sesión</button>
 
   <slot />
@@ -41,6 +39,7 @@ import Layout from '@layouts/Layout.astro'
 
   window.netlifyIdentity.on('init', (data) => {
     console.log('Netlify:initialized', data)
+
     const token = data?.token?.access_token
     handleLogoutButton(token)
     if (token) {
@@ -50,6 +49,7 @@ import Layout from '@layouts/Layout.astro'
 
   window.netlifyIdentity.on('login', (user) => {
     console.log('Netlify:login', user)
+
     const token = user?.token?.access_token
     handleLogoutButton(token)
     if (token) setCookie('netlify-token', token)
@@ -59,6 +59,7 @@ import Layout from '@layouts/Layout.astro'
 
   window.netlifyIdentity.on('logout', (user) => {
     console.log('Netlify:logout', user)
+
     eraseCookie('netlify-token')
     handleLogoutButton(false)
 
