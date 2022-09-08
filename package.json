@@ -12,7 +12,7 @@
     "format:all": "eslint . --fix && prettier . --write"
   },
   "dependencies": {
-    "astro": "^1.1.6"
+    "astro": "^1.1.7"
   },
   "devDependencies": {
     "@astrojs/netlify": "^1.0.2",
