@@ -4,18 +4,60 @@ import Layout from '@layouts/Layout.astro'
 ---
 
 <Layout title="Admin">
+  <button id="logout-button" class="hidden text-light-text absolute top-4 left-4">Cerrar sesión</button>
+
   <slot />
 </Layout>
 
 <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script is:inline>
-  window.netlifyIdentity.on('login', (user) => {
-    console.log('login', user)
-    window.netlifyIdentity.close()
+  function setCookie(name, value, days) {
+    let expires = ''
+    if (days) {
+      const date = new Date()
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
+      expires = '; expires=' + date.toUTCString()
+    }
+    document.cookie = name + '=' + (value || '') + expires + '; path=/'
+  }
+
+  function eraseCookie(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+  }
+
+  function handleLogoutButton(display) {
+    document.getElementById('logout-button').style.display = display ? 'block' : 'none'
+  }
+  netlifyIdentity.setLocale('es')
+
+  window.netlifyIdentity.on('init', (data) => {
+    console.log('Netlify initialized', data)
+    const token = data?.token?.access_token
+    handleLogoutButton(token)
+    if (token) {
+      setCookie('netlify-token', token)
+    }
   })
 
-  window.netlifyIdentity.on('init', (init) => {
-    console.log('Netlify initialized', init)
-    if (!init) window.netlifyIdentity.open()
+  window.netlifyIdentity.on('login', (user) => {
+    console.log('login', user)
+    const token = user?.token?.access_token
+    handleLogoutButton(token)
+    if (token) setCookie('netlify-token', token)
+
+    if (window.location.pathname !== '/admin') window.location.href = '/admin'
+  })
+
+  window.netlifyIdentity.on('logout', (user) => {
+    console.log('logout', user)
+    eraseCookie('netlify-token')
+    handleLogoutButton(false)
+
+    console.log('navigate login')
+    if (window.location.pathname !== '/admin/login') window.location.href = '/admin/login'
+  })
+
+  document.getElementById('logout-button').addEventListener('click', () => {
+    window.netlifyIdentity.logout()
   })
 </script>
