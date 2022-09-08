@@ -27,7 +27,7 @@ export default function BurgerMenu() {
     setSectionSlug(window.location.pathname.split('/')[2])
   }, [])
 
-  if (!sectionSlug) return null
+  if (!sectionSlug || (sectionSlug && sectionSlug === 'login')) return null
 
   return (
     <div className={`w-screen absolute overflow-x-hidden top-0 left-0 ${isOpen ? 'h-full' : 'h-20'}`}>
@@ -37,11 +37,13 @@ export default function BurgerMenu() {
 
       <div className={`absolute top-0 w-screen h-full bg-black/80 p-4 transition-[left] overflow-y-auto ${isOpen ? 'left-0' : 'left-full'}`}>
         <div className="flex flex-col items-center gap-4 mt-16">
-          {sections?.map((section) => (
-            <a key={section.id} href={`/${zone}/${section.id}`} className="text-light-text font-medium text-xl">
-              {section.buttonText}
-            </a>
-          ))}
+          {sections?.map((section) => {
+            return (
+              <a key={section.id} href={`/${zone}/${section.id}`} className="text-light-text font-medium text-xl">
+                {section.buttonText}
+              </a>
+            )
+          })}
         </div>
       </div>
     </div>

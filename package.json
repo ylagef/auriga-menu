@@ -15,6 +15,7 @@
     "astro": "^1.1.6"
   },
   "devDependencies": {
+    "@astrojs/netlify": "^1.0.2",
     "@astrojs/react": "^1.1.1",
     "@astrojs/tailwind": "^1.0.0",
     "@types/react": "^18.0.18",
@@ -36,7 +37,7 @@
   "lint-staged": {
     "*.{js,ts,jsx,tsx,css,scss,md,astro}": [
       "prettier --write",
-      "eslint --fix"
+      "eslint --fix --color"
     ]
   },
   "husky": {

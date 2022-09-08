@@ -1,4 +1,4 @@
-import { SCHEDULES, EXTRA_SERVICES, ALLERGENS, Restaurant } from '../types'
+import { ALLERGENS, EXTRA_SERVICES, Restaurant, SCHEDULES } from '../types'
 
 export const RESTAURANT: Restaurant = {
   id: 'auriga',

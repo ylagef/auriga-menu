@@ -11,6 +11,20 @@ module.exports = {
     'plugin:prettier/recommended'
   ],
   plugins: ['@typescript-eslint', 'simple-import-sort', 'prettier'],
+  rules: {
+    'simple-import-sort/exports': 'error',
+    'simple-import-sort/imports': 'error',
+    camelcase: 'warn',
+    indent: [
+      'error',
+      2,
+      {
+        SwitchCase: 1
+      }
+    ],
+    'no-tabs': 0,
+    'no-undef': 'warn'
+  },
   overrides: [
     {
       // Define the configuration for `.astro` file.
@@ -22,19 +36,6 @@ module.exports = {
       parserOptions: {
         parser: '@typescript-eslint/parser',
         extraFileExtensions: ['.astro']
-      },
-      rules: {
-        'simple-import-sort/exports': 'error',
-        'simple-import-sort/imports': 'error',
-        camelcase: 'warn',
-        indent: [
-          'error',
-          2,
-          {
-            SwitchCase: 1
-          }
-        ],
-        'no-tabs': 0
       }
     }
   ]
