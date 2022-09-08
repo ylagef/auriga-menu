@@ -2,8 +2,15 @@
 import Admin from '@components/Admin.astro'
 ---
 
-<Admin />
+<Admin>
+  <button id="open-modal" class="text-light-text">Open Modal</button>
+</Admin>
 
 <script is:inline>
+  console.log('login', window.netlifyIdentity)
   window.netlifyIdentity.open()
+
+  document.getElementById('open-modal').addEventListener('click', () => {
+    window.netlifyIdentity.open()
+  })
 </script>
