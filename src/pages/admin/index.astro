@@ -1,5 +1,6 @@
 ---
 import Admin from '@components/Admin.astro'
+import ButtonInput from '@components/ButtonInput'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import Divider from '@components/Divider.astro'
@@ -21,8 +22,9 @@ const zones = RESTAURANT.zones
     <ButtonLinksContainer>
       {Object.entries(zones).map(([key, zone]) => <ButtonLink href={`/admin/${key}`}>{zone.name}</ButtonLink>)}
 
-      <Divider theme="light" />
-      <ButtonLink href="#">CREAR</ButtonLink>
+      <Divider theme="dark" />
     </ButtonLinksContainer>
+
+    <ButtonInput client:visible>CREAR NUEVA ZONA</ButtonInput>
   </div>
 </Admin>

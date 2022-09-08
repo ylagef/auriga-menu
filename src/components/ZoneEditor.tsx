@@ -7,8 +7,9 @@ import SectionsEditor from './SectionsEditor'
 interface Props {
   zone: ZoneI
 }
-function ZoneEditor({ zone }: Props) {
+export default function ZoneEditor({ zone }: Props) {
   console.log({ zone })
+
   return (
     <div>
       <h1>{zone?.name}</h1>
@@ -35,5 +36,3 @@ function ZoneEditor({ zone }: Props) {
     </div>
   )
 }
-
-export default ZoneEditor
