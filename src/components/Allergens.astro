@@ -1,5 +1,5 @@
 ---
-import { t } from 'i18next'
+import { translations } from 'src/locales/translations'
 
 import type { ALLERGENS } from '../types'
 import Allergen from './Allergen'
@@ -18,7 +18,7 @@ const { allergens } = Astro.props
         return a.localeCompare(b)
       })
       .map((allergen) => {
-        return <Allergen client:load allergen={allergen} text={t(`allergens.${allergen}`)} />
+        return <Allergen client:load allergen={allergen} text={translations.allergens[allergen]} />
       })
   }
 </div>
