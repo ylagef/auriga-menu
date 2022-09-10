@@ -1,61 +1,69 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 interface Props {
-  children?: React.ReactNode
+  children?: string
+  callback: (text: string) => Promise<void>
 }
-export default function ButtonInput({ children }: Props) {
-  const [editing, setEditing] = useState(true)
-  const [name, setName] = useState('')
+export default function ButtonInput({ children, callback }: Props) {
+  const [editing, setEditing] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [text, setText] = useState('')
 
-  if (!editing)
+  if (!editing) {
     return (
-      <button
-        className="py-3 px-8 bg-light-text/80 rounded w-60 text-center mx-auto"
-        onClick={() => {
-          setEditing(true)
-        }}
-      >
-        {children}
-      </button>
+      <div className="flex flex-col gap-4 items-center">
+        <button
+          className="py-3 px-8 bg-light-text/80 rounded w-60 text-center mx-auto"
+          onClick={() => {
+            setEditing(true)
+          }}
+        >
+          {children}
+        </button>
+
+        {success && <span>Creación correcta</span>}
+      </div>
     )
+  }
+
+  const handleAdd = async () => {
+    try {
+      await callback(text)
+      setText('')
+      setEditing(false)
+      setSuccess(true)
+      setTimeout(() => {
+        setSuccess(false)
+      }, 5000)
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   return (
-    <div className="flex gap-2 justify-center">
-      <h1>{name}</h1>
+    <div className="flex gap-2 justify-center flex-col w-fit mx-auto rounded border border-dark-text/20 p-2">
       <input
         className="py-3 px-8 bg-light-text/80 rounded w-60 text-center"
         placeholder="Nombre de la zona"
         onChange={(ev) => {
-          setName(ev.target.value)
+          setText(ev.target.value)
         }}
       />
 
-      <button
-        className="py-3 px-4 bg-light-text/80 rounded text-center"
-        onClick={() => {
-          fetch('/api/auriga', { method: 'POST', body: JSON.stringify({ name }) })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data)
-            })
-            .catch((err) => {
-              console.error(err)
-            })
+      <div className="flex justify-between">
+        <button className="py-3 px-4 text-center" onClick={handleAdd}>
+          Añadir
+        </button>
 
-          setEditing(false)
-        }}
-      >
-        ok
-      </button>
-
-      <button
-        className="py-3 px-4 bg-light-text/80 rounded text-center"
-        onClick={() => {
-          setEditing(false)
-        }}
-      >
-        X
-      </button>
+        <button
+          className="py-3 px-4 text-center"
+          onClick={() => {
+            setEditing(false)
+          }}
+        >
+          Cancelar
+        </button>
+      </div>
     </div>
   )
 }
