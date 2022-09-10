@@ -1,8 +1,8 @@
 ---
 import Admin from '@components/Admin.astro'
-import ButtonInput from '@components/ButtonInput'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
+import CreateZone from '@components/CreateZone'
 import Divider from '@components/Divider.astro'
 import { getZones } from 'src/utils/supabase'
 
@@ -26,6 +26,6 @@ console.log({ zones })
       <Divider theme="dark" />
     </ButtonLinksContainer>
 
-    <ButtonInput client:visible>CREAR NUEVA ZONA</ButtonInput>
+    <CreateZone client:visible />
   </div>
 </Admin>

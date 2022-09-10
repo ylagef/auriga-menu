@@ -26,6 +26,15 @@ export const getZones = async ({ restaurantId }: { restaurantId: number }) => {
   return data
 }
 
+export const createZone = async ({ restaurantId, name, slug }: { restaurantId: number; name: string; slug: string }) => {
+  const { data, error } = await supabase.from<ZoneSI>('zones').insert([{ restaurantId, name, slug }])
+  if (error) {
+    console.log('error', error)
+    return null
+  }
+  return data
+}
+
 export const getZoneBySlug = async ({ restaurantId, zoneSlug }: { restaurantId: number; zoneSlug: string }) => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', restaurantId).eq('slug', zoneSlug).single()
   if (error) {
