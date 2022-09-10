@@ -4,7 +4,7 @@ import ButtonInput from '@components/ButtonInput'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import Divider from '@components/Divider.astro'
-import { RESTAURANT } from 'src/mock/auriga'
+import { getZones } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
 const token = cookies
@@ -14,13 +14,14 @@ const token = cookies
 
 if (!token) return Astro.redirect('/admin/login')
 
-const zones = RESTAURANT.zones
+const zones = await getZones({ restaurantId: 1 })
+console.log({ zones })
 ---
 
 <Admin>
   <div class="flex flex-col">
     <ButtonLinksContainer>
-      {Object.entries(zones).map(([key, zone]) => <ButtonLink href={`/admin/${key}`}>{zone.name}</ButtonLink>)}
+      {zones.map((zone) => <ButtonLink href={`/admin/${zone.slug}`}>{zone.name}</ButtonLink>)}
 
       <Divider theme="dark" />
     </ButtonLinksContainer>

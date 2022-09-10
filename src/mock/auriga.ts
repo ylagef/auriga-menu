@@ -6,6 +6,7 @@ export const RESTAURANT: Restaurant = {
   shortName: 'Auriga',
   zones: {
     restaurante: {
+      id: 'restaurante',
       name: 'Restaurante',
       categories: [
         {
@@ -289,6 +290,7 @@ export const RESTAURANT: Restaurant = {
       ]
     },
     comedor: {
+      id: 'comedor',
       name: 'Comedor',
       categories: [
         {

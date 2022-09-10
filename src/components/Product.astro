@@ -1,10 +1,9 @@
 ---
 import Allergens from '@components/Allergens.astro'
-
-import type { ProductI } from '../types'
+import { ProductSI } from 'src/typesSupabase'
 
 export interface Props {
-  product: ProductI
+  product: ProductSI
 }
 
 const {

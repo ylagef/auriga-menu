@@ -1,10 +1,11 @@
 ---
 import Section from '@components/Section.astro'
+import { SectionSI } from 'src/typesSupabase'
 
 import type { SectionI } from '../types'
 
 export interface Props {
-  sections: SectionI[]
+  sections: SectionSI[]
 }
 
 const { sections } = Astro.props

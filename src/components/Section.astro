@@ -1,16 +1,20 @@
 ---
 import ExtraServices from '@components/ExtraServices.astro'
 import Products from '@components/Products.astro'
+import { SectionSI } from 'src/typesSupabase'
+import { getProductsBySection } from 'src/utils/supabase'
 
 import type { SectionI } from '../types'
 
 export interface Props {
-  section: SectionI
+  section: SectionSI
 }
 
 const {
-  section: { title, extraServices, products }
+  section: { id, title, extraServices }
 } = Astro.props
+
+const products = await getProductsBySection({ sectionId: id })
 ---
 
 <div>
