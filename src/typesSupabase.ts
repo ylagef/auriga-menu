@@ -29,8 +29,12 @@ export enum ALLERGENS {
   SULPHITES = 'sulphites'
 }
 
-export interface ProductI {
-  id: string
+export interface ProductSI {
+  // fk
+  categoryId: number
+  sectionId: number
+
+  id: number
   order: number
   name: string
   description?: string
@@ -39,48 +43,58 @@ export interface ProductI {
   allergens?: ALLERGENS[]
 }
 
-export interface SectionI {
-  id: string
+export interface SectionSI {
+  // fk
+  categoryId: number
+
+  id: number
   order: number
   title?: string
   extraServices?: EXTRA_SERVICES[]
-  products: ProductI[]
 }
 
-export interface Course {
-  id: string
+export interface CourseSI {
+  // fk
+  menuId: number
+
+  id: number
   name: string
   products: string[]
 }
 
-export interface Menu {
-  courses: Course[]
+export interface MenuSI {
+  // fk
+  categoryId: number
+
+  id: number
   extraServices: EXTRA_SERVICES[]
   price: number
 }
 
-export interface CategoryI {
-  id: string
+export interface CategorySI {
+  // fk
+  zoneId: number
+
+  id: number
+  slug: string
   order: number
   buttonText: string
   categoryTitle?: string
   schedules?: string[]
   extraServices?: EXTRA_SERVICES[]
-  sections?: SectionI[]
-  products?: ProductI[]
-  menu?: Menu
 }
 
-export interface ZoneI {
-  id: string
+export interface ZoneSI {
+  // fk
+  restaurantId: number
+
+  id: number
+  slug: string
   name?: string
-  slug?: string
-  categories: CategoryI[]
 }
 
-export interface Restaurant {
-  id: string
+export interface RestaurantSI {
+  id: number
   name: string
   shortName?: string
-  zones: { [key: string]: ZoneI }
 }

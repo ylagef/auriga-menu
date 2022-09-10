@@ -1,10 +1,11 @@
 ---
 import Product from '@components/Product.astro'
+import { ProductSI } from 'src/typesSupabase'
 
 import type { ProductI } from '../types'
 
 export interface Props {
-  products: ProductI[]
+  products: ProductSI[]
 }
 
 const { products } = Astro.props

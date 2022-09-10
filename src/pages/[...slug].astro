@@ -1,20 +1,29 @@
 ---
 import Category from '@components/Category.astro'
 import Zone from '@components/Zone.astro'
+import { CategorySI, ZoneSI } from 'src/typesSupabase'
+import { getCategories, getCategoryBySlug, getZoneBySlug } from 'src/utils/supabase'
 
 import Layout from '../layouts/Layout.astro'
 import { RESTAURANT } from '../mock/auriga'
+
+console.log('[...slug].astro...')
 
 const { name } = RESTAURANT
 
 const { slug } = Astro.params
 const [zoneSlug, sectionSlug] = slug.toString().split('/')
-
-const zone = RESTAURANT.zones[zoneSlug]
-const category = zone?.categories.find((category) => category.id === sectionSlug)
+console.log({ slug, zoneSlug, sectionSlug })
+let zone: ZoneSI, category: CategorySI
+if (!sectionSlug) {
+  zone = await getZoneBySlug({ restaurantId: 1, zoneSlug })
+} else {
+  category = await getCategoryBySlug({ categorySlug: sectionSlug })
+}
+console.log({ zone, category })
 ---
 
 <Layout title={name}>
-  {zone && !category && <Zone zone={zone} slug={slug.toString()} />}
+  - {zone && !sectionSlug && <Zone zone={zone} />}
   {category && <Category category={category} />}
 </Layout>

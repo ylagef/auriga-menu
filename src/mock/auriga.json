@@ -1,0 +1,442 @@
+{
+  "id": "auriga",
+  "name": "hola",
+  "shortName": "Auriga",
+  "zones": {
+    "restaurante": {
+      "name": "Restaurante",
+      "categories": [
+        {
+          "id": "menu",
+          "order": 0,
+          "buttonText": "Menú",
+          "categoryTitle": "Menú del día",
+          "menu": {
+            "courses": [
+              {
+                "id": "aperitivos",
+                "name": "Aperitivos",
+                "products": [
+                  "Mayonesa de naranja y zanahoria"
+                ]
+              },
+              {
+                "id": "entrantes",
+                "name": "Entrantes",
+                "products": [
+                  "Ensalada de tomate y queso de cabra",
+                  "Ensalada de quinoa y verduras"
+                ]
+              },
+              {
+                "id": "segundos-elegir",
+                "name": "Segundos a elegir",
+                "products": [
+                  "Pasta con salsa de tomate y albahaca",
+                  "Meiga a la brasa con patatas"
+                ]
+              },
+              {
+                "id": "postres",
+                "name": "Postres",
+                "products": [
+                  "Tarta de queso"
+                ]
+              }
+            ],
+            "extraServices": [
+              "water coffee"
+            ],
+            "price": 12.9
+          }
+        },
+        {
+          "id": "desayunos-meriendas",
+          "order": 1,
+          "buttonText": "Desayunos y meriendas",
+          "categoryTitle": "Desayunos y meriendas",
+          "schedules": [
+            "sche breakf",
+            "sche lunch"
+          ],
+          "sections": [
+            {
+              "id": "clasicas",
+              "order": 0,
+              "title": "Clásicas",
+              "extraServices": [
+                "rye bread",
+                "gluten free bun"
+              ],
+              "products": [
+                {
+                  "id": "aove",
+                  "order": 0,
+                  "name": "De AOVE",
+                  "price": 2,
+                  "allergens": [
+                    "gluten"
+                  ]
+                },
+                {
+                  "id": "confitura-temporada-mantequilla",
+                  "order": 1,
+                  "name": "De confitura de temporada y mantequilla",
+                  "price": 2.5,
+                  "allergens": [
+                    "gluten",
+                    "lactose"
+                  ]
+                },
+                {
+                  "id": "tomate-aove",
+                  "order": 2,
+                  "name": "De tomate restregado y AOVE",
+                  "price": 3,
+                  "allergens": [
+                    "gluten"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "del-auriga",
+              "order": 1,
+              "title": "Las tostas del Auriga",
+              "products": [
+                {
+                  "id": "mex",
+                  "order": 0,
+                  "name": "Taco mex,  guacamole, tartar de ahumados y queso galmesano",
+                  "price": 6.5,
+                  "allergens": [
+                    "lactose",
+                    "fish"
+                  ]
+                },
+                {
+                  "id": "centeno-requeson",
+                  "order": 1,
+                  "name": "Tosta de centeno, requesón, fruta de hueso a la parrilla, nueces y miel",
+                  "price": 6.5,
+                  "allergens": [
+                    "gluten",
+                    "lactose",
+                    "eggs"
+                  ]
+                },
+                {
+                  "id": "cea-huevos",
+                  "order": 2,
+                  "name": "Tosta de Cea, huevos BT, espinaca fresca y champiñones encurtidos",
+                  "price": 6.5,
+                  "allergens": [
+                    "gluten",
+                    "lactose"
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "los-huevos",
+              "order": 2,
+              "title": "Los huevos",
+              "products": [
+                {
+                  "id": "tortilla-patata",
+                  "order": 0,
+                  "name": "Tortilla de patata",
+                  "description": "Pintxo hecho al momento con pan con tomate",
+                  "price": 3,
+                  "allergens": [
+                    "gluten",
+                    "eggs"
+                  ]
+                },
+                {
+                  "id": "croissant-huevo",
+                  "order": 1,
+                  "name": "Croissant a la plancha, huevos revueltos y jamón crujiente",
+                  "price": 6.5,
+                  "allergens": [
+                    "gluten",
+                    "lactose",
+                    "eggs",
+                    "sulphites"
+                  ]
+                },
+                {
+                  "id": "benedictine",
+                  "order": 2,
+                  "name": "63ºC con lacón",
+                  "price": 7,
+                  "allergens": [
+                    "gluten",
+                    "lactose",
+                    "eggs",
+                    "sulphites"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "masas-panes",
+          "order": 2,
+          "buttonText": "Masas y panes",
+          "categoryTitle": "Con pan y mucha miga",
+          "schedules": [
+            "uniterrupted"
+          ],
+          "products": [
+            {
+              "id": "nuestra-burger",
+              "order": 0,
+              "name": "Nuestra burger",
+              "description": "Burger de ternera, queso, bacon, tomate, lechuga, cebolla y salsa de tomate",
+              "price": 7,
+              "allergens": [
+                "gluten",
+                "lactose",
+                "eggs",
+                "sulphites"
+              ]
+            },
+            {
+              "id": "bocatin-calamares",
+              "order": 1,
+              "name": "Bocata de calamares",
+              "description": "Calamares a la romana, lechuga, tomate y salsa de tomate",
+              "price": 7,
+              "allergens": [
+                "gluten",
+                "lactose",
+                "eggs",
+                "sulphites"
+              ]
+            },
+            {
+              "id": "bocata-pepitoria",
+              "order": 2,
+              "name": "Bocata de pepitoria",
+              "description": "Pepitoria, lechuga, tomate y salsa de tomate",
+              "price": 7
+            }
+          ]
+        },
+        {
+          "id": "pintxos",
+          "order": 3,
+          "buttonText": "Pintxos",
+          "categoryTitle": "Somos una ración",
+          "schedules": [
+            "uniterrupted"
+          ],
+          "extraServices": [
+            "bread extra s",
+            "gluten free bread"
+          ],
+          "products": [
+            {
+              "id": "Croquetas",
+              "order": 0,
+              "name": "Croquetas hechas aquí",
+              "price": 7,
+              "options": [
+                "De jamón y arzúa",
+                "De calamares en su tinta"
+              ],
+              "allergens": [
+                "lactose",
+                "fish"
+              ]
+            },
+            {
+              "id": "Huevos",
+              "order": 1,
+              "name": "Huevos BT",
+              "description": "Huevos BT, champiñones, crujiente de jamón y nuestra salsa",
+              "price": 9.5,
+              "allergens": [
+                "gluten",
+                "lactose",
+                "eggs"
+              ]
+            },
+            {
+              "id": "Tartar",
+              "order": 2,
+              "name": "Tartar de atún rojo",
+              "description": "Atún rojo, guacamole de fresa, fresas ácidas y nuestras chips",
+              "price": 14.5,
+              "allergens": [
+                "gluten",
+                "lactose"
+              ]
+            },
+            {
+              "id": "Alitas",
+              "order": 2,
+              "name": "Alitas Koreanas",
+              "description": "Fritas y especiadas ",
+              "price": 11.5,
+              "allergens": [
+                "gluten",
+                "lactose"
+              ]
+            },
+            {
+              "id": "Patatas",
+              "order": 2,
+              "name": "Patatas Gajo",
+              "description": "Con salsa brava de chipottle",
+              "price": 6,
+              "allergens": [
+                "gluten",
+                "lactose"
+              ]
+            },
+            {
+              "id": "Brochetas",
+              "order": 2,
+              "name": "Brochetas de pollo",
+              "description": "Pollo marinado a la brasa, guacamole y totopos  ",
+              "price": 9,
+              "allergens": [
+                "gluten",
+                "lactose"
+              ]
+            },
+            {
+              "id": "Morro",
+              "order": 2,
+              "name": "Morro Nikkei",
+              "description": "Frito estilo nikkei ",
+              "price": 9,
+              "allergens": [
+                "gluten",
+                "lactose"
+              ]
+            },
+            {
+              "id": "Nuestras",
+              "order": 2,
+              "name": "Nuestras almóndigas",
+              "description": "Con salsa Tikka Massala y totopos",
+              "price": 12.5,
+              "allergens": [
+                "gluten",
+                "lactose"
+              ]
+            },
+            {
+              "id": "Costilla",
+              "order": 2,
+              "name": "Costilla",
+              "description": "Cocinada a BT, deshuesada, marcada en la parrilla y con salsa teriyaki de mango",
+              "price": 12.5,
+              "allergens": [
+                "gluten",
+                "lactose"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "raciones",
+          "order": 4,
+          "buttonText": "Raciones",
+          "schedules": [
+            "uniterrupted"
+          ],
+          "extraServices": [
+            "bread extra s",
+            "gluten free bread"
+          ],
+          "sections": []
+        },
+        {
+          "id": "postres",
+          "order": 5,
+          "buttonText": "Postres",
+          "categoryTitle": "Los dulces",
+          "schedules": [
+            "uniterrupted"
+          ],
+          "sections": []
+        },
+        {
+          "id": "recomendaciones",
+          "order": 6,
+          "buttonText": "Recomendaciones",
+          "categoryTitle": "Lo que hoy nos inspira",
+          "sections": []
+        },
+        {
+          "id": "vinos",
+          "order": 7,
+          "buttonText": "Vinos",
+          "categoryTitle": "Vinos",
+          "sections": []
+        },
+        {
+          "id": "cocteleria",
+          "order": 8,
+          "buttonText": "Coctelería",
+          "categoryTitle": "Coctelería",
+          "sections": []
+        }
+      ]
+    },
+    "comedor": {
+      "name": "Comedor",
+      "categories": [
+        {
+          "id": "menu",
+          "order": 0,
+          "buttonText": "Menú",
+          "categoryTitle": "Menú del día",
+          "menu": {
+            "courses": [
+              {
+                "id": "aperitivos",
+                "name": "Aperitivos",
+                "products": [
+                  "Mayonesa de naranja y zanahoria"
+                ]
+              },
+              {
+                "id": "entrantes",
+                "name": "Entrantes",
+                "products": [
+                  "Ensalada de tomate y queso de cabra",
+                  "Ensalada de quinoa y verduras"
+                ]
+              },
+              {
+                "id": "segundos-elegir",
+                "name": "Segundos a elegir",
+                "products": [
+                  "Pasta con salsa de tomate y albahaca",
+                  "Meiga a la brasa con patatas"
+                ]
+              },
+              {
+                "id": "postres",
+                "name": "Postres",
+                "products": [
+                  "Tarta de queso"
+                ]
+              }
+            ],
+            "extraServices": [
+              "water coffee"
+            ],
+            "price": 12.9
+          }
+        }
+      ]
+    }
+  }
+}
