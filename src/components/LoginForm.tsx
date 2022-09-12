@@ -1,5 +1,5 @@
 import React from 'react'
-import { setCookie, updateCookiesDomain } from 'src/utils/cookies'
+import { setCookie } from 'src/utils/cookies'
 import { supabase } from 'src/utils/supabase'
 
 export default function LoginForm() {
@@ -11,11 +11,11 @@ export default function LoginForm() {
 
     const { data, error } = await supabase.auth.api.signInWithEmail(email, password)
     console.log({ data, error })
-    // get token from user
-    const { access_token, expires_in, refresh_token } = data
-    // set token in cookie
-    setCookie('sup-access-token', access_token, expires_in, window.location.hostname)
-    setCookie('sup-refresh-token', refresh_token, expires_in, window.location.hostname)
+
+    const { access_token: accessToken, expires_at: expiresAt, refresh_token: refreshToken } = data
+
+    setCookie('sup-access-token', accessToken, expiresAt)
+    setCookie('sup-refresh-token', refreshToken, expiresAt)
 
     window.location.href = '/admin'
   }

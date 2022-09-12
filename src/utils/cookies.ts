@@ -1,11 +1,12 @@
-export const setCookie = (name, value, expiresIn, domain) => {
+export const setCookie = (name, value, expiresIn) => {
+  const domain = window.location.hostname
   let expires = ''
   if (expiresIn) {
     const date = new Date()
-    date.setTime(date.getTime() + expiresIn)
+    date.setTime(date.getTime() + 24 * 60 * 60 * 1000)
     expires = '; expires=' + date.toUTCString()
   }
-  document.cookie = name + '=' + (value || '') + expires + '; path=/; domain=' + domain
+  document.cookie = name + '=' + (value || '') + expires + '; path=/admin; domain=' + domain
 }
 export const getCookie = (name) => {
   const nameEQ = name + '='
