@@ -82,7 +82,7 @@ export interface CategorySI {
   type: CATEGORY_TYPES
   slug: string
   buttonText: string
-  categoryTitle?: string
+  categoryTitle: string
   schedules?: string[]
   extraServices?: EXTRA_SERVICES[]
 

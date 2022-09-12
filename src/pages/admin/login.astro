@@ -2,6 +2,20 @@
 import Admin from '@components/Admin.astro'
 import Card from '@components/Card.astro'
 import LoginForm from '@components/LoginForm'
+import { supabase } from 'src/utils/supabase'
+
+const cookies = Astro.request.headers.get('cookie')
+
+const token = cookies
+  ?.split(';')
+  .find((c) => c.trim().startsWith('sup-access-token='))
+  ?.split('=')[1]
+
+if (token) {
+  const { data: user, error } = await supabase.auth.api.getUser(token)
+  console.log({ user, error })
+  if (user?.aud === 'authenticated') return Astro.redirect('/admin')
+}
 ---
 
 <Admin>

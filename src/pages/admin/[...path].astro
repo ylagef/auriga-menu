@@ -12,13 +12,12 @@ import { getCategoryBySlug, getZoneBySlug, supabase } from 'src/utils/supabase'
 //   .find((c) => c.trim().startsWith('netlify-token='))
 //   .split('=')[1]
 
-const session = supabase.auth.session()
-console.log({ session })
-
-if (!session) {
-  console.log('Session not found - redirect to login')
-  return Astro.redirect('/admin/login')
-}
+// const user = await getUser(Astro.request)
+// console.log({ user })
+// if (!user) {
+//   console.log('[...path].astro:Session not found - redirect to login')
+//   return Astro.redirect('/admin/login')
+// }
 
 const { path } = Astro.params
 const [zoneSlug, categorySlug] = path.toString().split('/')

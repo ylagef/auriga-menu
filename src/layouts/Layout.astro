@@ -6,10 +6,9 @@ import { RESTAURANT } from '../mock/auriga'
 
 export interface Props {
   title: string
-  scripts?: any[]
 }
 
-const { title, scripts } = Astro.props
+const { title } = Astro.props
 ---
 
 <!DOCTYPE html>
@@ -20,7 +19,6 @@ const { title, scripts } = Astro.props
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    {scripts?.map((script) => <script {...script} />)}
   </head>
   <body class="m-0 relative bg-black z-10 flex flex-col overflow-y-auto">
     <BurgerMenu client:load />
@@ -35,7 +33,7 @@ const { title, scripts } = Astro.props
 
     <Footer />
 
-    <style is:global>
+    <style is:inline>
       @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
       html {
@@ -64,8 +62,7 @@ const { title, scripts } = Astro.props
       * {
         box-sizing: border-box;
       }
-    </style>
-    <style is:global>
+
       h1 {
         font-size: 1.6rem;
         font-weight: 700;
