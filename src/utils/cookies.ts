@@ -18,3 +18,8 @@ export const getCookie = (name) => {
   }
   return null
 }
+
+export const eraseCookie = (name) => {
+  const domain = window.location.hostname
+  document.cookie = name + '=; Max-Age=-99999999;' + ' path=/admin; domain=' + domain
+}

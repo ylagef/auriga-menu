@@ -1,12 +1,12 @@
-import React from 'react'
+import { FormEvent, useState } from 'react'
 import { setCookie } from 'src/utils/cookies'
 import { supabase } from 'src/utils/supabase'
 
 export default function LoginForm() {
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const { data, error } = await supabase.auth.api.signInWithEmail(email, password)
