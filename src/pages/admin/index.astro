@@ -7,19 +7,24 @@ import Divider from '@components/Divider.astro'
 import { getZones, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
-console.log({ cookies })
+
 const token = cookies
   ?.split(';')
-  .find((c) => c.trim().startsWith('sb-access-token='))
-  .split('=')[1]
+  .find((c) => c.trim().startsWith('sup-access-token='))
+  ?.split('=')[1]
 
-const session = supabase.auth.setAuth(token)
-console.log({ session })
+if (!token) return Astro.redirect('/admin/login')
 
-if (!session) {
-  console.log('Session not found - redirect to login')
-  return Astro.redirect('/admin/login')
-}
+const { data: user, error } = await supabase.auth.api.getUser(token)
+console.log({ user, error })
+if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
+
+// const user = await getUser(Astro.request)
+// console.log({ user })
+// if (!user) {
+//   console.log('Admin.astro:Session not found - redirect to login')
+//   return Astro.redirect('/admin/login')
+// }
 
 const zones = await getZones({ restaurantId: 1 })
 ---

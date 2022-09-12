@@ -1,7 +1,6 @@
 ---
 import Card from '@components/Card.astro'
 import Layout from '@layouts/Layout.astro'
-import { supabase } from 'src/utils/supabase'
 
 import Divider from './Divider.astro'
 ---
@@ -20,8 +19,6 @@ import Divider from './Divider.astro'
     </Card>
   </div>
 </Layout>
-
-<!-- <script is:inline type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script> -->
 <script is:inline>
   function showLoggedContainer(token) {
     document.getElementById('logged-container').style.display = token ? 'flex' : 'none'
