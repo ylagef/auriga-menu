@@ -2,11 +2,9 @@ import { createClient } from '@supabase/supabase-js'
 
 import { CategorySI, CourseSI, MenuSI, ProductSI, RestaurantSI, SectionSI, ZoneSI } from './../typesSupabase'
 
+console.log({ url: import.meta.env.SUPABASE_URL, key: import.meta.env.SUPABASE_KEY })
 // Create a single supabase client for interacting with your database
-export const supabase = createClient(
-  'https://pkgypqlhoeycvdrpqqad.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBrZ3lwcWxob2V5Y3ZkcnBxcWFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjI3MzY1MTMsImV4cCI6MTk3ODMxMjUxM30.ELjbU-zWPh_OcjLK0VPQehU_GXxuFQB04f8DGSIJ-7U'
-)
+export const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY)
 
 export const getRestaurant = async (id) => {
   const { data, error } = await supabase.from<RestaurantSI>('restaurants').select('*').eq('id', id).single()
@@ -55,6 +53,15 @@ export const getCategories = async ({ zoneId }: { zoneId: number }) => {
 
 export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string }) => {
   const { data, error } = await supabase.from<CategorySI>('categories').select('*').eq('slug', categorySlug).single()
+  if (error) {
+    console.log('error', error)
+    return null
+  }
+  return data
+}
+
+export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
+  const { data, error } = await supabase.from<CategorySI>('categories').select('*').eq('zoneId', zoneId)
   if (error) {
     console.log('error', error)
     return null
