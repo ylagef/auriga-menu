@@ -1,3 +1,4 @@
+import { translations } from 'src/locales/translations'
 import { Menu } from 'src/types'
 
 interface Props {
@@ -10,7 +11,7 @@ export default function MenuEditor({ menu }: Props) {
       <h3>{menu.price}€</h3>
       <div>
         {menu.extraServices?.map((extraService) => (
-          <p key={extraService}>{extraService}</p>
+          <p key={extraService}>{translations.extraServices[extraService]}</p>
         ))}
       </div>
 

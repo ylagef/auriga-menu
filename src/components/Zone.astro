@@ -2,7 +2,7 @@
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import { ZoneSI } from 'src/typesSupabase'
-import { getCategories } from 'src/utils/supabase'
+import { getCategoriesByZoneId } from 'src/utils/supabase'
 
 export interface Props {
   zone: ZoneSI
@@ -10,7 +10,7 @@ export interface Props {
 
 console.log('Zone.astro...')
 const { zone } = Astro.props
-const categories = await getCategories({ zoneId: zone.id })
+const categories = await getCategoriesByZoneId({ zoneId: zone.id })
 console.log({ zone, categories })
 ---
 

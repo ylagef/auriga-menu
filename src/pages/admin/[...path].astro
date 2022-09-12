@@ -1,33 +1,43 @@
 ---
 import Admin from '@components/Admin.astro'
-import ZoneEditor from '@components/ZoneEditor'
+import CategoryEditor from '@components/CategoryEditor.astro'
+import ZoneEditor from '@components/ZoneEditor.astro'
 import { RESTAURANT } from 'src/mock/auriga'
+import { CategorySI, ZoneSI } from 'src/typesSupabase'
+import { getCategoryBySlug, getZoneBySlug, supabase } from 'src/utils/supabase'
 
-const cookies = Astro.request.headers.get('cookie')
-const token = cookies
-  ?.split(';')
-  .find((c) => c.trim().startsWith('netlify-token='))
-  .split('=')[1]
+// const cookies = Astro.request.headers.get('cookie')
+// const token = cookies
+//   ?.split(';')
+//   .find((c) => c.trim().startsWith('netlify-token='))
+//   .split('=')[1]
 
-if (!token) {
-  console.log('Token not found - redirect to admin')
+const session = supabase.auth.session()
+console.log({ session })
+
+if (!session) {
+  console.log('Session not found - redirect to login')
   return Astro.redirect('/admin/login')
 }
 
-const { zones } = RESTAURANT
 const { path } = Astro.params
-const [zoneId] = path.toString().split('/')
-console.log({ path, zoneId })
-if (!Object.keys(zones).includes(zoneId)) return Astro.redirect('/admin')
+const [zoneSlug, categorySlug] = path.toString().split('/')
 
-const zone = zones[zoneId]
+let zone: ZoneSI, category: CategorySI
+if (zoneSlug) {
+  if (categorySlug) {
+    category = await getCategoryBySlug({ categorySlug })
+  } else {
+    zone = await getZoneBySlug({ restaurantId: 1, zoneSlug })
+  }
+}
 
-// const categories = zoneId ? zones[zoneId].categories : []
-// const category = categoryId ? zones[zoneId].categories.find((c) => c.id === categoryId) : null
+if (!zone && !category) return Astro.redirect('/admin')
 ---
 
 <Admin>
-  <ZoneEditor client:visible zone={zone} />
+  {zone && !category && <ZoneEditor zone={zone} />}
+  {category && <CategoryEditor category={category} />}
   <!-- <ButtonLinksContainer>
     {!category && categories?.map((category) => <ButtonLink href={`/admin/${zoneId}/${category.id}`}>{category.buttonText}</ButtonLink>)} -->
 
