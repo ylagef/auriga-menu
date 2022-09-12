@@ -1,12 +1,13 @@
 ---
 import Card from '@components/Card.astro'
 import Layout from '@layouts/Layout.astro'
+import { supabase } from 'src/utils/supabase'
 
 import Divider from './Divider.astro'
 ---
 
 <Layout title="Admin">
-  <div class="hidden flex-col" id="logged-container">
+  <div class="flex-col" id="logged-container">
     <Card>
       <div class="flex items-center flex-col gap-2">
         <h1>ADMIN</h1>
@@ -20,58 +21,44 @@ import Divider from './Divider.astro'
   </div>
 </Layout>
 
-<script is:inline type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<!-- <script is:inline type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script> -->
 <script is:inline>
-  function setCookie(name, value, days) {
-    let expires = ''
-    if (days) {
-      const date = new Date()
-      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
-      expires = '; expires=' + date.toUTCString()
-    }
-    document.cookie = name + '=' + (value || '') + expires + '; path=/'
-  }
-
-  function eraseCookie(name) {
-    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
-  }
-
   function showLoggedContainer(token) {
     document.getElementById('logged-container').style.display = token ? 'flex' : 'none'
   }
 
-  window.netlifyIdentity.setLocale('es')
+  // window.netlifyIdentity.setLocale('es')
 
-  window.netlifyIdentity.on('init', (data) => {
-    console.log('Netlify:initialized', data)
+  // window.netlifyIdentity.on('init', (data) => {
+  //   console.log('Netlify:initialized', data)
 
-    const token = data?.token?.access_token
-    showLoggedContainer(token)
-    if (token) {
-      setCookie('netlify-token', token)
-    }
-  })
+  //   const token = data?.token?.access_token
+  //   showLoggedContainer(token)
+  //   if (token) {
+  //     setCookie('netlify-token', token)
+  //   }
+  // })
 
-  window.netlifyIdentity.on('login', (user) => {
-    console.log('Netlify:login', user)
+  // window.netlifyIdentity.on('login', (user) => {
+  //   console.log('Netlify:login', user)
 
-    const token = user?.token?.access_token
-    showLoggedContainer(token)
-    if (token) setCookie('netlify-token', token)
+  //   const token = user?.token?.access_token
+  //   showLoggedContainer(token)
+  //   if (token) setCookie('netlify-token', token)
 
-    if (window.location.pathname === '/admin/login') window.location.href = '/admin'
-  })
+  //   if (window.location.pathname === '/admin/login') window.location.href = '/admin'
+  // })
 
-  window.netlifyIdentity.on('logout', (user) => {
-    console.log('Netlify:logout', user)
+  // window.netlifyIdentity.on('logout', (user) => {
+  //   console.log('Netlify:logout', user)
 
-    eraseCookie('netlify-token')
-    showLoggedContainer(false)
+  //   eraseCookie('netlify-token')
+  //   showLoggedContainer(false)
 
-    if (window.location.pathname !== '/admin/login') window.location.href = '/admin/login'
-  })
+  //   if (window.location.pathname !== '/admin/login') window.location.href = '/admin/login'
+  // })
 
-  document.getElementById('logout-button').addEventListener('click', () => {
-    window.netlifyIdentity.logout()
-  })
+  // document.getElementById('logout-button').addEventListener('click', () => {
+  //   window.netlifyIdentity.logout()
+  // })
 </script>

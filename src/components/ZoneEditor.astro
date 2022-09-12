@@ -1,0 +1,58 @@
+---
+import { ZoneSI } from 'src/typesSupabase'
+import { getCategoriesByZoneId } from 'src/utils/supabase'
+
+import ButtonInput from './ButtonInput'
+import ButtonLink from './ButtonLink.astro'
+import ButtonLinksContainer from './ButtonLinksContainer.astro'
+import CreateCategory from './CreateCategory'
+import Divider from './Divider.astro'
+import LineCard from './LineCard.astro'
+
+export interface Props {
+  zone: ZoneSI
+}
+const { zone } = Astro.props
+
+const categories = await getCategoriesByZoneId({ zoneId: zone.id })
+---
+
+<div class="flex flex-col gap-4 items-center">
+  <LineCard label="Nombre">
+    <ButtonInput
+      client:visible
+      callback={async () => {
+        console.log('hey')
+      }}
+      initialText={zone.name}
+    >
+      {zone?.name}
+    </ButtonInput>
+  </LineCard>
+
+  <LineCard label="Categorías">
+    <ButtonLinksContainer>
+      {categories?.map((category) => <ButtonLink href={`/admin/${zone.slug}/${category.slug}`}>{category.buttonText}</ButtonLink>)}
+    </ButtonLinksContainer>
+
+    <div class="flex flex-col w-full">
+      <Divider theme="dark" />
+
+      <CreateCategory client:visible />
+    </div>
+  </LineCard>
+</div>
+
+{
+  /* <div class="pl-4">{category.menu && <MenuEditor menu={category.menu} />}</div>
+          <div class="pl-4">{category.sections && <SectionsEditor sections={category.sections} />}</div>
+          <div class="pl-4">
+            {category.products && (
+              <div>
+                {category.products.map((product) => (
+                  <ProductEditor product={product} />
+                ))}
+              </div>
+            )}
+          </div> */
+}

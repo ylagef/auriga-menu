@@ -4,18 +4,24 @@ import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import CreateZone from '@components/CreateZone'
 import Divider from '@components/Divider.astro'
-import { getZones } from 'src/utils/supabase'
+import { getZones, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
+console.log({ cookies })
 const token = cookies
   ?.split(';')
-  .find((c) => c.trim().startsWith('netlify-token='))
+  .find((c) => c.trim().startsWith('sb-access-token='))
   .split('=')[1]
 
-if (!token) return Astro.redirect('/admin/login')
+const session = supabase.auth.setAuth(token)
+console.log({ session })
+
+if (!session) {
+  console.log('Session not found - redirect to login')
+  return Astro.redirect('/admin/login')
+}
 
 const zones = await getZones({ restaurantId: 1 })
-console.log({ zones })
 ---
 
 <Admin>

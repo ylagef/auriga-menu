@@ -1,15 +1,15 @@
 export enum EXTRA_SERVICES {
-  BREAD = 'Servicio de pan 1,50€',
-  GLUTEN_FREE_BREAD = 'Servicio de pan sin gluten 1,50€',
-  RYE_BREAD = 'Opción de pan de centeno +1€',
-  GLUTEN_FREE_BUN = 'Bollo sin gluten +1€',
-  BREAD_WATER_COFFEE = 'Incluye servicio de pan, agua y café'
+  BREAD = 'bread',
+  GLUTEN_FREE_BREAD = 'glutenFreeBread',
+  RYE_BREAD = 'ryeBread',
+  GLUTEN_FREE_BUN = 'glutenFreeBun',
+  BREAD_WATER_COFFEE = 'breadWaterCoffee'
 }
 
 export enum SCHEDULES {
-  BREAKFAST = 'Horario de desayunos de 8:00 a 12:30',
-  SNACK = 'Horario de meriendas de 17:00 a 20:00',
-  UNINTERRUPTED = 'Cocina ininterrumpida de 8:00 a 23:30'
+  BREAKFAST = 'breakfast',
+  SNACK = 'snack',
+  UNINTERRUPTED = 'uninterrupted'
 }
 
 export enum ALLERGENS {
@@ -27,6 +27,12 @@ export enum ALLERGENS {
   SESAME = 'sesame',
   SOY = 'soy',
   SULPHITES = 'sulphites'
+}
+
+export enum CATEGORY_TYPES {
+  MENU = 'menu',
+  SECTIONS = 'sections',
+  PRODUCTS = 'products'
 }
 
 export interface ProductSI {
@@ -72,16 +78,16 @@ export interface MenuSI {
 }
 
 export interface CategorySI {
-  // fk
-  zoneId: number
-
   id: number
+  type: CATEGORY_TYPES
   slug: string
-  order: number
   buttonText: string
   categoryTitle?: string
   schedules?: string[]
   extraServices?: EXTRA_SERVICES[]
+
+  // join
+  order: number
 }
 
 export interface ZoneSI {
@@ -91,6 +97,18 @@ export interface ZoneSI {
   id: number
   slug: string
   name?: string
+}
+
+export interface ZonesCategoriesSI {
+  // fk
+  zoneId: number
+  categoryId: number
+
+  id: number
+  order: number
+
+  // join
+  categories: CategorySI
 }
 
 export interface RestaurantSI {

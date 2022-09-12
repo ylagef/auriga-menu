@@ -1,10 +1,10 @@
 import { createClient } from '@supabase/supabase-js'
 
-import { CategorySI, CourseSI, MenuSI, ProductSI, RestaurantSI, SectionSI, ZoneSI } from './../typesSupabase'
+import { CategorySI, CourseSI, MenuSI, ProductSI, RestaurantSI, SectionSI, ZonesCategoriesSI, ZoneSI } from './../typesSupabase'
 
-console.log({ url: import.meta.env.SUPABASE_URL, key: import.meta.env.SUPABASE_KEY })
+console.log({ url: import.meta.env.PUBLIC_SUPABASE_URL, key: import.meta.env.PUBLIC_SUPABASE_KEY })
 // Create a single supabase client for interacting with your database
-export const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY)
+export const supabase = createClient(import.meta.env.PUBLIC_SUPABASE_URL, import.meta.env.PUBLIC_SUPABASE_KEY)
 
 export const getRestaurant = async (id) => {
   const { data, error } = await supabase.from<RestaurantSI>('restaurants').select('*').eq('id', id).single()
@@ -42,15 +42,6 @@ export const getZoneBySlug = async ({ restaurantId, zoneSlug }: { restaurantId: 
   return data
 }
 
-export const getCategories = async ({ zoneId }: { zoneId: number }) => {
-  const { data, error } = await supabase.from<CategorySI>('categories').select('*').eq('zoneId', zoneId)
-  if (error) {
-    console.log('error', error)
-    return null
-  }
-  return data
-}
-
 export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string }) => {
   const { data, error } = await supabase.from<CategorySI>('categories').select('*').eq('slug', categorySlug).single()
   if (error) {
@@ -61,12 +52,15 @@ export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string
 }
 
 export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
-  const { data, error } = await supabase.from<CategorySI>('categories').select('*').eq('zoneId', zoneId)
+  // zones_categories is a junction table
+  const { data, error } = await supabase.from<ZonesCategoriesSI>('zones_categories').select('categoryId,order, categories ( * )').eq('zoneId', zoneId)
+
   if (error) {
     console.log('error', error)
     return null
   }
-  return data
+
+  return data.map((d) => ({ ...d.categories, order: d.order }))
 }
 
 export const getProducts = async ({ categoryId, sectionId }: { categoryId?: number; sectionId?: number }) => {
