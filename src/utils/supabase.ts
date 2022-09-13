@@ -1,14 +1,21 @@
 import { createClient } from '@supabase/supabase-js'
 
 import { CategorySI, CourseSI, MenuSI, ProductSI, RestaurantSI, SectionSI, ZonesCategoriesSI, ZoneSI } from './../typesSupabase'
+import { getCookie } from './cookies'
 
-console.log({ url: import.meta.env.PUBLIC_SUPABASE_URL, key: import.meta.env.PUBLIC_SUPABASE_KEY })
 // Create a single supabase client for interacting with your database
 export const supabase = createClient(import.meta.env.PUBLIC_SUPABASE_URL, import.meta.env.PUBLIC_SUPABASE_KEY)
 
+const setAuthToken = () => {
+  const token = getCookie('sup-access-token')
+  console.log({ token })
+  const session = supabase.auth.setAuth(token)
+  console.log({ session })
+}
+
 // Restaurant
-export const getRestaurant = async (id) => {
-  const { data, error } = await supabase.from<RestaurantSI>('restaurants').select('*').eq('id', id).single()
+export const getRestaurant = async ({ restaurantId }) => {
+  const { data, error } = await supabase.from<RestaurantSI>('restaurants').select('*').eq('id', restaurantId).single()
   if (error) {
     console.log('error', error)
     return null
@@ -35,11 +42,14 @@ export const getZoneById = async ({ zoneId }: { zoneId: number }) => {
 }
 
 export const createZone = async ({ restaurantId, name, slug }: { restaurantId: number; name: string; slug: string }) => {
+  setAuthToken()
+  console.log('createZone', { restaurantId, name, slug })
   const { data, error } = await supabase.from<ZoneSI>('zones').insert([{ restaurantId, name, slug }])
   if (error) {
     console.log('error', error)
     return null
   }
+
   return data
 }
 

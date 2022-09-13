@@ -1,0 +1,31 @@
+---
+import Admin from '@components/Admin.astro'
+import { Input } from '@components/Input'
+import LineCard from '@components/LineCard.astro'
+import { getRestaurant, supabase } from 'src/utils/supabase'
+
+const cookies = Astro.request.headers.get('cookie')
+
+const token = cookies
+  ?.split(';')
+  .find((c) => c.trim().startsWith('sup-access-token='))
+  ?.split('=')[1]
+
+if (!token) return Astro.redirect('/admin/login')
+
+const { data: user, error } = await supabase.auth.api.getUser(token)
+console.log({ user, error })
+if (error) return Astro.redirect('/admin/login')
+
+const restaurant = await getRestaurant({ restaurantId: 1 })
+---
+
+<Admin user={user}>
+  <LineCard label="Restaurante">
+    <form class="flex flex-col gap-6">
+      <Input id="name" type="text" label="Nombre" placeholder="Nombre" value={restaurant?.name} />
+
+      <button type="submit" class="bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60"> Guardar</button>
+    </form>
+  </LineCard>
+</Admin>

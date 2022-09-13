@@ -2,8 +2,6 @@
 import LogoutButton from '@components/LogoutButton'
 import AdminLayout from '@layouts/AdminLayout.astro'
 
-import Divider from './Divider.astro'
-
 const { user } = Astro.props
 ---
 
@@ -11,12 +9,8 @@ const { user } = Astro.props
   <div class="flex flex-col" id="logged-container">
     {
       user && (
-        <div>
-          <div class="flex items-start flex-col gap-2">
-            <LogoutButton client:visible />
-          </div>
-
-          <Divider theme="dark" />
+        <div class="flex items-start flex-col gap-2 pt-2 pb-4">
+          <LogoutButton client:visible />
         </div>
       )
     }
