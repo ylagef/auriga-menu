@@ -1,8 +1,5 @@
 ---
 import BurgerMenu from '@components/BurgerMenu'
-import Footer from '@components/Footer.astro'
-
-import { RESTAURANT } from '../mock/auriga'
 
 export interface Props {
   title: string
@@ -21,7 +18,9 @@ const { title } = Astro.props
     <title>{title}</title>
   </head>
   <body class="m-0 relative bg-card-bg/80 z-10 flex flex-col overflow-y-auto">
-    <BurgerMenu client:load />
+    <div class="z-20">
+      <BurgerMenu dark={true} client:load />
+    </div>
 
     <main class="flex-grow max-w-5xl mx-auto w-full p-4">
       <slot />
@@ -77,7 +76,6 @@ const { title } = Astro.props
       }
       .line {
         fill: none;
-        stroke: #ffffff;
         stroke-width: 6;
         transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
       }

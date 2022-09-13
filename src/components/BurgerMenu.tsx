@@ -3,7 +3,11 @@ import MenuIcon from 'src/icons/MenuIcon'
 import { RESTAURANT } from 'src/mock/auriga'
 import { CategoryI } from 'src/types'
 
-export default function BurgerMenu() {
+interface Props {
+  dark?: boolean
+}
+
+export default function BurgerMenu({ dark = false }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [zone, setZone] = useState<string>(null)
   const [sectionSlug, setSectionSlug] = useState<string>(null)
@@ -31,8 +35,8 @@ export default function BurgerMenu() {
 
   return (
     <div className={`w-screen absolute overflow-x-hidden top-0 left-0 ${isOpen ? 'h-full' : 'h-20'}`}>
-      <button id="menu" className="absolute top-4 right-4 py-2 px-4 rounded w-fit z-30" onClick={handleOpen}>
-        <MenuIcon opened={isOpen} />
+      <button id="menu" className="absolute top-4 right-4 py-2 px-4 rounded w-fit z-20" onClick={handleOpen}>
+        <MenuIcon dark={dark} opened={isOpen} />
       </button>
 
       <div className={`absolute top-0 w-screen h-full bg-black/80 p-4 transition-[left] overflow-y-auto ${isOpen ? 'left-0' : 'left-full'}`}>

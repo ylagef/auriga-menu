@@ -1,3 +1,4 @@
+import LogoutIcon from 'src/icons/LogoutIcon'
 import { eraseCookie } from 'src/utils/cookies'
 import { supabase } from 'src/utils/supabase'
 
@@ -11,8 +12,8 @@ export default function LogoutButton() {
   }
 
   return (
-    <button className="pb-2 font-semibold" onClick={handleLogout}>
-      Cerrar sesión
+    <button className="pb-2 z-20" onClick={handleLogout}>
+      <LogoutIcon />
     </button>
   )
 }

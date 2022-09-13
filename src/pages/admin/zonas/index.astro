@@ -4,6 +4,7 @@ import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import CreateZone from '@components/CreateZone'
 import Divider from '@components/Divider.astro'
+import { Input } from '@components/Input'
 import LineCard from '@components/LineCard.astro'
 import { getZones, supabase } from 'src/utils/supabase'
 
@@ -23,14 +24,14 @@ if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 const zones = await getZones({ restaurantId: 1 })
 ---
 
-<Admin>
-  <LineCard label="Zonas">
+<Admin user={user}>
+  <div class="py-8">
     <ButtonLinksContainer>
       {zones.map((zone) => <ButtonLink href={`/admin/${zone.slug}`}>{zone.name}</ButtonLink>)}
-
-      <Divider theme="dark" />
     </ButtonLinksContainer>
+  </div>
 
+  <LineCard label="Crear nueva zona">
     <CreateZone client:visible />
   </LineCard>
 </Admin>

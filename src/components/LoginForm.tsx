@@ -32,6 +32,8 @@ export default function LoginForm() {
     setCookie('sup-access-token', accessToken, expiresAt)
     setCookie('sup-refresh-token', refreshToken, expiresAt)
 
+    supabase.auth.setAuth(accessToken)
+
     window.location.href = '/admin'
   }
 
