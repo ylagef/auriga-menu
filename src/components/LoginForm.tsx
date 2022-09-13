@@ -2,6 +2,8 @@ import { FormEvent, useState } from 'react'
 import { setCookie } from 'src/utils/cookies'
 import { supabase } from 'src/utils/supabase'
 
+import { Input } from './Input'
+
 export default function LoginForm() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -34,20 +36,9 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <div className="flex items-center gap-4">
-        <label className="w-[50%] text-right" htmlFor="email">
-          Email
-        </label>
-        <input className="border-b-dark-text py-2 px-4 rounded" type="text" name="email" />
-      </div>
-
-      <div className="flex items-center gap-4">
-        <label className="w-[50%] text-right" htmlFor="password">
-          Contraseña
-        </label>
-        <input className="border-b-dark-text py-2 px-4 rounded" type="password" name="password" />
-      </div>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      <Input id="email" label="Email" type="email" />
+      <Input id="password" label="Contraseña" type="password" />
 
       <button type="submit" className="bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60" disabled={loading}>
         Login
