@@ -1,6 +1,7 @@
 ---
 import Admin from '@components/Admin.astro'
 import Card from '@components/Card.astro'
+import LineCard from '@components/LineCard.astro'
 import LoginForm from '@components/LoginForm'
 import { supabase } from 'src/utils/supabase'
 
@@ -11,15 +12,19 @@ const token = cookies
   .find((c) => c.trim().startsWith('sup-access-token='))
   ?.split('=')[1]
 
+let user
 if (token) {
-  const { data: user, error } = await supabase.auth.api.getUser(token)
+  const { data, error } = await supabase.auth.api.getUser(token)
+  user = data
   console.log({ user, error })
-  if (user?.aud === 'authenticated') return Astro.redirect('/admin')
+  if (user) return Astro.redirect('/admin')
 }
 ---
 
-<Admin>
-  <Card>
-    <LoginForm client:visible />
-  </Card>
+<Admin user={user}>
+  <div class="grid items-center">
+    <LineCard label="Login">
+      <LoginForm client:visible />
+    </LineCard>
+  </div>
 </Admin>

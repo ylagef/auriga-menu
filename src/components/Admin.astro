@@ -1,62 +1,26 @@
 ---
-import Card from '@components/Card.astro'
 import LogoutButton from '@components/LogoutButton'
-import Layout from '@layouts/Layout.astro'
+import AdminLayout from '@layouts/AdminLayout.astro'
 
 import Divider from './Divider.astro'
+
+const { user } = Astro.props
 ---
 
-<Layout title="Admin">
-  <div class="flex-col" id="logged-container">
-    <Card>
-      <div class="flex items-center flex-col gap-2">
-        <h1>ADMIN</h1>
-        <LogoutButton client:visible />
-      </div>
+<AdminLayout title="Admin">
+  <div class="flex flex-col" id="logged-container">
+    {
+      user && (
+        <div>
+          <div class="flex items-start flex-col gap-2">
+            <LogoutButton client:visible />
+          </div>
 
-      <Divider theme="dark" />
+          <Divider theme="dark" />
+        </div>
+      )
+    }
 
-      <slot />
-    </Card>
+    <slot />
   </div>
-</Layout>
-<script is:inline>
-  function showLoggedContainer(token) {
-    document.getElementById('logged-container').style.display = token ? 'flex' : 'none'
-  }
-
-  // window.netlifyIdentity.setLocale('es')
-
-  // window.netlifyIdentity.on('init', (data) => {
-  //   console.log('Netlify:initialized', data)
-
-  //   const token = data?.token?.access_token
-  //   showLoggedContainer(token)
-  //   if (token) {
-  //     setCookie('netlify-token', token)
-  //   }
-  // })
-
-  // window.netlifyIdentity.on('login', (user) => {
-  //   console.log('Netlify:login', user)
-
-  //   const token = user?.token?.access_token
-  //   showLoggedContainer(token)
-  //   if (token) setCookie('netlify-token', token)
-
-  //   if (window.location.pathname === '/admin/login') window.location.href = '/admin'
-  // })
-
-  // window.netlifyIdentity.on('logout', (user) => {
-  //   console.log('Netlify:logout', user)
-
-  //   eraseCookie('netlify-token')
-  //   showLoggedContainer(false)
-
-  //   if (window.location.pathname !== '/admin/login') window.location.href = '/admin/login'
-  // })
-
-  // document.getElementById('logout-button').addEventListener('click', () => {
-  //   window.netlifyIdentity.logout()
-  // })
-</script>
+</AdminLayout>

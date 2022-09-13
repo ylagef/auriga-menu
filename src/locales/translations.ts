@@ -26,5 +26,11 @@ export const translations = {
     ryeBread: 'Opción de pan de centeno +1€',
     glutenFreeBun: 'Bollo sin gluten +1€',
     breadWaterCoffee: 'Incluye servicio de pan, agua y café'
+  },
+  adminButtons: {
+    restaurante: 'Restaurante',
+    zonas: 'Zonas',
+    categorias: 'Categorías',
+    otros: 'Otros'
   }
 }
