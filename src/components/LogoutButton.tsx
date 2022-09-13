@@ -11,7 +11,7 @@ export default function LogoutButton() {
   }
 
   return (
-    <button className="pb-2" onClick={handleLogout}>
+    <button className="pb-2 font-semibold" onClick={handleLogout}>
       Cerrar sesión
     </button>
   )

@@ -6,6 +6,7 @@ console.log({ url: import.meta.env.PUBLIC_SUPABASE_URL, key: import.meta.env.PUB
 // Create a single supabase client for interacting with your database
 export const supabase = createClient(import.meta.env.PUBLIC_SUPABASE_URL, import.meta.env.PUBLIC_SUPABASE_KEY)
 
+// Restaurant
 export const getRestaurant = async (id) => {
   const { data, error } = await supabase.from<RestaurantSI>('restaurants').select('*').eq('id', id).single()
   if (error) {
@@ -15,8 +16,17 @@ export const getRestaurant = async (id) => {
   return data
 }
 
+// Zones
 export const getZones = async ({ restaurantId }: { restaurantId: number }) => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', restaurantId)
+  if (error) {
+    console.log('error', error)
+    return null
+  }
+  return data
+}
+export const getZoneById = async ({ zoneId }: { zoneId: number }) => {
+  const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('id', zoneId).single()
   if (error) {
     console.log('error', error)
     return null
@@ -33,6 +43,7 @@ export const createZone = async ({ restaurantId, name, slug }: { restaurantId: n
   return data
 }
 
+// Categories
 export const getZoneBySlug = async ({ restaurantId, zoneSlug }: { restaurantId: number; zoneSlug: string }) => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', restaurantId).eq('slug', zoneSlug).single()
   if (error) {
@@ -63,6 +74,7 @@ export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
   return data.map((d) => ({ ...d.categories, order: d.order }))
 }
 
+// Products
 export const getProducts = async ({ categoryId, sectionId }: { categoryId?: number; sectionId?: number }) => {
   // TODO check if conditional is ok
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('categoryId', categoryId).eq('sectionId', sectionId)
@@ -91,6 +103,7 @@ export const getProductsBySection = async ({ sectionId }: { sectionId: number })
   return data
 }
 
+// Sections
 export const getSections = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase.from<SectionSI>('sections').select('*').eq('categoryId', categoryId)
   if (error) {
@@ -109,6 +122,7 @@ export const getSectionsByCategory = async ({ categoryId }: { categoryId: number
   return data
 }
 
+// Menus
 export const getMenus = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase.from<MenuSI>('menus').select('*').eq('categoryId', categoryId)
   if (error) {
@@ -127,6 +141,7 @@ export const getMenuByCategory = async ({ categoryId }: { categoryId: number }) 
   return data
 }
 
+// Courses
 export const getCourses = async ({ menuId }: { menuId: number }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').select('*').eq('menuId', menuId)
   if (error) {

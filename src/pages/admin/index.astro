@@ -2,9 +2,8 @@
 import Admin from '@components/Admin.astro'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
-import CreateZone from '@components/CreateZone'
-import Divider from '@components/Divider.astro'
-import { getZones, supabase } from 'src/utils/supabase'
+import { translations } from 'src/locales/translations'
+import { supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
 
@@ -17,26 +16,13 @@ if (!token) return Astro.redirect('/admin/login')
 
 const { data: user, error } = await supabase.auth.api.getUser(token)
 console.log({ user, error })
-if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
+if (error) return Astro.redirect('/admin/login')
 
-// const user = await getUser(Astro.request)
-// console.log({ user })
-// if (!user) {
-//   console.log('Admin.astro:Session not found - redirect to login')
-//   return Astro.redirect('/admin/login')
-// }
-
-const zones = await getZones({ restaurantId: 1 })
+const buttons = ['restaurante', 'zonas', 'categorias', 'otros']
 ---
 
-<Admin>
-  <div class="flex flex-col">
-    <ButtonLinksContainer>
-      {zones.map((zone) => <ButtonLink href={`/admin/${zone.slug}`}>{zone.name}</ButtonLink>)}
-
-      <Divider theme="dark" />
-    </ButtonLinksContainer>
-
-    <CreateZone client:visible />
-  </div>
+<Admin user={user}>
+  <ButtonLinksContainer>
+    {buttons.map((button) => <ButtonLink href={`/admin/${button}`}>{translations.adminButtons[button]}</ButtonLink>)}
+  </ButtonLinksContainer>
 </Admin>
