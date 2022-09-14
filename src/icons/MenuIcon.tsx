@@ -1,5 +1,4 @@
 function MenuIcon({ opened, dark = false }: { opened: boolean; dark?: boolean }) {
-  console.log({ opened, dark })
   return (
     <div className={`menu ${opened ? 'opened' : ''}`}>
       <svg width="30" height="30" viewBox="0 0 100 100">

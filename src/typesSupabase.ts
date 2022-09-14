@@ -78,7 +78,7 @@ export interface MenuSI {
 }
 
 export interface CategorySI {
-  id: number
+  id?: number
   type: CATEGORY_TYPES
   slug: string
   buttonText: string
@@ -87,7 +87,7 @@ export interface CategorySI {
   extraServices?: EXTRA_SERVICES[]
 
   // join
-  order: number
+  order?: number
 }
 
 export interface ZoneSI {

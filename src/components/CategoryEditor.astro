@@ -3,7 +3,7 @@ import { translations } from 'src/locales/translations'
 import { CategorySI, EXTRA_SERVICES, SCHEDULES } from 'src/typesSupabase'
 
 import ButtonInput from './ButtonInput'
-import LineCard from './LineCard.astro'
+import LineCard from './Linecard'
 
 export interface Props {
   category: CategorySI
@@ -14,7 +14,7 @@ const { category } = Astro.props
 ---
 
 <div class="flex flex-col gap-4 items-center">
-  <LineCard label="Nombre">
+  <LineCard client:visible label="Nombre">
     <ButtonInput
       client:visible
       callback={async () => {
@@ -26,7 +26,7 @@ const { category } = Astro.props
     </ButtonInput>
   </LineCard>
 
-  <LineCard label="Título">
+  <LineCard client:visible label="Título">
     <ButtonInput
       client:visible
       callback={async () => {
@@ -38,7 +38,7 @@ const { category } = Astro.props
     </ButtonInput>
   </LineCard>
 
-  <LineCard label="Horarios">
+  <LineCard client:visible label="Horarios">
     <div class="flex flex-col gap-2">
       {
         Object.entries(SCHEDULES).map(([key, schedule]) => (
@@ -51,7 +51,7 @@ const { category } = Astro.props
     </div>
   </LineCard>
 
-  <LineCard label="Servicios extra">
+  <LineCard client:visible label="Servicios extra">
     <div class="flex flex-col gap-2">
       {
         Object.entries(EXTRA_SERVICES).map(([key, extraService]) => (
@@ -64,7 +64,7 @@ const { category } = Astro.props
     </div>
   </LineCard>
 
-  <LineCard label="Tipo de categoría">
+  <LineCard client:visible label="Tipo de categoría">
     <div class="flex">
       <div class={`flex py-2 px-6 ${category.type === 'menu' ? `bg-light-text/90` : `bg-light-text/30`} rounded-tl-xl rounded-bl-xl`}>MENU</div>
       <div class={`flex py-2 px-6 ${category.type === 'sections' ? `bg-light-text/90` : `bg-light-text/30`}`}>SECCIONES</div>
@@ -74,7 +74,7 @@ const { category } = Astro.props
     </div>
   </LineCard>
 
-  <!-- <LineCard label="Categorías">
+  <!-- <LineCard client:visible label="Categorías">
     <ButtonLinksContainer>
       {categories?.map((category) => <ButtonLink href={`/admin/${zone.slug}/${category.id}`}>{category.buttonText}</ButtonLink>)}
     </ButtonLinksContainer>

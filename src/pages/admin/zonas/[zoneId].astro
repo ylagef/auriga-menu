@@ -4,7 +4,7 @@ import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import CreateZone from '@components/CreateZone'
 import Divider from '@components/Divider.astro'
-import LineCard from '@components/LineCard.astro'
+import LineCard from '@components/Linecard'
 import { getZoneById, getZoneBySlug, getZones, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
@@ -30,7 +30,7 @@ const { zoneId } = Astro.params
 ---
 
 <!-- <Admin>
-  <LineCard label="Zonas">
+  <LineCard client:visible label="Zonas">
     <ButtonLinksContainer>
       {zones.map((zone) => <ButtonLink href={`/admin/${zone.slug}`}>{zone.name}</ButtonLink>)}
 

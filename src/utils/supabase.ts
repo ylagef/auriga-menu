@@ -72,9 +72,23 @@ export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string
   return data
 }
 
+export const getCategories = async () => {
+  const { data, error } = await supabase.from<CategorySI>('categories').select('*')
+
+  if (error) {
+    console.log('error', error)
+    return null
+  }
+
+  return data
+}
+
 export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
   // zones_categories is a junction table
-  const { data, error } = await supabase.from<ZonesCategoriesSI>('zones_categories').select('categoryId,order, categories ( * )').eq('zoneId', zoneId)
+  const { data, error } = await supabase
+    .from<ZonesCategoriesSI>('zones_categories')
+    .select('categoryId, order, categories ( * )')
+    .eq('zoneId', zoneId)
 
   if (error) {
     console.log('error', error)
@@ -82,6 +96,40 @@ export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
   }
 
   return data.map((d) => ({ ...d.categories, order: d.order }))
+}
+
+export const createCategory = async ({ zoneId, newCategory }: { zoneId: number; newCategory: CategorySI }) => {
+  setAuthToken()
+  console.log('createCategory', { zoneId, newCategory })
+  const zoneCategories = await getCategoriesByZoneId({ zoneId })
+
+  const { data, error } = await supabase.from<CategorySI>('categories').insert([
+    {
+      type: newCategory.type,
+      slug: newCategory.slug,
+      buttonText: newCategory.buttonText,
+      categoryTitle: newCategory.categoryTitle,
+      schedules: newCategory.schedules,
+      extraServices: newCategory.extraServices
+    }
+  ])
+  if (error) {
+    console.log('error', error)
+    return null
+  }
+
+  // ADD JOIN
+  const order = zoneCategories.sort((a, b) => b.order - a.order)[0].order + 1
+  console.log({ order })
+  const { data: data2, error: error2 } = await supabase
+    .from<ZonesCategoriesSI>('zones_categories')
+    .insert([{ zoneId, categoryId: data[0].id, order }])
+  if (error2) {
+    console.log('error', error2)
+    return null
+  }
+
+  return data2
 }
 
 // Products

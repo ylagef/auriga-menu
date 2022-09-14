@@ -7,7 +7,7 @@ import ButtonLink from './ButtonLink.astro'
 import ButtonLinksContainer from './ButtonLinksContainer.astro'
 import CreateCategory from './CreateCategory'
 import Divider from './Divider.astro'
-import LineCard from './LineCard.astro'
+import LineCard from './Linecard'
 
 export interface Props {
   zone: ZoneSI
@@ -18,7 +18,7 @@ const categories = await getCategoriesByZoneId({ zoneId: zone.id })
 ---
 
 <div class="flex flex-col gap-4 items-center">
-  <LineCard label="Nombre">
+  <LineCard client:visible label="Nombre">
     <ButtonInput
       client:visible
       callback={async () => {
@@ -30,7 +30,7 @@ const categories = await getCategoriesByZoneId({ zoneId: zone.id })
     </ButtonInput>
   </LineCard>
 
-  <LineCard label="Categorías">
+  <LineCard client:visible label="Categorías">
     <ButtonLinksContainer>
       {categories?.map((category) => <ButtonLink href={`/admin/${zone.slug}/${category.slug}`}>{category.buttonText}</ButtonLink>)}
     </ButtonLinksContainer>

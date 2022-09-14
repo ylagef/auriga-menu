@@ -1,7 +1,7 @@
 ---
 import Admin from '@components/Admin.astro'
 import Card from '@components/Card.astro'
-import LineCard from '@components/LineCard.astro'
+import LineCard from '@components/Linecard'
 import LoginForm from '@components/LoginForm'
 import { supabase } from 'src/utils/supabase'
 
@@ -23,7 +23,7 @@ if (token) {
 
 <Admin user={user}>
   <div class="grid items-center">
-    <LineCard label="Login">
+    <LineCard client:visible label="Login">
       <LoginForm client:visible />
     </LineCard>
   </div>
