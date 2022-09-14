@@ -22,6 +22,10 @@ const { data: user, error } = await supabase.auth.api.getUser(token)
 if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 
 const categories = await getCategories()
+console.log({ categories })
+categories.forEach((category) => {
+  console.log(category.zones)
+})
 ---
 
 <Admin user={user}>
@@ -31,7 +35,18 @@ const categories = await getCategories()
         {
           categories
             .sort((a, b) => a.buttonText.localeCompare(b.buttonText))
-            .map((category) => <ButtonLink href={`/admin/categorias/${category.slug}`}>{category.buttonText}</ButtonLink>)
+            .map((category) => (
+              <ButtonLink href={`/admin/categorias/${category.slug}`}>
+                <span>{category.buttonText}</span>
+
+                <div class="text-sm text-gray-500 mt-2">
+                  {category.zones
+                    ?.sort((a, z) => a.zone.name.localeCompare(z.zone.name))
+                    .map(({ zone }) => zone.name)
+                    .join(', ')}
+                </div>
+              </ButtonLink>
+            ))
         }
       </ButtonLinksContainer>
     </LineCard>

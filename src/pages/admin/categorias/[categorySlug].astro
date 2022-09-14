@@ -2,6 +2,7 @@
 import Admin from '@components/Admin.astro'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
+import CreateProduct from '@components/CreateProduct'
 import CreateSection from '@components/CreateSection'
 import CreateZone from '@components/CreateZone'
 import Divider from '@components/Divider.astro'
@@ -90,6 +91,7 @@ switch (categoryType) {
 
     <LineCard client:visible label={createTitle}>
       {categoryType === CATEGORY_TYPES.SECTIONS && <CreateSection client:visible category={category} sections={sections} />}
+      {categoryType === CATEGORY_TYPES.PRODUCTS && <CreateProduct client:visible category={category} products={products} />}
     </LineCard>
   </div>
 </Admin>

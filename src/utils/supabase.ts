@@ -14,6 +14,7 @@ const setAuthToken = () => {
 // Restaurant
 export const getRestaurant = async ({ restaurantId }) => {
   const { data, error } = await supabase.from<RestaurantSI>('restaurants').select('*').eq('id', restaurantId).single()
+
   if (error) {
     console.error('error', error)
     return null
@@ -24,6 +25,7 @@ export const getRestaurant = async ({ restaurantId }) => {
 // Zones
 export const getZones = async ({ restaurantId }: { restaurantId: number }) => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', restaurantId)
+
   if (error) {
     console.error('error', error)
     return null
@@ -32,6 +34,7 @@ export const getZones = async ({ restaurantId }: { restaurantId: number }) => {
 }
 export const getZoneById = async ({ zoneId }: { zoneId: number }) => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('id', zoneId).single()
+
   if (error) {
     console.error('error', error)
     return null
@@ -42,6 +45,7 @@ export const getZoneById = async ({ zoneId }: { zoneId: number }) => {
 export const createZone = async ({ restaurantId, name, slug }: { restaurantId: number; name: string; slug: string }) => {
   setAuthToken()
   const { data, error } = await supabase.from<ZoneSI>('zones').insert([{ restaurantId, name, slug }])
+
   if (error) {
     console.error('error', error)
     return null
@@ -53,6 +57,7 @@ export const createZone = async ({ restaurantId, name, slug }: { restaurantId: n
 // Categories
 export const getZoneBySlug = async ({ restaurantId, zoneSlug }: { restaurantId: number; zoneSlug: string }) => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', restaurantId).eq('slug', zoneSlug).single()
+
   if (error) {
     console.error('error', error)
     return null
@@ -62,6 +67,7 @@ export const getZoneBySlug = async ({ restaurantId, zoneSlug }: { restaurantId: 
 
 export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string }) => {
   const { data, error } = await supabase.from<CategorySI>('categories').select('*').eq('slug', categorySlug).single()
+
   if (error) {
     console.error('error', error)
     return null
@@ -70,7 +76,9 @@ export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string
 }
 
 export const getCategories = async () => {
-  const { data, error } = await supabase.from<CategorySI>('categories').select('*')
+  const { data, error } = await supabase
+    .from<CategorySI>('categories')
+    .select('*, zones:zones_categories(zone:zones (*)), orders:zones_categories(order)')
 
   if (error) {
     console.error('error', error)
@@ -109,6 +117,7 @@ export const createCategory = async ({ zoneId, newCategory }: { zoneId: number; 
       extraServices: newCategory.extraServices
     }
   ])
+
   if (error) {
     console.error('error', error)
     return null
@@ -132,6 +141,7 @@ export const createCategory = async ({ zoneId, newCategory }: { zoneId: number; 
 export const getProducts = async ({ categoryId, sectionId }: { categoryId?: number; sectionId?: number }) => {
   // TODO check if conditional is ok
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('categoryId', categoryId).eq('sectionId', sectionId)
+
   if (error) {
     console.error('error', error)
     return null
@@ -141,6 +151,7 @@ export const getProducts = async ({ categoryId, sectionId }: { categoryId?: numb
 
 export const getProductsByCategory = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('categoryId', categoryId)
+
   if (error) {
     console.error('error', error)
     return null
@@ -150,6 +161,7 @@ export const getProductsByCategory = async ({ categoryId }: { categoryId: number
 
 export const getProductsBySection = async ({ sectionId }: { sectionId: number }) => {
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('sectionId', sectionId)
+
   if (error) {
     console.error('error', error)
     return null
@@ -157,9 +169,23 @@ export const getProductsBySection = async ({ sectionId }: { sectionId: number })
   return data
 }
 
+export const createCategoryProduct = async ({ categoryId, newProduct }: { categoryId: number; newProduct: ProductSI }) => {
+  setAuthToken()
+  const { name, description, price, options, allergens, order } = newProduct
+  const { data, error } = await supabase.from<ProductSI>('products').insert([{ categoryId, name, description, price, options, allergens, order }])
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+
+  return data
+}
+
 // Sections
 export const getSections = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase.from<SectionSI>('sections').select('*').eq('categoryId', categoryId)
+
   if (error) {
     console.error('error', error)
     return null
@@ -169,6 +195,7 @@ export const getSections = async ({ categoryId }: { categoryId: number }) => {
 
 export const getSectionsByCategory = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase.from<SectionSI>('sections').select('*, products (*)').eq('categoryId', categoryId)
+
   if (error) {
     console.error('error', error)
     return null
@@ -181,6 +208,7 @@ export const createSection = async ({ categoryId, newSection }: { categoryId: nu
   setAuthToken()
   const { title, extraServices, order } = newSection
   const { data, error } = await supabase.from<SectionSI>('sections').insert([{ categoryId, title, extraServices, order }])
+
   if (error) {
     console.error('error', error)
     return null
@@ -191,6 +219,7 @@ export const createSection = async ({ categoryId, newSection }: { categoryId: nu
 // Menus
 export const getMenus = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase.from<MenuSI>('menus').select('*').eq('categoryId', categoryId)
+
   if (error) {
     console.error('error', error)
     return null
@@ -200,6 +229,7 @@ export const getMenus = async ({ categoryId }: { categoryId: number }) => {
 
 export const getMenuByCategory = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase.from<MenuSI>('menus').select('*').eq('categoryId', categoryId).single()
+
   if (error) {
     console.error('error', error)
     return null
@@ -210,6 +240,7 @@ export const getMenuByCategory = async ({ categoryId }: { categoryId: number }) 
 // Courses
 export const getCourses = async ({ menuId }: { menuId: number }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').select('*').eq('menuId', menuId)
+
   if (error) {
     console.error('error', error)
     return null
@@ -219,6 +250,7 @@ export const getCourses = async ({ menuId }: { menuId: number }) => {
 
 export const getCoursesByMenu = async ({ menuId }: { menuId: number }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').select('*').eq('menuId', menuId)
+
   if (error) {
     console.error('error', error)
     return null
