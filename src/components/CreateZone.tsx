@@ -6,7 +6,6 @@ import { Input } from './Input'
 
 export default function CreateZone() {
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()

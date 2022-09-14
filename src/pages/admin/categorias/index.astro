@@ -2,11 +2,12 @@
 import Admin from '@components/Admin.astro'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
+import CreateCategory from '@components/CreateCategory'
 import CreateZone from '@components/CreateZone'
 import Divider from '@components/Divider.astro'
 import { Input } from '@components/Input'
 import LineCard from '@components/Linecard'
-import { getZones, supabase } from 'src/utils/supabase'
+import { getCategories, getZones, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
 
@@ -21,19 +22,23 @@ const { data: user, error } = await supabase.auth.api.getUser(token)
 console.log({ user, error })
 if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 
-const zones = await getZones({ restaurantId: 1 })
+const categories = await getCategories()
 ---
 
 <Admin user={user}>
   <div class="flex flex-col gap-6">
-    <LineCard client:visible label="Zonas">
+    <LineCard client:visible label="Categorías">
       <ButtonLinksContainer>
-        {zones.sort((a, b) => a.name.localeCompare(b.name)).map((zone) => <ButtonLink href={`/admin/${zone.slug}`}>{zone.name}</ButtonLink>)}
+        {
+          categories
+            .sort((a, b) => a.buttonText.localeCompare(b.buttonText))
+            .map((category) => <ButtonLink href={`/admin/categories/${category.slug}`}>{category.buttonText}</ButtonLink>)
+        }
       </ButtonLinksContainer>
     </LineCard>
 
-    <LineCard client:visible label="Crear nueva zona">
-      <CreateZone client:visible />
+    <LineCard client:visible label="Crear nueva categoría">
+      <CreateCategory client:visible categories={categories} />
     </LineCard>
   </div>
 </Admin>

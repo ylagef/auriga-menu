@@ -1,7 +1,7 @@
 ---
 import Admin from '@components/Admin.astro'
 import { Input } from '@components/Input'
-import LineCard from '@components/LineCard.astro'
+import LineCard from '@components/Linecard'
 import { getRestaurant, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
@@ -21,7 +21,7 @@ const restaurant = await getRestaurant({ restaurantId: 1 })
 ---
 
 <Admin user={user}>
-  <LineCard label="Restaurante">
+  <LineCard client:visible label="Restaurante">
     <form class="flex flex-col gap-6">
       <Input id="name" type="text" label="Nombre" placeholder="Nombre" value={restaurant?.name} />
 
