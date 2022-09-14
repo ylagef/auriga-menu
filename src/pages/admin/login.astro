@@ -16,7 +16,6 @@ let user
 if (token) {
   const { data, error } = await supabase.auth.api.getUser(token)
   user = data
-  console.log({ user, error })
   if (user) return Astro.redirect('/admin')
 }
 ---

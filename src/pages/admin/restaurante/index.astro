@@ -14,7 +14,6 @@ const token = cookies
 if (!token) return Astro.redirect('/admin/login')
 
 const { data: user, error } = await supabase.auth.api.getUser(token)
-console.log({ user, error })
 if (error) return Astro.redirect('/admin/login')
 
 const restaurant = await getRestaurant({ restaurantId: 1 })

@@ -9,7 +9,7 @@ import LineCard from './LineCard'
 
 export default function CreateSection({ category, sections }: { category: CategorySI; sections: SectionSI[] }) {
   const [loading, setLoading] = useState(false)
-  console.log({ category })
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setLoading(true)
@@ -22,7 +22,6 @@ export default function CreateSection({ category, sections }: { category: Catego
       .filter((extraService) => formData.get(extraService) === 'on')
       .map((extraService) => extraService)
 
-    // console.log({ ZoneId: zoneId, categoryTitle, buttonText, type, extraServices, schedules, slug })
     const newSection: SectionSI = {
       title,
       extraServices,

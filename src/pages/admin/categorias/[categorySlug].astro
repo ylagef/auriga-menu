@@ -30,7 +30,7 @@ const token = cookies
 if (!token) return Astro.redirect('/admin/login')
 
 const { data: user, error } = await supabase.auth.api.getUser(token)
-console.log({ user, error })
+
 if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 
 let { categorySlug } = Astro.params
@@ -42,7 +42,6 @@ const categoryTitle = categoryType === CATEGORY_TYPES.MENU ? 'Platos' : category
 const createTitle =
   categoryType === CATEGORY_TYPES.SECTIONS ? 'Crear nueva sección' : categoryType === CATEGORY_TYPES.PRODUCTS && 'Crear nuevo producto'
 
-// console.log({ categorySlug, categoryType })
 let menu: MenuSI, products: ProductSI[], sections: SectionSI[]
 switch (categoryType) {
   case CATEGORY_TYPES.MENU:
@@ -55,7 +54,6 @@ switch (categoryType) {
     sections = await getSectionsByCategory({ categoryId: category?.id })
     break
 }
-// console.log({ category, menu, products, sections })
 ---
 
 <Admin user={user}>
