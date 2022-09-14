@@ -32,7 +32,7 @@ const categories = await getCategories()
         {
           categories
             .sort((a, b) => a.buttonText.localeCompare(b.buttonText))
-            .map((category) => <ButtonLink href={`/admin/categories/${category.slug}`}>{category.buttonText}</ButtonLink>)
+            .map((category) => <ButtonLink href={`/admin/categorias/${category.slug}`}>{category.buttonText}</ButtonLink>)
         }
       </ButtonLinksContainer>
     </LineCard>
