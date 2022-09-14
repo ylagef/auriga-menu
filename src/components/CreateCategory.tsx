@@ -8,7 +8,6 @@ import { Input } from './Input'
 import LineCard from './LineCard'
 
 export default function CreateCategory({ categories }: { categories: CategorySI[] }) {
-  console.log('categories', categories)
   const [loading, setLoading] = useState(false)
   const [zones, setZones] = useState<ZoneSI[]>()
   const [zoneId, setZoneId] = useState<number>(null)
@@ -32,7 +31,6 @@ export default function CreateCategory({ categories }: { categories: CategorySI[
 
     const slug = createSlug(categoryTitle)
 
-    console.log({ ZoneId: zoneId, categoryTitle, buttonText, type, extraServices, schedules, slug })
     const newCategory: CategorySI = { categoryTitle, buttonText, type, extraServices, schedules, slug }
     await createCategory({ zoneId, newCategory })
     window.location.reload()
@@ -47,7 +45,7 @@ export default function CreateCategory({ categories }: { categories: CategorySI[
     const selectElement = event.currentTarget
     const id = selectElement.id
     const selectedValue = selectElement.value
-    console.log({ selectElement, selectedValue })
+
     if (id === 'zoneId') setZoneId(Number(selectedValue))
     if (id === 'type') setType(selectedValue as CATEGORY_TYPES)
   }

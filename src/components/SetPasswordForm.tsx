@@ -7,17 +7,14 @@ export default function LoginForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    console.log({ password })
-    const { user, error } = await supabase.auth.update({ password })
-    console.log({ user, error })
+    await supabase.auth.update({ password })
   }
 
   useEffect(() => {
     const session = supabase.auth.session()
-    console.log({ session })
 
     if (!session) {
-      console.log('Session not found - redirect to login')
+      console.warn('Session not found - redirect to login')
     }
   }, [])
 

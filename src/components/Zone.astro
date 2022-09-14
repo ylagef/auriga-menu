@@ -8,10 +8,8 @@ export interface Props {
   zone: ZoneSI
 }
 
-console.log('Zone.astro...')
 const { zone } = Astro.props
 const categories = await getCategoriesByZoneId({ zoneId: zone.id })
-console.log({ zone, categories })
 ---
 
 <ButtonLinksContainer>

@@ -16,10 +16,8 @@ export default function LoginForm() {
     const formData = new FormData(event.currentTarget)
     const email = formData.get('email') as string
     const password = formData.get('password') as string
-    console.log({ email, password })
 
     const { data, error } = await supabase.auth.api.signInWithEmail(email, password)
-    console.log({ data, error })
 
     if (error) {
       setError(error.message)
