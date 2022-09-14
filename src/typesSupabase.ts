@@ -13,20 +13,20 @@ export enum SCHEDULES {
 }
 
 export enum ALLERGENS {
-  CELERY = 'celery',
-  CRUSTACEANS = 'crustaceans',
-  EGGS = 'eggs',
-  FISH = 'fish',
   GLUTEN = 'gluten',
   LACTOSE = 'lactose',
+  EGGS = 'eggs',
+  FISH = 'fish',
+  CELERY = 'celery',
+  CRUSTACEANS = 'crustaceans',
   LUPINS = 'lupins',
   MOLLUSCS = 'molluscs',
   MUSTARD = 'mustard',
   NUTS = 'nuts',
-  PEELING_FRUITS = 'peeling_fruits',
   SESAME = 'sesame',
   SOY = 'soy',
-  SULPHITES = 'sulphites'
+  SULPHITES = 'sulphites',
+  PEELING_FRUITS = 'peeling_fruits'
 }
 
 export enum CATEGORY_TYPES {
@@ -37,10 +37,10 @@ export enum CATEGORY_TYPES {
 
 export interface ProductSI {
   // fk
-  categoryId: number
-  sectionId: number
+  categoryId?: number
+  sectionId?: number
 
-  id: number
+  id?: number
   order: number
   name: string
   description?: string
@@ -80,6 +80,15 @@ export interface MenuSI {
   price: number
 }
 
+export interface ZoneSI {
+  // fk
+  restaurantId: number
+
+  id: number
+  slug: string
+  name?: string
+}
+
 export interface CategorySI {
   id?: number
   type: CATEGORY_TYPES
@@ -91,15 +100,8 @@ export interface CategorySI {
 
   // join
   order?: number
-}
-
-export interface ZoneSI {
-  // fk
-  restaurantId: number
-
-  id: number
-  slug: string
-  name?: string
+  orders?: { order: number }[]
+  zones?: { zone: ZoneSI }[]
 }
 
 export interface ZonesCategoriesSI {
