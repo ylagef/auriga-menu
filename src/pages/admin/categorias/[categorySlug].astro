@@ -1,0 +1,97 @@
+---
+import Admin from '@components/Admin.astro'
+import ButtonLink from '@components/ButtonLink.astro'
+import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
+import CreateSection from '@components/CreateSection'
+import CreateZone from '@components/CreateZone'
+import Divider from '@components/Divider.astro'
+import EditSection from '@components/EditSection'
+import { Input } from '@components/Input'
+import LineCard from '@components/Linecard'
+import { CATEGORY_TYPES, MenuSI, ProductSI, SectionSI } from 'src/typesSupabase'
+import {
+  getCategories,
+  getCategoryBySlug,
+  getMenuByCategory,
+  getProductsByCategory,
+  getProductsBySection,
+  getSectionsByCategory,
+  getZones,
+  supabase
+} from 'src/utils/supabase'
+
+const cookies = Astro.request.headers.get('cookie')
+
+const token = cookies
+  ?.split(';')
+  .find((c) => c.trim().startsWith('sup-access-token='))
+  ?.split('=')[1]
+
+if (!token) return Astro.redirect('/admin/login')
+
+const { data: user, error } = await supabase.auth.api.getUser(token)
+console.log({ user, error })
+if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
+
+let { categorySlug } = Astro.params
+categorySlug = categorySlug as string
+
+const category = await getCategoryBySlug({ categorySlug })
+const categoryType = category?.type
+const categoryTitle = categoryType === CATEGORY_TYPES.MENU ? 'Platos' : categoryType === CATEGORY_TYPES.SECTIONS ? 'Secciones' : 'Productos'
+const createTitle =
+  categoryType === CATEGORY_TYPES.SECTIONS ? 'Crear nueva sección' : categoryType === CATEGORY_TYPES.PRODUCTS && 'Crear nuevo producto'
+
+// console.log({ categorySlug, categoryType })
+let menu: MenuSI, products: ProductSI[], sections: SectionSI[]
+switch (categoryType) {
+  case CATEGORY_TYPES.MENU:
+    menu = await getMenuByCategory({ categoryId: category?.id })
+    break
+  case CATEGORY_TYPES.PRODUCTS:
+    products = await getProductsByCategory({ categoryId: category?.id })
+    break
+  case CATEGORY_TYPES.SECTIONS:
+    sections = await getSectionsByCategory({ categoryId: category?.id })
+    break
+}
+// console.log({ category, menu, products, sections })
+---
+
+<Admin user={user}>
+  <div class="flex flex-col gap-6">
+    <LineCard client:visible label={categoryTitle}>
+      <ButtonLinksContainer>
+        {
+          products
+            ?.sort((a, b) => a.name.localeCompare(b.name))
+            .map((product) => <ButtonLink href={`/admin/categories/${product.id}`}>{product.name}</ButtonLink>)
+        }
+      </ButtonLinksContainer>
+
+      {
+        sections
+          ?.sort((a, b) => a.title.localeCompare(b.title))
+          .map((section) => (
+            <div class="flex flex-col gap-4 items-center p-2 w-full">
+              <div class="flex justify-between items-center w-full">
+                <h2>{section.title}</h2>
+                <EditSection section={section} />
+              </div>
+              <LineCard label="Productos">
+                {section.products
+                  ?.sort((a, b) => a.name.localeCompare(b.name))
+                  .map((product) => (
+                    <ButtonLink href={`/admin/categories/${product.id}`}>{product.name}</ButtonLink>
+                  ))}
+              </LineCard>
+            </div>
+          ))
+      }
+    </LineCard>
+
+    <LineCard client:visible label={createTitle}>
+      {categoryType === CATEGORY_TYPES.SECTIONS && <CreateSection client:visible category={category} sections={sections} />}
+    </LineCard>
+  </div>
+</Admin>

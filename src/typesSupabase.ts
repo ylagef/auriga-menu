@@ -51,12 +51,15 @@ export interface ProductSI {
 
 export interface SectionSI {
   // fk
-  categoryId: number
+  categoryId?: number
 
-  id: number
-  order: number
+  id?: number
+  order?: number
   title?: string
   extraServices?: EXTRA_SERVICES[]
+
+  // join
+  products?: ProductSI[]
 }
 
 export interface CourseSI {
