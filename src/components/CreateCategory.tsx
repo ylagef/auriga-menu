@@ -57,7 +57,7 @@ export default function CreateCategory({ categories }: { categories: CategorySI[
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
       <LineCard label="Zona">
-        <select id="zoneId" className="border-b-dark-text py-2 px-4 rounded" onChange={handleSelectChange} defaultValue="">
+        <select id="zoneId" className="border-b-dark-text py-2 px-4 rounded" onChange={handleSelectChange} defaultValue="" required>
           <option disabled value="">
             Selecciona zona
           </option>
@@ -69,8 +69,8 @@ export default function CreateCategory({ categories }: { categories: CategorySI[
         </select>
       </LineCard>
 
-      <Input id="categoryTitle" type="text" label="Título" placeholder="Título" />
-      <Input id="buttonText" type="text" label="Texto del botón" placeholder="Texto del botón" />
+      <Input id="categoryTitle" type="text" label="Título" placeholder="Título" required />
+      <Input id="buttonText" type="text" label="Texto del botón" placeholder="Texto del botón" required />
 
       <LineCard label="Servicios extra">
         <div className="flex flex-col gap-4 max-w-md">
@@ -95,7 +95,7 @@ export default function CreateCategory({ categories }: { categories: CategorySI[
       </LineCard>
 
       <LineCard label="Tipo">
-        <select id="type" className="border-b-dark-text py-2 px-4 rounded" defaultValue="" onChange={handleSelectChange}>
+        <select id="type" className="border-b-dark-text py-2 px-4 rounded" defaultValue="" onChange={handleSelectChange} required>
           <option disabled value="">
             Selecciona tipo
           </option>

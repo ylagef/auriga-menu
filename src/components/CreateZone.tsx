@@ -22,7 +22,7 @@ export default function CreateZone() {
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-      <Input id="name" type="text" label="Nombre" placeholder="Nombre" />
+      <Input id="name" type="text" label="Nombre" placeholder="Nombre" required />
 
       <button type="submit" className="w-full bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60" disabled={loading}>
         Crear

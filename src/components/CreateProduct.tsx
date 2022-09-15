@@ -1,10 +1,7 @@
-import React, { FormEvent, useEffect, useState } from 'react'
-import { translations } from 'src/locales/translations'
-import { ALLERGENS, CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, ProductSI, SCHEDULES, ZoneSI } from 'src/typesSupabase'
-import { createCategory, createCategoryProduct, createZone, getZones } from 'src/utils/supabase'
-import { createSlug } from 'src/utils/utilities'
+import { FormEvent, useState } from 'react'
+import { ALLERGENS, CategorySI, ProductSI } from 'src/typesSupabase'
+import { createCategoryProduct } from 'src/utils/supabase'
 
-import Allergen from './Allergen'
 import AllergenSelector from './AllergenSelector'
 import { Input } from './Input'
 import LineCard from './LineCard'
@@ -35,13 +32,13 @@ export default function CreateProduct({ category, products }: { category: Catego
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-      <Input id="name" type="text" label="Nombre" placeholder="Nombre" />
-      <Input id="description" type="text" label="Descripción" placeholder="Descripción" />
-      <Input id="price" type="text" label="Precio" placeholder="Precio" />
+      <Input id="name" type="text" label="Nombre" placeholder="Nombre" required />
+      <Input id="description" type="text" label="Descripción" placeholder="Descripción" required />
+      <Input id="price" type="text" label="Precio" placeholder="Precio" required />
 
       <LineCard label="Opciones">
-        {options.map((option, index) => (
-          <Input key={`option-${index}`} id={`option-${index}`} type="text" placeholder={`Opción ${index + 1}`} />
+        {options.map((_, index) => (
+          <Input key={`option-${index}`} id={`option-${index}`} type="text" placeholder={`Opción ${index + 1}`} required />
         ))}
         <button
           type="button"
