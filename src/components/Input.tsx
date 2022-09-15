@@ -1,23 +1,18 @@
-import React from 'react'
-
 export function Input({
   id,
   label,
   placeholder,
   type = 'text',
-  value,
   required = false,
-  defaultValue,
-  onChange
+  defaultValue
 }: {
   id: string
   label?: string
   placeholder?: string
   type?: string
-  value?: string
+
   required?: boolean
   defaultValue?: string
-  onChange?: (ev: React.ChangeEvent<HTMLInputElement>) => void
 }) {
   return (
     <div className="flex flex-col gap-1 w-full">
@@ -27,10 +22,8 @@ export function Input({
         type={type}
         name={id}
         placeholder={placeholder}
-        value={value}
         defaultValue={defaultValue}
         required={required}
-        onChange={onChange}
       />
     </div>
   )

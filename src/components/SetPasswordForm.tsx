@@ -11,22 +11,14 @@ export default function SetPasswordForm() {
     const formData = new FormData(event.currentTarget)
     const password = formData.get('password') as string
 
-    await supabase.auth.update({ password })
+    const { error } = await supabase.auth.update({ password })
+    if (!error) window.location.href = '/admin/login'
   }
-
-  useEffect(() => {
-    const session = supabase.auth.session()
-
-    if (!session) {
-      console.warn('Session not found - redirect to login')
-      window.location.href = '/admin/login'
-    }
-  }, [])
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div>
-        <Input label="Nueva contraseña" type="password" id="password" placeholder="∗ ∗ ∗ ∗ ∗ ∗ ∗ ∗" />
+        <Input label="Nueva contraseña" type="password" id="password" placeholder="∗ ∗ ∗ ∗ ∗ ∗ ∗ ∗" required />
       </div>
 
       <Button type={BUTTON_TYPES.SUBMIT}>Actualizar contraseña</Button>
