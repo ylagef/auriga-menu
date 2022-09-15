@@ -74,7 +74,7 @@ console.log(menu.courses)
     <LineCard client:visible label={categoryTitle}>
       {
         categoryType === CATEGORY_TYPES.MENU && (
-          <div class="flex flex-col items-center justify-center">
+          <div class="flex flex-col items-center justify-center w-full">
             {menu.courses?.length === 0 && <span class="text-gray-600">Aún no hay platos</span>}
 
             {menu.courses

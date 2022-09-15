@@ -30,7 +30,7 @@ const menu = await getMenuById({ menuId: course.menuId })
       <h1>{course.name}</h1>
     </div>
 
-    <LineCard client:visible label="Datos categoría">
+    <LineCard client:visible label="Datos plato">
       <CourseForm client:visible menu={menu} course={course} />
     </LineCard>
   </div>
