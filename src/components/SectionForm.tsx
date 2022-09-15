@@ -16,7 +16,7 @@ export default function SectionForm({
 }: {
   category?: CategorySI
   sections?: SectionSI[]
-  section: SectionSI
+  section?: SectionSI
   defaultOpen?: boolean
 }) {
   const updateMode = !!section
