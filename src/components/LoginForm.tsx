@@ -13,7 +13,6 @@ export default function LoginForm() {
     event.preventDefault()
     setLoading(true)
 
-    // get inputs from form
     const formData = new FormData(event.currentTarget)
     const email = formData.get('email') as string
     const password = formData.get('password') as string
@@ -39,7 +38,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       <Input id="email" label="Email" type="email" placeholder="abc@efg.com" />
-      <Input id="password" label="Contraseña" type="password" placeholder="∗ ∗ ∗ ∗ ∗ ∗ ∗ ∗ " />
+      <Input id="password" label="Contraseña" type="password" placeholder="∗ ∗ ∗ ∗ ∗ ∗ ∗ ∗" />
 
       <Button type={BUTTON_TYPES.SUBMIT} disabled={loading}>
         Iniciar sesión
