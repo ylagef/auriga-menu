@@ -32,5 +32,10 @@ export const translations = {
     zonas: 'Zonas',
     categorias: 'Categorías',
     otros: 'Otros'
+  },
+  categoryTypes: {
+    menu: 'Menú',
+    sections: 'Secciones',
+    products: 'Productos'
   }
 }

@@ -5,7 +5,7 @@ import { getCategoriesByZoneId } from 'src/utils/supabase'
 import ButtonInput from './ButtonInput'
 import ButtonLink from './ButtonLink.astro'
 import ButtonLinksContainer from './ButtonLinksContainer.astro'
-import CreateCategory from './CreateCategory'
+import CategoryForm from './CategoryForm'
 import Divider from './Divider.astro'
 import LineCard from './Linecard'
 
@@ -38,7 +38,7 @@ const categories = await getCategoriesByZoneId({ zoneId: zone.id })
     <div class="flex flex-col w-full">
       <Divider theme="dark" />
 
-      <CreateCategory client:visible />
+      <CategoryForm client:visible />
     </div>
   </LineCard>
 </div>
