@@ -38,23 +38,25 @@ export default function CreateProduct({ category, products }: { category: Catego
       <Input id="price" type="text" label="Precio" placeholder="Precio" required />
 
       <LineCard label="Opciones">
-        <div className="flex flex-col">
-          {options.map((option, index) => (
-            <div className="flex gap-2 items-center ml-8" key={`option-${index}`}>
-              <Input id={`option-${index}`} type="text" placeholder={`Opción ${index + 1}`} defaultValue={option} required />
-              {index === options.length - 1 && (
-                <button
-                  onClick={() => {
-                    // remove last option
-                    setOptions((prev) => prev.slice(0, -1))
-                  }}
-                >
-                  <TrashIcon />
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
+        {options.length > 0 && (
+          <div className="flex flex-col">
+            {options.map((option, index) => (
+              <div className="flex gap-2 items-center ml-8" key={`option-${index}`}>
+                <Input id={`option-${index}`} type="text" placeholder={`Opción ${index + 1}`} defaultValue={option} required />
+                {index === options.length - 1 && (
+                  <button
+                    onClick={() => {
+                      // remove last option
+                      setOptions((prev) => prev.slice(0, -1))
+                    }}
+                  >
+                    <TrashIcon />
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
         <button
           className=" bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60"
           type="button"
