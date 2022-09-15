@@ -12,17 +12,19 @@ export default function ProductForm({
   category,
   section,
   product,
-  products
+  products,
+  defaultOpen
 }: {
   category?: CategorySI
   section?: SectionSI
   product?: ProductSI
   products?: ProductSI[]
+  defaultOpen?: boolean
 }) {
   const updateMode = !!product
   const [loading, setLoading] = useState(false)
   const [confirmDeletion, setConfirmDeletion] = useState(false)
-  const [open, setOpen] = useState(updateMode)
+  const [open, setOpen] = useState(defaultOpen)
   const [allergens, setAllergens] = useState<ALLERGENS[]>(product?.allergens || [])
   const [options, setOptions] = useState<string[]>(product?.options || [])
 
