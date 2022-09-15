@@ -4,6 +4,7 @@ import { ALLERGENS, CategorySI, ProductSI } from 'src/typesSupabase'
 import { createCategoryProduct } from 'src/utils/supabase'
 
 import AllergenSelector from './AllergenSelector'
+import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
 import LineCard from './LineCard'
 
@@ -57,19 +58,18 @@ export default function CreateProduct({ category, products }: { category: Catego
             ))}
           </div>
         )}
-        <button
-          className=" bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60"
-          type="button"
+        <Button
+          inverted
           onClick={() => {
             setOptions((prev) => [...prev, ''])
           }}
         >
           {options.length === 0 ? 'Añadir opciones' : 'Añadir otra opción'}
-        </button>
+        </Button>
       </LineCard>
 
       <LineCard label="Alérgenos">
-        <div className="flex flex-wrap justify-center gap-4 max-w-md">
+        <div className="flex flex-wrap justify-center gap-4 max-w-xl">
           {Object.values(ALLERGENS).map((allergen) => (
             <AllergenSelector
               key={allergen}
@@ -83,9 +83,9 @@ export default function CreateProduct({ category, products }: { category: Catego
         </div>
       </LineCard>
 
-      <button type="submit" className="w-full bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60" disabled={loading}>
+      <Button type={BUTTON_TYPES.SUBMIT} className="w-full" disabled={loading}>
         Crear
-      </button>
+      </Button>
     </form>
   )
 }

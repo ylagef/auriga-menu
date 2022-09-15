@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react'
 import { createZone } from 'src/utils/supabase'
 import { createSlug } from 'src/utils/utilities'
 
+import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
 
 export default function CreateZone() {
@@ -24,9 +25,9 @@ export default function CreateZone() {
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
       <Input id="name" type="text" label="Nombre" placeholder="Nombre" required />
 
-      <button type="submit" className="w-full bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60" disabled={loading}>
+      <Button type={BUTTON_TYPES.SUBMIT} className="w-full" disabled={loading}>
         Crear
-      </button>
+      </Button>
     </form>
   )
 }

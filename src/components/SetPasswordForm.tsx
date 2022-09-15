@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import { supabase } from 'src/utils/supabase'
 
-export default function LoginForm() {
+import Button, { BUTTON_TYPES } from './Button'
+
+export default function SetPasswordForm() {
   const [password, setPassword] = React.useState('')
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -25,7 +27,7 @@ export default function LoginForm() {
         <input type="password" id="password" value={password} onChange={(ev) => setPassword(ev.target.value)} />
       </div>
 
-      <button type="submit">Actualizar contraseña</button>
+      <Button type={BUTTON_TYPES.SUBMIT}>Actualizar contraseña</Button>
     </form>
   )
 }

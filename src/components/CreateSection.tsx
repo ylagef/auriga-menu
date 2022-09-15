@@ -4,6 +4,7 @@ import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, SectionSI, ZoneS
 import { createCategory, createSection, createZone, getZones } from 'src/utils/supabase'
 import { createSlug } from 'src/utils/utilities'
 
+import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
 import LineCard from './LineCard'
 
@@ -36,7 +37,7 @@ export default function CreateSection({ category, sections }: { category: Catego
       <Input id="title" type="text" label="Título" placeholder="Título" required />
 
       <LineCard label="Servicios extra">
-        <div className="flex flex-col gap-4 max-w-md">
+        <div className="flex flex-col gap-4 max-w-xl">
           {Object.values(EXTRA_SERVICES).map((extraService) => (
             <div key={extraService} className="flex items-center gap-2">
               <input id={extraService} name={extraService} type="checkbox" />
@@ -46,9 +47,9 @@ export default function CreateSection({ category, sections }: { category: Catego
         </div>
       </LineCard>
 
-      <button type="submit" className="w-full bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60" disabled={loading}>
+      <Button type={BUTTON_TYPES.SUBMIT} className="w-full" disabled={loading}>
         Crear
-      </button>
+      </Button>
     </form>
   )
 }
