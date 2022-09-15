@@ -2,6 +2,7 @@
 import Admin from '@components/Admin.astro'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
+import CategoryForm from '@components/CategoryForm'
 import CreateProduct from '@components/CreateProduct'
 import CreateSection from '@components/CreateSection'
 import CreateZone from '@components/CreateZone'
@@ -64,8 +65,8 @@ switch (categoryType) {
       <h3>{category.categoryTitle}</h3>
     </div>
 
-    <LineCard client:visible label="Editar categoría">
-      <!-- <EditCategory client:visible category={category} /> -->
+    <LineCard client:visible label="Editar datos categoría">
+      <CategoryForm client:visible category={category} />
     </LineCard>
 
     <LineCard client:visible label={categoryTitle}>

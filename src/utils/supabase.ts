@@ -66,7 +66,11 @@ export const getZoneBySlug = async ({ restaurantId, zoneSlug }: { restaurantId: 
 }
 
 export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string }) => {
-  const { data, error } = await supabase.from<CategorySI>('categories').select('*').eq('slug', categorySlug).single()
+  const { data, error } = await supabase
+    .from<CategorySI>('categories')
+    .select('*, zones:zones_categories(zone:zones(id)), orders:zones_categories(order)')
+    .eq('slug', categorySlug)
+    .single()
 
   if (error) {
     console.error('error', error)
@@ -103,38 +107,40 @@ export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
   return data.map((d) => ({ ...d.categories, order: d.order }))
 }
 
-export const createCategory = async ({ zoneId, newCategory }: { zoneId: number; newCategory: CategorySI }) => {
+export const createCategory = async ({ selectedZones, newCategory }: { selectedZones: number[]; newCategory: CategorySI }) => {
   setAuthToken()
-  const zoneCategories = await getCategoriesByZoneId({ zoneId })
+  selectedZones.forEach(async (zoneId) => {
+    const zoneCategories = await getCategoriesByZoneId({ zoneId })
 
-  const { data, error } = await supabase.from<CategorySI>('categories').insert([
-    {
-      type: newCategory.type,
-      slug: newCategory.slug,
-      buttonText: newCategory.buttonText,
-      categoryTitle: newCategory.categoryTitle,
-      schedules: newCategory.schedules,
-      extraServices: newCategory.extraServices
+    const { data, error } = await supabase.from<CategorySI>('categories').insert([
+      {
+        type: newCategory.type,
+        slug: newCategory.slug,
+        buttonText: newCategory.buttonText,
+        categoryTitle: newCategory.categoryTitle,
+        schedules: newCategory.schedules,
+        extraServices: newCategory.extraServices
+      }
+    ])
+
+    if (error) {
+      console.error('error', error)
+      return null
     }
-  ])
 
-  if (error) {
-    console.error('error', error)
-    return null
-  }
+    // ADD JOIN
+    const order = zoneCategories.sort((a, b) => b.order - a.order)[0].order + 1
 
-  // ADD JOIN
-  const order = zoneCategories.sort((a, b) => b.order - a.order)[0].order + 1
+    const { data: data2, error: error2 } = await supabase
+      .from<ZonesCategoriesSI>('zones_categories')
+      .insert([{ zoneId, categoryId: data[0].id, order }])
+    if (error2) {
+      console.error('error', error2)
+      return null
+    }
 
-  const { data: data2, error: error2 } = await supabase
-    .from<ZonesCategoriesSI>('zones_categories')
-    .insert([{ zoneId, categoryId: data[0].id, order }])
-  if (error2) {
-    console.error('error', error2)
-    return null
-  }
-
-  return data2
+    return data2
+  })
 }
 
 // Products
