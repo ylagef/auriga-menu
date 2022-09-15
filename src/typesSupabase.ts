@@ -64,11 +64,12 @@ export interface SectionSI {
 
 export interface CourseSI {
   // fk
-  menuId: number
+  menuId?: number
 
-  id: number
+  id?: number
   name: string
   products: string[]
+  order: number
 }
 
 export interface MenuSI {
@@ -78,6 +79,9 @@ export interface MenuSI {
   id: number
   extraServices: EXTRA_SERVICES[]
   price: number
+
+  // join
+  courses: CourseSI[]
 }
 
 export interface ZoneSI {

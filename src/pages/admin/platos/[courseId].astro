@@ -1,8 +1,9 @@
 ---
 import Admin from '@components/Admin.astro'
+import CourseForm from '@components/CourseForm'
 import LineCard from '@components/Linecard'
 import ProductForm from '@components/ProductForm'
-import { getProductById, getProductsByCategory, getProductsBySection, supabase } from 'src/utils/supabase'
+import { getCourseById, getMenuById, getProductById, getProductsByCategory, getProductsBySection, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
 
@@ -17,23 +18,20 @@ const { data: user } = await supabase.auth.api.getUser(token)
 
 if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 
-const { productId } = Astro.params
+const { courseId } = Astro.params
 
-const product = await getProductById({ productId: Number(productId) })
-const products = product.categoryId
-  ? await getProductsByCategory({ categoryId: product.categoryId })
-  : await getProductsBySection({ sectionId: product.sectionId })
-console.log({ product, products })
+const course = await getCourseById({ courseId: Number(courseId) })
+const menu = await getMenuById({ menuId: course.menuId })
 ---
 
 <Admin user={user}>
   <div class="flex flex-col gap-6">
     <div class="flex flex-col">
-      <h1>{product.name}</h1>
+      <h1>{course.name}</h1>
     </div>
 
     <LineCard client:visible label="Datos categoría">
-      <ProductForm client:visible product={product} products={products} />
+      <CourseForm client:visible menu={menu} course={course} />
     </LineCard>
   </div>
 </Admin>
