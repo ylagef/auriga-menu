@@ -1,13 +1,12 @@
 ---
 import Admin from '@components/Admin.astro'
+import Button from '@components/Button'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import CategoryForm from '@components/CategoryForm'
-import Divider from '@components/Divider.astro'
-import { Input } from '@components/Input'
 import LineCard from '@components/Linecard'
-import { getCategories, getZones, supabase } from 'src/utils/supabase'
-
+import ZoneForm from '@components/ZoneForm'
+import { getCategoriesByZoneId, getZoneById, getZoneBySlug, supabase } from 'src/utils/supabase'
 const cookies = Astro.request.headers.get('cookie')
 
 const token = cookies
@@ -20,15 +19,27 @@ if (!token) return Astro.redirect('/admin/login')
 const { data: user, error } = await supabase.auth.api.getUser(token)
 if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 
-const categories = await getCategories()
+export interface Props {
+  zoneSlug: number
+}
+
+const { zoneSlug } = Astro.params
+
+const zone = await getZoneBySlug({ restaurantId: 1, zoneSlug: String(zoneSlug) })
+const categories = await getCategoriesByZoneId({ zoneId: zone.id })
 console.log({ categories })
-categories.forEach((category) => {
-  console.log(category.zones)
-})
 ---
 
 <Admin user={user}>
   <div class="flex flex-col gap-6">
+    <div class="flex flex-col">
+      <h1>{zone.name}</h1>
+    </div>
+
+    <LineCard client:visible label="Editar datos zona">
+      <ZoneForm client:visible zone={zone} />
+    </LineCard>
+
     <LineCard client:visible label="Categorías">
       <ButtonLinksContainer>
         {
@@ -36,22 +47,17 @@ categories.forEach((category) => {
             .sort((a, b) => a.buttonText.localeCompare(b.buttonText))
             .map((category) => (
               <ButtonLink href={`/admin/categorias/${category.slug}`}>
-                <span>{category.buttonText}</span>
-
-                <div class="text-sm text-gray-500 mt-2">
-                  {category.zones
-                    ?.sort((a, z) => a.zone.name.localeCompare(z.zone.name))
-                    .map(({ zone }) => zone.name)
-                    .join(', ')}
-                </div>
+                <span>
+                  {category.buttonText} ({category.type})
+                </span>
               </ButtonLink>
             ))
         }
       </ButtonLinksContainer>
     </LineCard>
 
-    <!-- <LineCard client:visible label="Crear nueva categoría">
-      <CategoryForm client:visible />
-    </LineCard> -->
+    <LineCard client:visible label="Crear nueva categoría">
+      <CategoryForm client:visible zone={zone} />
+    </LineCard>
   </div>
 </Admin>

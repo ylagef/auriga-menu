@@ -4,11 +4,13 @@ import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, ZoneSI } from 's
 import { createCategory, getZones } from 'src/utils/supabase'
 import { createSlug } from 'src/utils/utilities'
 
+import Button from './Button'
 import { Input } from './Input'
 import LineCard from './LineCard'
 
-export default function CategoryForm({ category }: { category?: CategorySI }) {
-  const editMode = !!category
+export default function CategoryForm({ category, zone }: { category?: CategorySI; zone?: ZoneSI }) {
+  const updateMode = !!category
+  const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [zones, setZones] = useState<ZoneSI[]>(null)
   const [type, setType] = useState<CATEGORY_TYPES>(category?.type)
@@ -22,7 +24,7 @@ export default function CategoryForm({ category }: { category?: CategorySI }) {
     const categoryTitle = formData.get('categoryTitle') as string
     const buttonText = formData.get('buttonText') as string
 
-    const selectedZones = zones.filter((zone) => formData.get(`zone-${zone.id}`) === 'on').map((zone) => zone.id)
+    const selectedZones = zone ? [zone.id] : zones.filter((zone) => formData.get(`zone-${zone.id}`) === 'on').map((zone) => zone.id)
     const extraServices = Object.values(EXTRA_SERVICES)
       .filter((extraService) => formData.get(extraService) === 'on')
       .map((extraService) => extraService)
@@ -34,11 +36,11 @@ export default function CategoryForm({ category }: { category?: CategorySI }) {
 
     const categoryObj: CategorySI = { categoryTitle, buttonText, type, extraServices, schedules, slug }
 
-    if (editMode) {
+    if (updateMode) {
       // TODO change to edit
-      await createCategory({ selectedZones, newCategory: categoryObj })
+      await createCategory({ selectedZones, categoryObj })
     } else {
-      await createCategory({ selectedZones, newCategory: categoryObj })
+      await createCategory({ selectedZones, categoryObj })
     }
 
     window.location.reload()
@@ -58,26 +60,39 @@ export default function CategoryForm({ category }: { category?: CategorySI }) {
   }
 
   useEffect(() => {
-    fetchZones()
+    if (!zone) fetchZones()
   }, [])
+
+  if (!open)
+    return (
+      <Button
+        onClick={() => {
+          setOpen(true)
+        }}
+      >
+        Abrir editor
+      </Button>
+    )
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-      <LineCard label="Zona/s">
-        <div className="flex flex-col gap-4 max-w-xl">
-          {zones?.map((zone) => (
-            <div key={zone.id} className="flex items-center gap-2">
-              <input
-                id={`zone-${zone.id}`}
-                name={`zone-${zone.id}`}
-                type="checkbox"
-                defaultChecked={!!category?.zones.find((z) => z.zone.id === zone.id)}
-              />
-              <label htmlFor={`zone-${zone.id}`}>{zone.name}</label>
-            </div>
-          ))}
-        </div>
-      </LineCard>
+      {!zone && (
+        <LineCard label="Zona/s">
+          <div className="flex flex-col gap-4 max-w-xl">
+            {zones?.map((zone) => (
+              <div key={zone.id} className="flex items-center gap-2">
+                <input
+                  id={`zone-${zone.id}`}
+                  name={`zone-${zone.id}`}
+                  type="checkbox"
+                  defaultChecked={!!category?.zones?.find((z) => z.zone.id === zone.id)}
+                />
+                <label htmlFor={`zone-${zone.id}`}>{zone.name}</label>
+              </div>
+            ))}
+          </div>
+        </LineCard>
+      )}
 
       <Input id="categoryTitle" type="text" label="Título" placeholder="Título" required defaultValue={category?.categoryTitle} />
       <Input id="buttonText" type="text" label="Texto del botón" placeholder="Texto del botón" required defaultValue={category?.buttonText} />
@@ -86,7 +101,7 @@ export default function CategoryForm({ category }: { category?: CategorySI }) {
         <div className="flex flex-col gap-4 max-w-xl">
           {Object.values(EXTRA_SERVICES).map((extraService) => (
             <div key={extraService} className="flex items-center gap-2">
-              <input id={extraService} name={extraService} type="checkbox" defaultChecked={category?.extraServices.includes(extraService)} />
+              <input id={extraService} name={extraService} type="checkbox" defaultChecked={category?.extraServices?.includes(extraService)} />
               <label htmlFor={extraService}>{translations.extraServices[extraService]}</label>
             </div>
           ))}
@@ -97,7 +112,7 @@ export default function CategoryForm({ category }: { category?: CategorySI }) {
         <div className="flex flex-col gap-4 max-w-xl">
           {Object.values(SCHEDULES).map((schedule) => (
             <div key={schedule} className="flex items-center gap-2">
-              <input id={schedule} name={schedule} type="checkbox" defaultChecked={category?.schedules.includes(schedule)} />
+              <input id={schedule} name={schedule} type="checkbox" defaultChecked={category?.schedules?.includes(schedule)} />
               <label htmlFor={schedule}>{translations.schedules[schedule]}</label>
             </div>
           ))}
@@ -111,17 +126,19 @@ export default function CategoryForm({ category }: { category?: CategorySI }) {
           defaultValue={category?.type}
           onChange={handleSelectChange}
           required
-          disabled={editMode}
+          disabled={updateMode}
         >
           <option disabled value={''}>
             Selecciona tipo
           </option>
           {Object.values(CATEGORY_TYPES).map((type) => (
-            <option value={type}>{translations.categoryTypes[type]}</option>
+            <option key={type} value={type}>
+              {translations.categoryTypes[type]}
+            </option>
           ))}
         </select>
 
-        {editMode && <small>El tipo no puede ser editado</small>}
+        {updateMode && <small>El tipo no puede ser editado</small>}
 
         <ul className="text-sm">
           <li>
@@ -144,7 +161,7 @@ export default function CategoryForm({ category }: { category?: CategorySI }) {
       </LineCard>
 
       <button type="submit" className="w-full bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60" disabled={loading}>
-        {editMode ? 'Editar' : 'Crear'}
+        {updateMode ? 'Editar' : 'Crear'}
       </button>
     </form>
   )

@@ -12,11 +12,20 @@ interface Props {
   onClick?: () => void
   inverted?: boolean
   className?: string
+  href?: string
   disabled?: boolean
 }
 
-export default function Button({ children, type = BUTTON_TYPES.BUTTON, onClick, inverted = false, className, disabled = false }: Props) {
+export default function Button({ children, type = BUTTON_TYPES.BUTTON, onClick, href, inverted = false, className, disabled = false }: Props) {
   const theme = inverted ? 'text-dark-text border border-dark-text' : 'bg-dark-text text-light-text'
+  if (href) {
+    return (
+      <a className={`${theme} py-2 px-4 rounded ${className}`} href={href}>
+        {children}
+      </a>
+    )
+  }
+
   return (
     <button className={`${theme} py-2 px-4 rounded disabled:opacity-60 ${className}`} type={type} onClick={onClick} disabled={disabled}>
       {children}

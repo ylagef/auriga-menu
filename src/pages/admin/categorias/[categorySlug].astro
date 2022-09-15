@@ -1,15 +1,14 @@
 ---
 import Admin from '@components/Admin.astro'
+import Button from '@components/Button'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import CategoryForm from '@components/CategoryForm'
-import CreateProduct from '@components/CreateProduct'
 import CreateSection from '@components/CreateSection'
-import CreateZone from '@components/CreateZone'
 import Divider from '@components/Divider.astro'
-import EditSection from '@components/EditSection'
 import { Input } from '@components/Input'
 import LineCard from '@components/Linecard'
+import ProductForm from '@components/ProductForm'
 import { CATEGORY_TYPES, MenuSI, ProductSI, SectionSI } from 'src/typesSupabase'
 import {
   getCategories,
@@ -65,7 +64,7 @@ switch (categoryType) {
       <h3>{category.categoryTitle}</h3>
     </div>
 
-    <LineCard client:visible label="Editar datos categoría">
+    <LineCard client:visible label="Datos categoría">
       <CategoryForm client:visible category={category} />
     </LineCard>
 
@@ -79,7 +78,7 @@ switch (categoryType) {
               {products
                 ?.sort((a, b) => a.name.localeCompare(b.name))
                 .map((product) => (
-                  <ButtonLink href={`/admin/categories/${product.id}`}>{product.name}</ButtonLink>
+                  <ButtonLink href={`/admin/productos/${product.id}`}>{product.name}</ButtonLink>
                 ))}
             </ButtonLinksContainer>
           </div>
@@ -88,7 +87,7 @@ switch (categoryType) {
 
       {
         categoryType === CATEGORY_TYPES.SECTIONS && (
-          <div class="flex items-center justify-center">
+          <div class="flex flex-col items-center justify-center">
             {sections.length === 0 && <span class="text-gray-600">Aún no hay secciones</span>}
 
             {sections
@@ -97,9 +96,10 @@ switch (categoryType) {
                 <div class="flex flex-col gap-4 items-center p-2 w-full">
                   <div class="flex justify-between items-center w-full">
                     <h2>{section.title}</h2>
-                    <EditSection section={section} />
+                    <Button href={`/admin/secciones/${section.id}`}>Editar</Button>
                   </div>
                   <LineCard label="Productos">
+                    {section.products.length === 0 && <span class="text-gray-600">Aún no hay productos</span>}
                     {section.products
                       ?.sort((a, b) => a.name.localeCompare(b.name))
                       .map((product) => (
@@ -115,7 +115,7 @@ switch (categoryType) {
 
     <LineCard client:visible label={createTitle}>
       {categoryType === CATEGORY_TYPES.SECTIONS && <CreateSection client:visible category={category} sections={sections} />}
-      {categoryType === CATEGORY_TYPES.PRODUCTS && <CreateProduct client:visible category={category} products={products} />}
+      {categoryType === CATEGORY_TYPES.PRODUCTS && <ProductForm client:visible category={category} products={products} sections={sections} />}
     </LineCard>
   </div>
 </Admin>

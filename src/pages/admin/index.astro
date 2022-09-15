@@ -17,7 +17,7 @@ if (!token) return Astro.redirect('/admin/login')
 const { data: user, error } = await supabase.auth.api.getUser(token)
 if (error) return Astro.redirect('/admin/login')
 
-const buttons = ['restaurante', 'zonas', 'categorias', 'otros']
+const buttons = ['restaurante', 'zonas']
 ---
 
 <Admin user={user}>
