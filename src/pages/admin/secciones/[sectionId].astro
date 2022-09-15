@@ -1,0 +1,53 @@
+---
+import Admin from '@components/Admin.astro'
+import ButtonLink from '@components/ButtonLink.astro'
+import LineCard from '@components/Linecard'
+import ProductForm from '@components/ProductForm'
+import { getSectionById, supabase } from 'src/utils/supabase'
+
+const cookies = Astro.request.headers.get('cookie')
+
+const token = cookies
+  ?.split(';')
+  .find((c) => c.trim().startsWith('sup-access-token='))
+  ?.split('=')[1]
+
+if (!token) return Astro.redirect('/admin/login')
+
+const { data: user } = await supabase.auth.api.getUser(token)
+
+if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
+
+let { sectionId } = Astro.params
+sectionId = sectionId as number
+
+const section = await getSectionById({ sectionId })
+console.log({ section })
+console.log({ products: section.products })
+---
+
+<Admin user={user}>
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-col">
+      <h1>{section.title}</h1>
+    </div>
+
+    <LineCard client:visible label="Datos categoría">
+      <!-- <CategoryForm client:visible category={category} /> -->
+    </LineCard>
+
+    <LineCard label="Productos">
+      {section.products.length === 0 && <span class="text-gray-600">Aún no hay productos</span>}
+
+      {
+        section.products
+          ?.sort((a, b) => a.name.localeCompare(b.name))
+          .map((product) => <ButtonLink href={`/admin/productos/${product.id}`}>{product.name}</ButtonLink>)
+      }
+    </LineCard>
+
+    <LineCard client:visible label="Añadir producto">
+      <ProductForm client:visible section={section} />
+    </LineCard>
+  </div>
+</Admin>
