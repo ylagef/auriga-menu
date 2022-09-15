@@ -16,7 +16,7 @@ export function Input({
   defaultValue?: string
 }) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1 w-full">
       <label htmlFor={id}>{label}</label>
       <input
         className="border-b-dark-text py-2 px-4 rounded"
