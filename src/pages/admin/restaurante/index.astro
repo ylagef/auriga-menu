@@ -22,7 +22,7 @@ const restaurant = await getRestaurant({ restaurantId: 1 })
 <Admin user={user}>
   <LineCard client:visible label="Restaurante">
     <form class="flex flex-col gap-6">
-      <Input id="name" type="text" label="Nombre" placeholder="Nombre" value={restaurant?.name} />
+      <Input id="name" type="text" label="Nombre" placeholder="Nombre" value={restaurant?.name} required />
 
       <button type="submit" class="bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60"> Guardar</button>
     </form>

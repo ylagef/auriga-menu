@@ -28,13 +28,12 @@ export default function CreateSection({ category, sections }: { category: Catego
       order: sections.sort((a, b) => b.order - a.order)[0].order + 1
     }
     await createSection({ categoryId: category.id, newSection })
-    // await createCategory({ zoneId, newCategory })
     window.location.reload()
   }
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-      <Input id="title" type="text" label="Título" placeholder="Título" />
+      <Input id="title" type="text" label="Título" placeholder="Título" required />
 
       <LineCard label="Servicios extra">
         <div className="flex flex-col gap-4 max-w-md">
