@@ -37,8 +37,8 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      <Input id="email" label="Email" type="email" placeholder="abc@efg.com" />
-      <Input id="password" label="Contraseña" type="password" placeholder="∗ ∗ ∗ ∗ ∗ ∗ ∗ ∗" />
+      <Input id="email" label="Email" type="email" placeholder="abc@efg.com" required />
+      <Input id="password" label="Contraseña" type="password" placeholder="∗ ∗ ∗ ∗ ∗ ∗ ∗ ∗" required />
 
       <Button type={BUTTON_TYPES.SUBMIT} disabled={loading}>
         Iniciar sesión
