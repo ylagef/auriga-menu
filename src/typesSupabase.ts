@@ -45,7 +45,7 @@ export interface ProductSI {
   name: string
   description?: string
   options?: string[]
-  price: number | string // String for "S/M"
+  price: string // String for "S/M"
   allergens?: ALLERGENS[]
 }
 

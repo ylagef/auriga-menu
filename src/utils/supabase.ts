@@ -54,6 +54,18 @@ export const createZone = async ({ restaurantId, name, slug }: { restaurantId: n
   return data
 }
 
+export const updateZone = async ({ restaurantId, name, slug }: { restaurantId: number; name: string; slug: string }) => {
+  setAuthToken()
+  const { data, error } = await supabase.from<ZoneSI>('zones').update({ name, slug }).eq('restaurantId', restaurantId)
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+
+  return data
+}
+
 // Categories
 export const getZoneBySlug = async ({ restaurantId, zoneSlug }: { restaurantId: number; zoneSlug: string }) => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', restaurantId).eq('slug', zoneSlug).single()
@@ -107,43 +119,74 @@ export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
   return data.map((d) => ({ ...d.categories, order: d.order }))
 }
 
-export const createCategory = async ({ selectedZones, newCategory }: { selectedZones: number[]; newCategory: CategorySI }) => {
+export const createCategory = async ({ selectedZones, categoryObj }: { selectedZones: number[]; categoryObj: CategorySI }) => {
   setAuthToken()
   selectedZones.forEach(async (zoneId) => {
-    const zoneCategories = await getCategoriesByZoneId({ zoneId })
-
-    const { data, error } = await supabase.from<CategorySI>('categories').insert([
+    const { data: data1, error: error1 } = await supabase.from<CategorySI>('categories').insert([
       {
-        type: newCategory.type,
-        slug: newCategory.slug,
-        buttonText: newCategory.buttonText,
-        categoryTitle: newCategory.categoryTitle,
-        schedules: newCategory.schedules,
-        extraServices: newCategory.extraServices
+        type: categoryObj.type,
+        slug: categoryObj.slug,
+        buttonText: categoryObj.buttonText,
+        categoryTitle: categoryObj.categoryTitle,
+        schedules: categoryObj.schedules,
+        extraServices: categoryObj.extraServices
       }
     ])
 
-    if (error) {
-      console.error('error', error)
+    if (error1) {
+      console.error('error 1', error1)
       return null
     }
 
-    // ADD JOIN
+    const zoneCategories = await getCategoriesByZoneId({ zoneId })
     const order = zoneCategories.sort((a, b) => b.order - a.order)[0].order + 1
 
     const { data: data2, error: error2 } = await supabase
       .from<ZonesCategoriesSI>('zones_categories')
-      .insert([{ zoneId, categoryId: data[0].id, order }])
+      .insert([{ zoneId, categoryId: categoryObj.id, order }])
     if (error2) {
-      console.error('error', error2)
+      console.error('error 2', error2)
       return null
     }
 
-    return data2
+    return [data1, data2]
   })
 }
 
+export const updateCategory = async ({ selectedZones, categoryObj }: { selectedZones: number[]; categoryObj: CategorySI }) => {
+  setAuthToken()
+  const { data, error } = await supabase.from<CategorySI>('categories').update(categoryObj).eq('id', categoryObj.id)
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+
+  // TODO update join
+  // selectedZones.forEach(async (zoneId) => {
+  //   const { data: data2, error: error2 } = await supabase
+  //     .from<ZonesCategoriesSI>('zones_categories')
+  //     .update({ zoneId })
+  //     .eq('categoryId', newCategory.id)
+  //   if (error2) {
+  //     console.error('error', error2)
+  //     return null
+  //   }
+  //   return data2
+  // })
+}
+
 // Products
+export const getProductById = async ({ productId }: { productId: number }) => {
+  const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('id', productId).single()
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+  return data
+}
+
 export const getProducts = async ({ categoryId, sectionId }: { categoryId?: number; sectionId?: number }) => {
   // TODO check if conditional is ok
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('categoryId', categoryId).eq('sectionId', sectionId)
@@ -175,10 +218,47 @@ export const getProductsBySection = async ({ sectionId }: { sectionId: number })
   return data
 }
 
-export const createCategoryProduct = async ({ categoryId, newProduct }: { categoryId: number; newProduct: ProductSI }) => {
+export const createCategoryProduct = async ({ categoryId, productObj }: { categoryId: number; productObj: ProductSI }) => {
   setAuthToken()
-  const { name, description, price, options, allergens, order } = newProduct
+  const { name, description, price, options, allergens, order } = productObj
   const { data, error } = await supabase.from<ProductSI>('products').insert([{ categoryId, name, description, price, options, allergens, order }])
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+
+  return data
+}
+
+export const createSectionProduct = async ({ sectionId, productObj }: { sectionId: number; productObj: ProductSI }) => {
+  setAuthToken()
+  const { name, description, price, options, allergens, order } = productObj
+  const { data, error } = await supabase.from<ProductSI>('products').insert([{ sectionId, name, description, price, options, allergens, order }])
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+
+  return data
+}
+
+export const updateProduct = async ({ productObj }: { productObj: ProductSI }) => {
+  setAuthToken()
+  const { data, error } = await supabase.from<ProductSI>('products').update(productObj).eq('id', productObj.id)
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+
+  return data
+}
+
+export const deleteProductById = async ({ productId }: { productId: number }) => {
+  setAuthToken()
+  const { data, error } = await supabase.from<ProductSI>('products').delete().eq('id', productId)
 
   if (error) {
     console.error('error', error)
