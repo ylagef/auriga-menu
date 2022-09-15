@@ -104,13 +104,13 @@ export default function CourseForm({ menu, defaultOpen, course }: { menu?: MenuS
               setConfirmDeletion(true)
             }}
           >
-            ELIMINAR SECCIÓN
+            ELIMINAR PLATO
           </button>
         ) : (
           <div className="flex flex-col gap-4 items-center">
-            <span>¿Seguro que quieres eliminar esta sección?</span>
+            <span>¿Seguro que quieres eliminar este plato?</span>
             <span>
-              Se eliminarán también <strong>todos sus productos</strong>.
+              Se eliminarán también <strong>todas sus opciones</strong>.
             </span>
             <Button className="w-full bg-red-700" onClick={deleteSection}>
               Confirmar eliminación
