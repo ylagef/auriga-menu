@@ -33,13 +33,13 @@ const categoryTitle = categoryType === CATEGORY_TYPES.MENU ? 'Platos' : category
 let createTitle
 switch (categoryType) {
   case CATEGORY_TYPES.SECTIONS:
-    createTitle = 'Crear nueva sección'
+    createTitle = 'Añadir nueva sección'
     break
   case CATEGORY_TYPES.PRODUCTS:
-    createTitle = 'Crear nuevo producto'
+    createTitle = 'Añadir nuevo producto'
     break
   case CATEGORY_TYPES.MENU:
-    createTitle = 'Crear nuevo plato'
+    createTitle = 'Añadir nuevo plato'
     break
 }
 
@@ -57,7 +57,6 @@ switch (categoryType) {
 }
 
 console.log({ menu })
-console.log(menu.courses)
 ---
 
 <Admin user={user}>
@@ -75,9 +74,9 @@ console.log(menu.courses)
       {
         categoryType === CATEGORY_TYPES.MENU && (
           <div class="flex flex-col items-center justify-center w-full">
-            {menu.courses?.length === 0 && <span class="text-gray-600">Aún no hay platos</span>}
+            {menu?.courses?.length === 0 && <span class="text-gray-600">Aún no hay platos</span>}
 
-            {menu.courses
+            {menu?.courses
               ?.sort((a, z) => a.order - z.order)
               ?.map((course) => (
                 <div class="flex flex-col gap-4 items-center p-2 w-full">
