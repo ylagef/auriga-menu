@@ -8,10 +8,11 @@ import Button from './Button'
 import { Input } from './Input'
 import LineCard from './LineCard'
 
-export default function CategoryForm({ category, zone }: { category?: CategorySI; zone?: ZoneSI }) {
+export default function CategoryForm({ category, zone, defaultOpen }: { category?: CategorySI; zone?: ZoneSI; defaultOpen?: boolean }) {
   const updateMode = !!category
-  const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [confirmDeletion, setConfirmDeletion] = useState(false)
+  const [open, setOpen] = useState(defaultOpen)
   const [zones, setZones] = useState<ZoneSI[]>(null)
   const [type, setType] = useState<CATEGORY_TYPES>(category?.type)
 
@@ -63,6 +64,11 @@ export default function CategoryForm({ category, zone }: { category?: CategorySI
     if (!zone) fetchZones()
   }, [])
 
+  const deleteCategory = async () => {
+    // await deleteSectionById({ sectionId: section.id })
+    window.history.back()
+  }
+
   if (!open)
     return (
       <Button
@@ -75,94 +81,118 @@ export default function CategoryForm({ category, zone }: { category?: CategorySI
     )
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-      {!zone && (
-        <LineCard label="Zona/s">
+    <div className="flex flex-col gap-10">
+      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+        {!zone && (
+          <LineCard label="Zona/s">
+            <div className="flex flex-col gap-4 max-w-xl">
+              {zones?.map((zone) => (
+                <div key={zone.id} className="flex items-center gap-2">
+                  <input
+                    id={`zone-${zone.id}`}
+                    name={`zone-${zone.id}`}
+                    type="checkbox"
+                    defaultChecked={!!category?.zones?.find((z) => z.zone.id === zone.id)}
+                  />
+                  <label htmlFor={`zone-${zone.id}`}>{zone.name}</label>
+                </div>
+              ))}
+            </div>
+          </LineCard>
+        )}
+
+        <Input id="categoryTitle" type="text" label="Título" placeholder="Título" required defaultValue={category?.categoryTitle} />
+        <Input id="buttonText" type="text" label="Texto del botón" placeholder="Texto del botón" required defaultValue={category?.buttonText} />
+
+        <LineCard label="Servicios extra">
           <div className="flex flex-col gap-4 max-w-xl">
-            {zones?.map((zone) => (
-              <div key={zone.id} className="flex items-center gap-2">
-                <input
-                  id={`zone-${zone.id}`}
-                  name={`zone-${zone.id}`}
-                  type="checkbox"
-                  defaultChecked={!!category?.zones?.find((z) => z.zone.id === zone.id)}
-                />
-                <label htmlFor={`zone-${zone.id}`}>{zone.name}</label>
+            {Object.values(EXTRA_SERVICES).map((extraService) => (
+              <div key={extraService} className="flex items-center gap-2">
+                <input id={extraService} name={extraService} type="checkbox" defaultChecked={category?.extraServices?.includes(extraService)} />
+                <label htmlFor={extraService}>{translations.extraServices[extraService]}</label>
               </div>
             ))}
           </div>
         </LineCard>
-      )}
 
-      <Input id="categoryTitle" type="text" label="Título" placeholder="Título" required defaultValue={category?.categoryTitle} />
-      <Input id="buttonText" type="text" label="Texto del botón" placeholder="Texto del botón" required defaultValue={category?.buttonText} />
+        <LineCard label="Horarios">
+          <div className="flex flex-col gap-4 max-w-xl">
+            {Object.values(SCHEDULES).map((schedule) => (
+              <div key={schedule} className="flex items-center gap-2">
+                <input id={schedule} name={schedule} type="checkbox" defaultChecked={category?.schedules?.includes(schedule)} />
+                <label htmlFor={schedule}>{translations.schedules[schedule]}</label>
+              </div>
+            ))}
+          </div>
+        </LineCard>
 
-      <LineCard label="Servicios extra">
-        <div className="flex flex-col gap-4 max-w-xl">
-          {Object.values(EXTRA_SERVICES).map((extraService) => (
-            <div key={extraService} className="flex items-center gap-2">
-              <input id={extraService} name={extraService} type="checkbox" defaultChecked={category?.extraServices?.includes(extraService)} />
-              <label htmlFor={extraService}>{translations.extraServices[extraService]}</label>
-            </div>
-          ))}
-        </div>
-      </LineCard>
-
-      <LineCard label="Horarios">
-        <div className="flex flex-col gap-4 max-w-xl">
-          {Object.values(SCHEDULES).map((schedule) => (
-            <div key={schedule} className="flex items-center gap-2">
-              <input id={schedule} name={schedule} type="checkbox" defaultChecked={category?.schedules?.includes(schedule)} />
-              <label htmlFor={schedule}>{translations.schedules[schedule]}</label>
-            </div>
-          ))}
-        </div>
-      </LineCard>
-
-      <LineCard label="Tipo">
-        <select
-          id="type"
-          className="border-b-dark-text py-2 px-4 rounded"
-          defaultValue={category?.type}
-          onChange={handleSelectChange}
-          required
-          disabled={updateMode}
-        >
-          <option disabled value={''}>
-            Selecciona tipo
-          </option>
-          {Object.values(CATEGORY_TYPES).map((type) => (
-            <option key={type} value={type}>
-              {translations.categoryTypes[type]}
+        <LineCard label="Tipo">
+          <select
+            id="type"
+            className="border-b-dark-text py-2 px-4 rounded"
+            defaultValue={category?.type}
+            onChange={handleSelectChange}
+            required
+            disabled={updateMode}
+          >
+            <option disabled value={''}>
+              Selecciona tipo
             </option>
-          ))}
-        </select>
+            {Object.values(CATEGORY_TYPES).map((type) => (
+              <option key={type} value={type}>
+                {translations.categoryTypes[type]}
+              </option>
+            ))}
+          </select>
 
-        {updateMode && <small>El tipo no puede ser editado</small>}
+          {updateMode && <small>El tipo no puede ser editado</small>}
 
-        <ul className="text-sm">
-          <li>
-            <span className="font-semibold">Menú</span>
-            <div className="pl-4">
-              Menú del día con platos. <span className="italic">(ej. Entrantes, Primeros...)</span>
-            </div>
-          </li>
-          <li>
-            <span className="font-semibold">Secciones</span>
-            <div className="pl-4">
-              Secciones con sus productos. <span className="italic">(ej. Clásicas, Del Auriga...)</span>
-            </div>
-          </li>
-          <li>
-            <span className="font-semibold">Productos</span>
-            <div className="pl-4">Listado de productos sin división por secciones.</div>
-          </li>
-        </ul>
-      </LineCard>
+          <ul className="text-sm">
+            <li>
+              <span className="font-semibold">Menú</span>
+              <div className="pl-4">
+                Menú del día con platos. <span className="italic">(ej. Entrantes, Primeros...)</span>
+              </div>
+            </li>
+            <li>
+              <span className="font-semibold">Secciones</span>
+              <div className="pl-4">
+                Secciones con sus productos. <span className="italic">(ej. Clásicas, Del Auriga...)</span>
+              </div>
+            </li>
+            <li>
+              <span className="font-semibold">Productos</span>
+              <div className="pl-4">Listado de productos sin división por secciones.</div>
+            </li>
+          </ul>
+        </LineCard>
 
-      <button type="submit" className="w-full bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60" disabled={loading}>
-        {updateMode ? 'Editar' : 'Crear'}
-      </button>
-    </form>
+        <button type="submit" className="w-full bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60" disabled={loading}>
+          {updateMode ? 'Editar' : 'Crear'}
+        </button>
+      </form>
+
+      {updateMode &&
+        (!confirmDeletion ? (
+          <button
+            className="text-red-700 font-semibold"
+            onClick={() => {
+              setConfirmDeletion(true)
+            }}
+          >
+            ELIMINAR CATEGORÍA
+          </button>
+        ) : (
+          <div className="flex flex-col gap-4 items-center">
+            <span>¿Seguro que quieres eliminar esta categoría?</span>
+            <span>
+              Se eliminarán también <strong>todas sus secciones, productos</strong>...
+            </span>
+            <Button className="w-full bg-red-700" onClick={deleteCategory}>
+              Confirmar eliminación
+            </Button>
+          </div>
+        ))}
+    </div>
   )
 }

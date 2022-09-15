@@ -8,9 +8,11 @@ import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
 import LineCard from './LineCard'
 
-export default function ZoneForm({ zone }: { zone?: ZoneSI }) {
+export default function ZoneForm({ zone, defaultOpen }: { zone?: ZoneSI; defaultOpen?: boolean }) {
   const updateMode = !!zone
   const [loading, setLoading] = useState(false)
+  const [confirmDeletion, setConfirmDeletion] = useState(false)
+  const [open, setOpen] = useState(defaultOpen)
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -29,13 +31,53 @@ export default function ZoneForm({ zone }: { zone?: ZoneSI }) {
     window.location.reload()
   }
 
-  return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-      <Input id="name" type="text" label="Nombre" placeholder="Nombre" required defaultValue={zone?.name} />
+  const deleteZone = async () => {
+    // await deleteSectionById({ sectionId: section.id })
+    window.history.back()
+  }
 
-      <Button type={BUTTON_TYPES.SUBMIT} className="w-full" disabled={loading}>
-        {updateMode ? 'Editar' : 'Crear'}
+  if (!open)
+    return (
+      <Button
+        onClick={() => {
+          setOpen(true)
+        }}
+      >
+        Abrir editor
       </Button>
-    </form>
+    )
+
+  return (
+    <div className="flex flex-col gap-10">
+      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+        <Input id="name" type="text" label="Nombre" placeholder="Nombre" required defaultValue={zone?.name} />
+
+        <Button type={BUTTON_TYPES.SUBMIT} className="w-full" disabled={loading}>
+          {updateMode ? 'Editar' : 'Crear'}
+        </Button>
+      </form>
+
+      {updateMode &&
+        (!confirmDeletion ? (
+          <button
+            className="text-red-700 font-semibold"
+            onClick={() => {
+              setConfirmDeletion(true)
+            }}
+          >
+            ELIMINAR ZONA
+          </button>
+        ) : (
+          <div className="flex flex-col gap-4 items-center">
+            <span>¿Seguro que quieres eliminar esta zona?</span>
+            <span>
+              Se eliminarán también <strong>todas sus categorías, secciones, productos</strong>...
+            </span>
+            <Button className="w-full bg-red-700" onClick={deleteZone}>
+              Confirmar eliminación
+            </Button>
+          </div>
+        ))}
+    </div>
   )
 }

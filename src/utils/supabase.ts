@@ -300,10 +300,33 @@ export const getSectionById = async ({ sectionId }: { sectionId: number }) => {
   return data
 }
 
-export const createSection = async ({ categoryId, newSection }: { categoryId: number; newSection: SectionSI }) => {
+export const createSection = async ({ categoryId, sectionObj }: { categoryId: number; sectionObj: SectionSI }) => {
   setAuthToken()
-  const { title, extraServices, order } = newSection
+  const { title, extraServices, order } = sectionObj
   const { data, error } = await supabase.from<SectionSI>('sections').insert([{ categoryId, title, extraServices, order }])
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+  return data
+}
+
+export const deleteSectionById = async ({ sectionId }: { sectionId: number }) => {
+  setAuthToken()
+  const { data, error } = await supabase.from<SectionSI>('sections').delete().eq('id', sectionId)
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+
+  return data
+}
+
+export const updateSection = async ({ sectionObj }: { sectionObj: SectionSI }) => {
+  setAuthToken()
+  const { data, error } = await supabase.from<SectionSI>('sections').update(sectionObj).eq('id', sectionObj.id)
 
   if (error) {
     console.error('error', error)
