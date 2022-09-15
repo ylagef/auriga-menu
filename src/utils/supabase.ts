@@ -290,6 +290,16 @@ export const getSectionsByCategory = async ({ categoryId }: { categoryId: number
   return data
 }
 
+export const getSectionById = async ({ sectionId }: { sectionId: number }) => {
+  const { data, error } = await supabase.from<SectionSI>('sections').select('*, products ( * )').eq('id', sectionId).single()
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+  return data
+}
+
 export const createSection = async ({ categoryId, newSection }: { categoryId: number; newSection: SectionSI }) => {
   setAuthToken()
   const { title, extraServices, order } = newSection

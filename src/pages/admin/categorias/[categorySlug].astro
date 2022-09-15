@@ -103,7 +103,7 @@ switch (categoryType) {
                     {section.products
                       ?.sort((a, b) => a.name.localeCompare(b.name))
                       .map((product) => (
-                        <ButtonLink href={`/admin/categories/${product.id}`}>{product.name}</ButtonLink>
+                        <ButtonLink href={`/admin/productos/${product.id}`}>{product.name}</ButtonLink>
                       ))}
                   </LineCard>
                 </div>
@@ -115,7 +115,7 @@ switch (categoryType) {
 
     <LineCard client:visible label={createTitle}>
       {categoryType === CATEGORY_TYPES.SECTIONS && <CreateSection client:visible category={category} sections={sections} />}
-      {categoryType === CATEGORY_TYPES.PRODUCTS && <ProductForm client:visible category={category} products={products} sections={sections} />}
+      {categoryType === CATEGORY_TYPES.PRODUCTS && <ProductForm client:visible category={category} products={products} />}
     </LineCard>
   </div>
 </Admin>

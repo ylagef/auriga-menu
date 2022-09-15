@@ -38,8 +38,10 @@ if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 const { productId } = Astro.params
 
 const product = await getProductById({ productId: Number(productId) })
-const products = await getProductsByCategory({ categoryId: product.categoryId })
-console.log({ product })
+const products = product.categoryId
+  ? await getProductsByCategory({ categoryId: product.categoryId })
+  : await getProductsBySection({ sectionId: product.sectionId })
+console.log({ product, products })
 ---
 
 <Admin user={user}>

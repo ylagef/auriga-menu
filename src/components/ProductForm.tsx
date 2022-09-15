@@ -10,14 +10,14 @@ import LineCard from './LineCard'
 
 export default function ProductForm({
   category,
+  section,
   product,
-  sections,
   products
 }: {
   category?: CategorySI
+  section?: SectionSI
   product?: ProductSI
   products?: ProductSI[]
-  sections?: SectionSI[]
 }) {
   const updateMode = !!product
   const [loading, setLoading] = useState(false)
@@ -37,17 +37,19 @@ export default function ProductForm({
 
     const parsedOptions = options.map((_, index) => formData.get('option-' + index) as string)
 
-    const order = products.sort((a, b) => a.order - b.order).pop()?.order + 1 || 0
+    const productsArray = products || section.products || []
+    const order = productsArray.sort((a, b) => a.order - b.order).pop()?.order + 1 || 0
 
     const productObj: ProductSI = { name, description, price, options: parsedOptions, allergens, order }
 
     console.log({ productObj })
+
     if (updateMode) {
       productObj.id = product.id
       await updateProduct({ productObj })
     }
     if (category) await createCategoryProduct({ categoryId: category.id, productObj })
-    // if (sections) await createSectionProduct({ sectionId: section.id, productObj })
+    if (section) await createSectionProduct({ sectionId: section.id, productObj })
 
     window.location.reload()
   }
