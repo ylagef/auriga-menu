@@ -4,22 +4,11 @@ import Button from '@components/Button'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import CategoryForm from '@components/CategoryForm'
-import Divider from '@components/Divider.astro'
-import { Input } from '@components/Input'
 import LineCard from '@components/Linecard'
 import ProductForm from '@components/ProductForm'
 import SectionForm from '@components/SectionForm'
 import { CATEGORY_TYPES, MenuSI, ProductSI, SectionSI } from 'src/typesSupabase'
-import {
-  getCategories,
-  getCategoryBySlug,
-  getMenuByCategory,
-  getProductsByCategory,
-  getProductsBySection,
-  getSectionsByCategory,
-  getZones,
-  supabase
-} from 'src/utils/supabase'
+import { getCategoryBySlug, getMenuByCategory, getProductsByCategory, getSectionsByCategory, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
 
@@ -30,7 +19,7 @@ const token = cookies
 
 if (!token) return Astro.redirect('/admin/login')
 
-const { data: user, error } = await supabase.auth.api.getUser(token)
+const { data: user } = await supabase.auth.api.getUser(token)
 
 if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 

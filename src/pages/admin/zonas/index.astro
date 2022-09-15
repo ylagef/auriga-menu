@@ -2,8 +2,6 @@
 import Admin from '@components/Admin.astro'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
-import Divider from '@components/Divider.astro'
-import { Input } from '@components/Input'
 import LineCard from '@components/Linecard'
 import ZoneForm from '@components/ZoneForm'
 import { getZones, supabase } from 'src/utils/supabase'
@@ -17,7 +15,7 @@ const token = cookies
 
 if (!token) return Astro.redirect('/admin/login')
 
-const { data: user, error } = await supabase.auth.api.getUser(token)
+const { data: user } = await supabase.auth.api.getUser(token)
 if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 
 const zones = await getZones({ restaurantId: 1 })

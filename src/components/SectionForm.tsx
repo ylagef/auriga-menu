@@ -1,8 +1,7 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { translations } from 'src/locales/translations'
-import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, SectionSI, ZoneSI } from 'src/typesSupabase'
-import { createCategory, createSection, createZone, deleteSectionById, getZones, updateSection } from 'src/utils/supabase'
-import { createSlug } from 'src/utils/utilities'
+import { CategorySI, EXTRA_SERVICES, SectionSI } from 'src/typesSupabase'
+import { createSection, deleteSectionById, updateSection } from 'src/utils/supabase'
 
 import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
