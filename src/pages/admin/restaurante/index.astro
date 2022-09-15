@@ -23,7 +23,7 @@ const restaurant = await getRestaurant({ restaurantId: 1 })
 <Admin user={user}>
   <LineCard client:visible label="Restaurante">
     <form class="flex flex-col gap-6">
-      <Input id="name" type="text" label="Nombre" placeholder="Nombre" value={restaurant?.name} required />
+      <Input id="name" type="text" label="Nombre" placeholder="Nombre" defaultValue={restaurant?.name} required />
 
       <Button type={BUTTON_TYPES.SUBMIT}>Guardar</Button>
     </form>
