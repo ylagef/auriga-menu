@@ -346,8 +346,18 @@ export const getMenus = async ({ categoryId }: { categoryId: number }) => {
   return data
 }
 
+export const getMenuById = async ({ menuId }: { menuId: number }) => {
+  const { data, error } = await supabase.from<MenuSI>('menus').select('*').eq('id', menuId).single()
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+  return data
+}
+
 export const getMenuByCategory = async ({ categoryId }: { categoryId: number }) => {
-  const { data, error } = await supabase.from<MenuSI>('menus').select('*').eq('categoryId', categoryId).single()
+  const { data, error } = await supabase.from<MenuSI>('menus').select('*, courses(*)').eq('categoryId', categoryId).single()
 
   if (error) {
     console.error('error', error)
@@ -367,8 +377,54 @@ export const getCourses = async ({ menuId }: { menuId: number }) => {
   return data
 }
 
+export const getCourseById = async ({ courseId }: { courseId: number }) => {
+  const { data, error } = await supabase.from<CourseSI>('courses').select('*').eq('id', courseId).single()
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+  return data
+}
+
 export const getCoursesByMenu = async ({ menuId }: { menuId: number }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').select('*').eq('menuId', menuId)
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+  return data
+}
+
+export const createCourse = async ({ courseObj }: { courseObj: CourseSI }) => {
+  setAuthToken()
+
+  const { data, error } = await supabase.from<CourseSI>('courses').insert([courseObj])
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+  return data
+}
+
+export const updateCourse = async ({ courseObj }: { courseObj: CourseSI }) => {
+  setAuthToken()
+
+  const { data, error } = await supabase.from<CourseSI>('courses').update(courseObj).eq('id', courseObj.id)
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+  return data
+}
+
+export const deleteCourseById = async ({ courseId }: { courseId: number }) => {
+  setAuthToken()
+
+  const { data, error } = await supabase.from<CourseSI>('courses').delete().eq('id', courseId)
 
   if (error) {
     console.error('error', error)
