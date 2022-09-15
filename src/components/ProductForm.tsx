@@ -81,7 +81,7 @@ export default function ProductForm({
 
         <LineCard label="Opciones">
           {options.length > 0 && (
-            <div className="flex flex-col">
+            <div className="flex flex-col w-full">
               {options.map((option, index) => (
                 <div className="flex gap-2 items-center ml-8" key={`option-${index}`}>
                   <Input id={`option-${index}`} type="text" placeholder={`Opción ${index + 1}`} defaultValue={option} required />

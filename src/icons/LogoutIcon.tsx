@@ -2,19 +2,9 @@ import React from 'react'
 
 function LogoutIcon() {
   return (
-    <svg
-      width="32px"
-      height="32px"
-      viewBox="0 0 32 32"
-      id="i-signout"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      stroke="currentcolor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-    >
-      <path d="M28 16 L8 16 M20 8 L28 16 20 24 M11 28 L3 28 3 4 11 4" />
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+      <path d="M16 13v-2H7V8l-5 4 5 4v-3z"></path>
+      <path d="M20 3h-9c-1.103 0-2 .897-2 2v4h2V5h9v14h-9v-4H9v4c0 1.103.897 2 2 2h9c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2z"></path>
     </svg>
   )
 }

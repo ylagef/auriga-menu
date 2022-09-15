@@ -11,8 +11,11 @@ export default function LogoutButton() {
   }
 
   return (
-    <button className="pb-2 z-20" onClick={handleLogout}>
-      <LogoutIcon />
+    <button onClick={handleLogout}>
+      <span className="flex items-center gap-2">
+        Cerrar sesión
+        <LogoutIcon />
+      </span>
     </button>
   )
 }
