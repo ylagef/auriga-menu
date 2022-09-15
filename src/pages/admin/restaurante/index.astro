@@ -1,5 +1,6 @@
 ---
 import Admin from '@components/Admin.astro'
+import Button, { BUTTON_TYPES } from '@components/Button'
 import { Input } from '@components/Input'
 import LineCard from '@components/Linecard'
 import { getRestaurant, supabase } from 'src/utils/supabase'
@@ -24,7 +25,7 @@ const restaurant = await getRestaurant({ restaurantId: 1 })
     <form class="flex flex-col gap-6">
       <Input id="name" type="text" label="Nombre" placeholder="Nombre" value={restaurant?.name} required />
 
-      <button type="submit" class="bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60"> Guardar</button>
+      <Button type={BUTTON_TYPES.SUBMIT}>Guardar</Button>
     </form>
   </LineCard>
 </Admin>

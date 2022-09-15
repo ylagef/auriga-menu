@@ -73,7 +73,7 @@ export default function CreateCategory({ categories }: { categories: CategorySI[
       <Input id="buttonText" type="text" label="Texto del botón" placeholder="Texto del botón" required />
 
       <LineCard label="Servicios extra">
-        <div className="flex flex-col gap-4 max-w-md">
+        <div className="flex flex-col gap-4 max-w-xl">
           {Object.values(EXTRA_SERVICES).map((extraService) => (
             <div key={extraService} className="flex items-center gap-2">
               <input id={extraService} name={extraService} type="checkbox" />
@@ -84,7 +84,7 @@ export default function CreateCategory({ categories }: { categories: CategorySI[
       </LineCard>
 
       <LineCard label="Horarios">
-        <div className="flex flex-col gap-4 max-w-md">
+        <div className="flex flex-col gap-4 max-w-xl">
           {Object.values(SCHEDULES).map((schedule) => (
             <div key={schedule} className="flex items-center gap-2">
               <input id={schedule} name={schedule} type="checkbox" />

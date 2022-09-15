@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react'
 import { setCookie } from 'src/utils/cookies'
 import { supabase } from 'src/utils/supabase'
 
+import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
 
 export default function LoginForm() {
@@ -40,9 +41,9 @@ export default function LoginForm() {
       <Input id="email" label="Email" type="email" />
       <Input id="password" label="Contraseña" type="password" />
 
-      <button type="submit" className="bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60" disabled={loading}>
+      <Button type={BUTTON_TYPES.SUBMIT} disabled={loading}>
         Login
-      </button>
+      </Button>
 
       {error && <label className="text-center text-red-600">{error}</label>}
     </form>

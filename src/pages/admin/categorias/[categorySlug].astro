@@ -59,33 +59,56 @@ switch (categoryType) {
 
 <Admin user={user}>
   <div class="flex flex-col gap-6">
+    <div class="flex flex-col">
+      <h1>{category.buttonText}</h1>
+      <h3>{category.categoryTitle}</h3>
+    </div>
+
+    <LineCard client:visible label="Editar categoría">
+      <!-- <EditCategory client:visible category={category} /> -->
+    </LineCard>
+
     <LineCard client:visible label={categoryTitle}>
-      <ButtonLinksContainer>
-        {
-          products
-            ?.sort((a, b) => a.name.localeCompare(b.name))
-            .map((product) => <ButtonLink href={`/admin/categories/${product.id}`}>{product.name}</ButtonLink>)
-        }
-      </ButtonLinksContainer>
+      {
+        categoryType === CATEGORY_TYPES.PRODUCTS && (
+          <div class="flex items-center justify-center">
+            {products.length === 0 && <span class="text-gray-600">Aún no hay productos</span>}
+
+            <ButtonLinksContainer>
+              {products
+                ?.sort((a, b) => a.name.localeCompare(b.name))
+                .map((product) => (
+                  <ButtonLink href={`/admin/categories/${product.id}`}>{product.name}</ButtonLink>
+                ))}
+            </ButtonLinksContainer>
+          </div>
+        )
+      }
 
       {
-        sections
-          ?.sort((a, b) => a.title.localeCompare(b.title))
-          .map((section) => (
-            <div class="flex flex-col gap-4 items-center p-2 w-full">
-              <div class="flex justify-between items-center w-full">
-                <h2>{section.title}</h2>
-                <EditSection section={section} />
-              </div>
-              <LineCard label="Productos">
-                {section.products
-                  ?.sort((a, b) => a.name.localeCompare(b.name))
-                  .map((product) => (
-                    <ButtonLink href={`/admin/categories/${product.id}`}>{product.name}</ButtonLink>
-                  ))}
-              </LineCard>
-            </div>
-          ))
+        categoryType === CATEGORY_TYPES.SECTIONS && (
+          <div class="flex items-center justify-center">
+            {sections.length === 0 && <span class="text-gray-600">Aún no hay secciones</span>}
+
+            {sections
+              ?.sort((a, b) => a.title.localeCompare(b.title))
+              .map((section) => (
+                <div class="flex flex-col gap-4 items-center p-2 w-full">
+                  <div class="flex justify-between items-center w-full">
+                    <h2>{section.title}</h2>
+                    <EditSection section={section} />
+                  </div>
+                  <LineCard label="Productos">
+                    {section.products
+                      ?.sort((a, b) => a.name.localeCompare(b.name))
+                      .map((product) => (
+                        <ButtonLink href={`/admin/categories/${product.id}`}>{product.name}</ButtonLink>
+                      ))}
+                  </LineCard>
+                </div>
+              ))}
+          </div>
+        )
       }
     </LineCard>
 
