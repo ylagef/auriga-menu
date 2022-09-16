@@ -91,6 +91,16 @@ export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string
   return data
 }
 
+export const getCategoryById = async ({ categoryId }: { categoryId: number }) => {
+  const { data, error } = await supabase.from<CategorySI>('categories').select('*').eq('id', categoryId).single()
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+  return data
+}
+
 export const getCategories = async () => {
   const { data, error } = await supabase
     .from<CategorySI>('categories')

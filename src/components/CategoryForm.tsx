@@ -4,6 +4,7 @@ import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, ZoneSI } from 's
 import { createCategory, getZones } from 'src/utils/supabase'
 import { createSlug } from 'src/utils/utilities'
 
+import Info from './admin/Info'
 import Button from './Button'
 import { Input } from './Input'
 import LineCard from './LineCard'
@@ -82,6 +83,15 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
 
   return (
     <div className="flex flex-col gap-10">
+      <Info>
+        <span>
+          <strong>Título:</strong> Título dentro de la categoría.
+        </span>
+        <span>
+          <strong>Texto del botón:</strong> Texto del botón de selección entre categorías.
+        </span>
+      </Info>
+
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         {!zone && (
           <LineCard label="Zona/s">
@@ -101,8 +111,8 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
           </LineCard>
         )}
 
-        <Input id="categoryTitle" type="text" label="Título" placeholder="Título" required defaultValue={category?.categoryTitle} />
-        <Input id="buttonText" type="text" label="Texto del botón" placeholder="Texto del botón" required defaultValue={category?.buttonText} />
+        <Input id="categoryTitle" label="Título" placeholder="Los dulces, Con pan y mucha miga..." required defaultValue={category?.categoryTitle} />
+        <Input id="buttonText" label="Texto del botón" placeholder="Desayunos y meriendas, Postres..." required defaultValue={category?.buttonText} />
 
         <LineCard label="Servicios extra">
           <div className="flex flex-col gap-4 max-w-xl">
@@ -126,16 +136,16 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
           </div>
         </LineCard>
 
-        <LineCard label="Tipo">
+        <LineCard label="Tipo *">
           <select
             id="type"
             className="border-b-dark-text py-2 px-4 rounded"
-            defaultValue={category?.type}
+            defaultValue={category?.type || ''}
             onChange={handleSelectChange}
             required
             disabled={updateMode}
           >
-            <option disabled value={''}>
+            <option disabled value="">
               Selecciona tipo
             </option>
             {Object.values(CATEGORY_TYPES).map((type) => (
@@ -168,7 +178,7 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
         </LineCard>
 
         <button type="submit" className="w-full bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60" disabled={loading}>
-          {updateMode ? 'Editar' : 'Crear'}
+          {updateMode ? 'Actualizar' : 'Añadir'}
         </button>
       </form>
 

@@ -69,7 +69,7 @@ export default function SectionForm({
   return (
     <div className="flex flex-col gap-10">
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-        <Input id="title" type="text" label="Título" placeholder="Título" required defaultValue={section?.title} />
+        <Input id="title" label="Título" placeholder="Título" required defaultValue={section?.title} />
 
         <LineCard label="Servicios extra">
           <div className="flex flex-col gap-4 max-w-xl">

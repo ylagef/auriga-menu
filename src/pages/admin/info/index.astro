@@ -1,5 +1,6 @@
 ---
 import Admin from '@components/Admin.astro'
+import Info from '@components/admin/Info'
 import Button, { BUTTON_TYPES } from '@components/Button'
 import { Input } from '@components/Input'
 import LineCard from '@components/Linecard'
@@ -21,9 +22,15 @@ const restaurant = await getRestaurant({ restaurantId: 1 })
 ---
 
 <Admin user={user}>
+  <!-- TODO form not working -->
   <LineCard client:visible label="Restaurante">
+    <Info>
+      <p>El nombre se mostrará en la pestaña del navegador.</p>
+    </Info>
+
     <form class="flex flex-col gap-6">
-      <Input id="name" type="text" label="Nombre" placeholder="Nombre" defaultValue={restaurant?.name} required />
+      <Input id="name" label="Nombre" placeholder="Auriga gastrobar" defaultValue={restaurant?.name} required />
+      <Input id="shortName" label="Nombre corto" placeholder="Auriga" defaultValue={restaurant?.shortName} />
 
       <Button type={BUTTON_TYPES.SUBMIT}>Guardar</Button>
     </form>

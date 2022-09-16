@@ -4,6 +4,7 @@ import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, ZoneSI } from 's
 import { createCategory, createZone, getZones, updateZone } from 'src/utils/supabase'
 import { createSlug } from 'src/utils/utilities'
 
+import Info from './admin/Info'
 import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
 import LineCard from './LineCard'
@@ -11,8 +12,9 @@ import LineCard from './LineCard'
 export default function ZoneForm({ zone, defaultOpen }: { zone?: ZoneSI; defaultOpen?: boolean }) {
   const updateMode = !!zone
   const [loading, setLoading] = useState(false)
-  const [confirmDeletion, setConfirmDeletion] = useState(false)
+  // const [confirmDeletion, setConfirmDeletion] = useState(false)
   const [open, setOpen] = useState(defaultOpen)
+  const [slug, setSlug] = useState(zone?.slug)
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -31,10 +33,16 @@ export default function ZoneForm({ zone, defaultOpen }: { zone?: ZoneSI; default
     window.location.reload()
   }
 
-  const deleteZone = async () => {
-    // await deleteSectionById({ sectionId: section.id })
-    window.history.back()
+  const updateSlug = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputElement = event.currentTarget
+    const value = inputElement.value
+    setSlug(createSlug(value))
   }
+
+  // const deleteZone = async () => {
+  //   // await deleteSectionById({ sectionId: section.id })
+  //   window.history.back()
+  // }
 
   if (!open)
     return (
@@ -49,15 +57,19 @@ export default function ZoneForm({ zone, defaultOpen }: { zone?: ZoneSI; default
 
   return (
     <div className="flex flex-col gap-10">
+      <Info>
+        <p>Modificar el nombre modificará también la ruta:</p>
+        {slug && <p className="text-center font-medium">auriga-menu.netlify.app/{slug}</p>}
+      </Info>
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-        <Input id="name" type="text" label="Nombre" placeholder="Nombre" required defaultValue={zone?.name} />
+        <Input id="name" label="Nombre" placeholder="Nombre" required defaultValue={zone?.name} onChange={updateSlug} />
 
         <Button type={BUTTON_TYPES.SUBMIT} className="w-full" disabled={loading}>
-          {updateMode ? 'Editar' : 'Crear'}
+          {updateMode ? 'Actualizar' : 'Añadir'}
         </Button>
       </form>
 
-      {updateMode &&
+      {/* {updateMode &&
         (!confirmDeletion ? (
           <button
             className="text-red-700 font-semibold"
@@ -77,7 +89,7 @@ export default function ZoneForm({ zone, defaultOpen }: { zone?: ZoneSI; default
               Confirmar eliminación
             </Button>
           </div>
-        ))}
+        ))} */}
     </div>
   )
 }

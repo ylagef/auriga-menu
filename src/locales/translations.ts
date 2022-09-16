@@ -28,6 +28,7 @@ export const translations = {
     breadWaterCoffee: 'Incluye servicio de pan, agua y café'
   },
   adminButtons: {
+    info: 'Info local',
     restaurante: 'Restaurante',
     zonas: 'Zonas',
     categorias: 'Categorías',

@@ -1,5 +1,6 @@
 ---
 import Admin from '@components/Admin.astro'
+import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
 import CourseForm from '@components/CourseForm'
 import LineCard from '@components/Linecard'
 import ProductForm from '@components/ProductForm'
@@ -26,9 +27,9 @@ const menu = await getMenuById({ menuId: course.menuId })
 
 <Admin user={user}>
   <div class="flex flex-col gap-6">
-    <div class="flex flex-col">
-      <h1>{course.name}</h1>
-    </div>
+    <DetailSummaryContainer title="Plato">
+      <h3>{course.name}</h3>
+    </DetailSummaryContainer>
 
     <LineCard client:visible label="Datos plato">
       <CourseForm client:visible menu={menu} course={course} />

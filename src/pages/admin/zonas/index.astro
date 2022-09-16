@@ -25,12 +25,23 @@ const zones = await getZones({ restaurantId: 1 })
   <div class="flex flex-col gap-6">
     <LineCard client:visible label="Zonas">
       <ButtonLinksContainer>
-        {zones.sort((a, b) => a.name.localeCompare(b.name)).map((zone) => <ButtonLink href={`/admin/zonas/${zone.slug}`}>{zone.name}</ButtonLink>)}
+        {
+          zones
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((zone) => (
+              <ButtonLink href={`/admin/zonas/${zone.slug}`}>
+                <div class="flex flex-col gap-2">
+                  <span>{zone.name}</span>
+                  <span class="text-sm opacity-80">/{zone.slug}</span>
+                </div>
+              </ButtonLink>
+            ))
+        }
       </ButtonLinksContainer>
     </LineCard>
 
-    <LineCard client:visible label="Añadir nueva zona">
+    <!-- <LineCard client:visible label="Añadir nueva zona">
       <ZoneForm client:visible />
-    </LineCard>
+    </LineCard> -->
   </div>
 </Admin>
