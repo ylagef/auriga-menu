@@ -63,8 +63,13 @@ export default function ProductForm({
   }
 
   const deleteProduct = async () => {
-    await deleteProductById({ productId: product.id })
-    window.history.back()
+    try {
+      setLoading(true)
+      await deleteProductById({ productId: product.id })
+      window.history.back()
+    } catch (e) {
+      setError('Ha habido un error. Inténtalo de nuevo más tarde.')
+    }
   }
 
   useEffect(() => {
@@ -181,7 +186,7 @@ export default function ProductForm({
             <span>
               Se eliminará de <strong>todas las secciones y/o categorías</strong>.
             </span>
-            <Button className="w-full bg-red-700" onClick={deleteProduct}>
+            <Button className="w-full" onClick={deleteProduct} error disabled={loading}>
               Confirmar eliminación
             </Button>
           </div>

@@ -47,8 +47,13 @@ export default function CourseForm({ menu, defaultOpen, course }: { menu?: MenuS
   }
 
   const deleteSection = async () => {
-    await deleteCourseById({ courseId: course.id })
-    window.history.back()
+    try {
+      setLoading(true)
+      await deleteCourseById({ courseId: course.id })
+      window.history.back()
+    } catch (e) {
+      setError('Ha habido un error. Inténtalo de nuevo más tarde.')
+    }
   }
 
   useEffect(() => {
@@ -124,7 +129,7 @@ export default function CourseForm({ menu, defaultOpen, course }: { menu?: MenuS
             <span>
               Se eliminarán también <strong>todas sus opciones</strong>.
             </span>
-            <Button className="w-full bg-red-700" onClick={deleteSection}>
+            <Button className="w-full" onClick={deleteSection} error disabled={loading}>
               Confirmar eliminación
             </Button>
           </div>

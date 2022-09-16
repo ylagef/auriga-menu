@@ -70,8 +70,13 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
   }
 
   const deleteCategory = async () => {
-    await deleteCategoryById({ categoryId: category.id })
-    window.history.back()
+    try {
+      setLoading(true)
+      await deleteCategoryById({ categoryId: category.id })
+      window.history.back()
+    } catch (e) {
+      setError('Ha habido un error. Inténtalo de nuevo más tarde.')
+    }
   }
 
   useEffect(() => {
@@ -212,7 +217,7 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
             <span>
               Se eliminarán también <strong>todas sus secciones, productos</strong>...
             </span>
-            <Button className="w-full bg-red-700" onClick={deleteCategory}>
+            <Button className="w-full" onClick={deleteCategory} error disabled={loading}>
               Confirmar eliminación
             </Button>
           </div>

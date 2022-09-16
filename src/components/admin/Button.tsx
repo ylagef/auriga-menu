@@ -14,10 +14,20 @@ interface Props {
   className?: string
   href?: string
   disabled?: boolean
+  error?: boolean
 }
 
-export default function Button({ children, type = BUTTON_TYPES.BUTTON, onClick, href, inverted = false, className, disabled = false }: Props) {
-  const theme = inverted ? 'text-dark-text border border-dark-text' : 'bg-dark-text text-light-text'
+export default function Button({
+  children,
+  type = BUTTON_TYPES.BUTTON,
+  onClick,
+  href,
+  inverted = false,
+  className,
+  disabled = false,
+  error = false
+}: Props) {
+  const theme = inverted ? 'text-dark-text border border-dark-text' : `${error ? 'bg-red-700' : 'bg-dark-text'} text-light-text`
   if (href) {
     return (
       <a className={`${theme} py-2 px-4 rounded ${className}`} href={href}>
