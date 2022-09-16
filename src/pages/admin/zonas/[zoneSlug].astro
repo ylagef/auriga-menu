@@ -1,5 +1,6 @@
 ---
 import Admin from '@components/Admin.astro'
+import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import CategoryForm from '@components/CategoryForm'
@@ -31,9 +32,9 @@ console.log({ categories })
 
 <Admin user={user}>
   <div class="flex flex-col gap-6">
-    <div class="flex flex-col">
-      <h1>{zone.name}</h1>
-    </div>
+    <DetailSummaryContainer title="Zona">
+      <h3>{zone.name}</h3>
+    </DetailSummaryContainer>
 
     <LineCard client:visible label="Editar datos zona">
       <ZoneForm client:visible zone={zone} />

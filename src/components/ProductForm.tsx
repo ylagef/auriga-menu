@@ -3,6 +3,7 @@ import TrashIcon from 'src/icons/TrashIcon'
 import { ALLERGENS, CategorySI, ProductSI, SectionSI } from 'src/typesSupabase'
 import { createCategoryProduct, createSectionProduct, deleteProductById, updateProduct } from 'src/utils/supabase'
 
+import Info from './admin/Info'
 import AllergenSelector from './AllergenSelector'
 import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
@@ -74,17 +75,35 @@ export default function ProductForm({
 
   return (
     <div className="flex flex-col gap-10">
+      <Info>
+        {category && (
+          <span>
+            Este producto se {updateMode ? 'actualizará en' : 'añadirá a'} la categoría actual: <strong>{category.categoryTitle}</strong>.
+          </span>
+        )}
+        {section && (
+          <span>
+            Este producto se {updateMode ? 'actualizará en' : 'añadirá a'} la sección actual: <strong>{section.title}</strong>.
+          </span>
+        )}
+      </Info>
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-        <Input id="name" type="text" label="Nombre" placeholder="Nombre" required defaultValue={product?.name} />
-        <Input id="description" type="text" label="Descripción" placeholder="Descripción" defaultValue={product?.description} />
-        <Input id="price" type="text" label="Precio" placeholder="Precio" required defaultValue={product?.price} />
+        <Input id="name" label="Nombre" placeholder="Costilla, Brochetas de pollo..." required defaultValue={product?.name} />
+        <Input
+          id="description"
+          type="textarea"
+          label="Descripción"
+          placeholder="Con ahumados y nuestra salsa, Frito estilo nikkei..."
+          defaultValue={product?.description}
+        />
+        <Input id="price" label="Precio" placeholder="6.50€, S/M€..." required defaultValue={product?.price} />
 
         <LineCard label="Opciones">
           {options.length > 0 && (
             <div className="flex flex-col w-full">
               {options.map((option, index) => (
                 <div className="flex gap-2 items-center ml-8" key={`option-${index}`}>
-                  <Input id={`option-${index}`} type="text" placeholder={`Opción ${index + 1}`} defaultValue={option} required />
+                  <Input id={`option-${index}`} placeholder="De jamón, De calamares..." defaultValue={option} required />
                   {index === options.length - 1 && (
                     <button
                       onClick={() => {
@@ -125,7 +144,7 @@ export default function ProductForm({
         </LineCard>
 
         <Button type={BUTTON_TYPES.SUBMIT} className="w-full" disabled={loading}>
-          {updateMode ? 'Editar' : 'Crear'}
+          {updateMode ? 'Actualizar' : 'Añadir'}
         </Button>
       </form>
 

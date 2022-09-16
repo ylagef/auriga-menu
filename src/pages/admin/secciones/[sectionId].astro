@@ -1,5 +1,6 @@
 ---
 import Admin from '@components/Admin.astro'
+import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
 import ButtonLink from '@components/ButtonLink.astro'
 import LineCard from '@components/Linecard'
 import ProductForm from '@components/ProductForm'
@@ -29,9 +30,9 @@ console.log({ products: section.products })
 
 <Admin user={user}>
   <div class="flex flex-col gap-6">
-    <div class="flex flex-col">
-      <h1>{section.title}</h1>
-    </div>
+    <DetailSummaryContainer title="Sección">
+      <h3>{section.title}</h3>
+    </DetailSummaryContainer>
 
     <LineCard client:visible label="Datos categoría">
       <SectionForm client:visible section={section} defaultOpen />

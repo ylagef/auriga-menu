@@ -1,5 +1,6 @@
 ---
 import Admin from '@components/Admin.astro'
+import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
 import Button from '@components/Button'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
@@ -61,10 +62,10 @@ console.log({ menu })
 
 <Admin user={user}>
   <div class="flex flex-col gap-6">
-    <div class="flex flex-col">
-      <h1>{category.buttonText}</h1>
-      <h3>{category.categoryTitle}</h3>
-    </div>
+    <DetailSummaryContainer title="Categoría">
+      <h3>{category.buttonText}</h3>
+      <h4>{category.categoryTitle}</h4>
+    </DetailSummaryContainer>
 
     <LineCard client:visible label="Datos categoría">
       <CategoryForm client:visible category={category} />

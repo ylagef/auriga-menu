@@ -59,14 +59,14 @@ export default function CourseForm({ menu, defaultOpen, course }: { menu?: MenuS
   return (
     <div className="flex flex-col gap-10 w-full">
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-        <Input id="name" type="text" label="Nombre" placeholder="Nombre" required defaultValue={course?.name} />
+        <Input id="name" label="Nombre" placeholder="Nombre" required defaultValue={course?.name} />
 
         <LineCard label="Opciones">
           {products.length > 0 && (
             <div className="flex flex-col w-full">
               {products.map((option, index) => (
                 <div className="flex gap-2 items-center ml-8" key={`option-${index}`}>
-                  <Input id={`option-${index}`} type="text" placeholder={`Opción ${index + 1}`} defaultValue={option} required />
+                  <Input id={`option-${index}`} placeholder={`Opción ${index + 1}`} defaultValue={option} required />
                   {products.length > 1 && index === products.length - 1 && (
                     <button
                       onClick={() => {
