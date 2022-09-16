@@ -44,7 +44,7 @@ const section = product.sectionId && (await getSectionById({ sectionId: product.
       <h3>{product.price}</h3>
     </DetailSummaryContainer>
 
-    <LineCard client:visible label="Datos categoría">
+    <LineCard client:visible label="Datos producto">
       <ProductForm client:visible product={product} products={products} section={section} category={category} defaultOpen />
     </LineCard>
   </div>
