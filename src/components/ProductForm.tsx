@@ -114,9 +114,9 @@ export default function ProductForm({
 
         <LineCard label="Opciones">
           {options.length > 0 && (
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col w-full gap-4">
               {options.map((option, index) => (
-                <div className="flex gap-2 items-center ml-8" key={`option-${index}`}>
+                <div className="flex gap-2 items-center" key={`option-${index}`}>
                   <Input
                     id={`option-${index}`}
                     label={`Opción ${index + 1}`}
@@ -126,6 +126,7 @@ export default function ProductForm({
                   />
                   {index === options.length - 1 && (
                     <button
+                      className="mt-7"
                       onClick={() => {
                         // remove last option
                         setOptions((prev) => prev.slice(0, -1))
