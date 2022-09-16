@@ -4,6 +4,7 @@ import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, ZoneSI } from 's
 import { createCategory, deleteCategoryById, getZones, updateCategory } from 'src/utils/supabase'
 import { createSlug } from 'src/utils/utilities'
 
+import Error from './admin/Error'
 import Info from './admin/Info'
 import Button from './Button'
 import { Input } from './Input'
@@ -12,6 +13,7 @@ import LineCard from './LineCard'
 export default function CategoryForm({ category, zone, defaultOpen }: { category?: CategorySI; zone?: ZoneSI; defaultOpen?: boolean }) {
   const updateMode = !!category
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string>(null)
   const [confirmDeletion, setConfirmDeletion] = useState(false)
   const [open, setOpen] = useState(defaultOpen)
   const [zones, setZones] = useState<ZoneSI[]>(null)
@@ -27,6 +29,8 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
     const buttonText = formData.get('buttonText') as string
 
     const selectedZones = zone ? [zone.id] : zones.filter((zone) => formData.get(`zone-${zone.id}`) === 'on').map((zone) => zone.id)
+    if (selectedZones.length < 1) return setError('Debes seleccionar al menos una zona.')
+
     const extraServices = Object.values(EXTRA_SERVICES)
       .filter((extraService) => formData.get(extraService) === 'on')
       .map((extraService) => extraService)
@@ -38,15 +42,18 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
 
     const categoryObj: CategorySI = { categoryTitle, buttonText, type, extraServices, schedules, slug }
 
-    if (updateMode) {
-      // TODO change to edit
-      categoryObj.id = category.id
-      await updateCategory({ selectedZones, categoryObj })
-    } else {
-      await createCategory({ selectedZones, categoryObj })
-    }
+    try {
+      if (updateMode) {
+        categoryObj.id = category.id
+        await updateCategory({ selectedZones, categoryObj })
+      } else {
+        await createCategory({ selectedZones, categoryObj })
+      }
 
-    window.location.href = `/admin/categorias/${slug}`
+      window.location.href = `/admin/categorias/${slug}`
+    } catch (e) {
+      setError('Ha habido un error. Inténtalo de nuevo más tarde.')
+    }
   }
 
   const fetchZones = async () => {
@@ -62,14 +69,18 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
     if (id === 'type') setType(selectedValue as CATEGORY_TYPES)
   }
 
-  useEffect(() => {
-    if (!zone) fetchZones()
-  }, [])
-
   const deleteCategory = async () => {
     await deleteCategoryById({ categoryId: category.id })
     window.history.back()
   }
+
+  useEffect(() => {
+    setLoading(false)
+  }, [error])
+
+  useEffect(() => {
+    if (!zone) fetchZones()
+  }, [])
 
   if (!open)
     return (
@@ -177,6 +188,8 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
             </li>
           </ul>
         </LineCard>
+
+        {error && <Error>{error}</Error>}
 
         <button type="submit" className="w-full bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60" disabled={loading}>
           {updateMode ? 'Actualizar' : 'Añadir'}
