@@ -46,9 +46,7 @@ const categories = await getCategoriesByZoneId({ zoneId: zone.id })
             .sort((a, b) => a.buttonText.localeCompare(b.buttonText))
             .map((category) => (
               <ButtonLink href={`/admin/categorias/${category.slug}`}>
-                <span>
-                  {category.buttonText} ({category.type})
-                </span>
+                <span>{category.buttonText}</span>
               </ButtonLink>
             ))
         }
