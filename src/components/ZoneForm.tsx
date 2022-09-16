@@ -1,11 +1,11 @@
 import React, { FormEvent, useEffect, useState } from 'react'
-import { ZoneSI } from 'src/typesSupabase'
+import { ZoneSI } from 'src/types'
 import { createZone, updateZone } from 'src/utils/supabase'
 import { createSlug } from 'src/utils/utilities'
 
+import Button, { BUTTON_TYPES } from './admin/Button'
 import Error from './admin/Error'
 import Info from './admin/Info'
-import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
 
 export default function ZoneForm({ zone, defaultOpen }: { zone?: ZoneSI; defaultOpen?: boolean }) {

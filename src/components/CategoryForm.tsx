@@ -1,14 +1,14 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 import { translations } from 'src/locales/translations'
-import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, ZoneSI } from 'src/typesSupabase'
+import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, ZoneSI } from 'src/types'
 import { createCategory, deleteCategoryById, getZones, updateCategory } from 'src/utils/supabase'
 import { createSlug } from 'src/utils/utilities'
 
+import Button, { BUTTON_TYPES } from './admin/Button'
 import Error from './admin/Error'
 import Info from './admin/Info'
-import Button, { BUTTON_TYPES } from './Button'
+import LineCard from './admin/LineCard'
 import { Input } from './Input'
-import LineCard from './LineCard'
 
 export default function CategoryForm({ category, zone, defaultOpen }: { category?: CategorySI; zone?: ZoneSI; defaultOpen?: boolean }) {
   const updateMode = !!category

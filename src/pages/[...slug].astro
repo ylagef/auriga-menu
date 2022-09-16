@@ -2,15 +2,15 @@
 import Category from '@components/Category.astro'
 import Zone from '@components/Zone.astro'
 import GeneralLayout from '@layouts/GeneralLayout.astro'
-import { CategorySI, ZoneSI } from 'src/typesSupabase'
-import { getCategoryBySlug, getZoneBySlug } from 'src/utils/supabase'
+import { CategorySI, ZoneSI } from 'src/types'
+import { getCategoryBySlug, getRestaurant, getZoneBySlug } from 'src/utils/supabase'
 
-import { RESTAURANT } from '../mock/auriga'
-
-const { slug } = Astro.params
+let { slug } = Astro.params
+slug = slug as string
+console.log({ slug })
 if (slug === 'favicon.ico') return
 
-const { name } = RESTAURANT
+const { name } = await getRestaurant({ restaurantId: 1 })
 const [zoneSlug, sectionSlug] = slug.toString().split('/')
 
 let zone: ZoneSI, category: CategorySI

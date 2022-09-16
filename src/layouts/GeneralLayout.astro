@@ -1,14 +1,16 @@
 ---
 import BurgerMenu from '@components/BurgerMenu'
 import Footer from '@components/Footer.astro'
-
-import { RESTAURANT } from '../mock/auriga'
+import { getRestaurant } from 'src/utils/supabase'
+import { createSlug } from 'src/utils/utilities'
 
 export interface Props {
   title: string
 }
 
 const { title } = Astro.props
+
+const restaurant = await getRestaurant({ restaurantId: 1 })
 ---
 
 <!DOCTYPE html>
@@ -24,7 +26,7 @@ const { title } = Astro.props
     <BurgerMenu client:load />
 
     <div id="logo-container" class="flex justify-center px-6 pt-6 pb-4">
-      <img class="max-h-20 max-w-[70%] h-fit" src={`/assets/images/${RESTAURANT.id}-logo.svg`} alt={`${RESTAURANT.name} logo`} />
+      <img class="max-h-20 max-w-[70%] h-fit" src={`/assets/images/${createSlug(restaurant.shortName)}-logo.svg`} alt={`${restaurant.name} logo`} />
     </div>
 
     <main class="flex-grow max-w-lg mx-auto w-full p-4">

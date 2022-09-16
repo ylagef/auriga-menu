@@ -1,8 +1,8 @@
 ---
 import Admin from '@components/Admin.astro'
 import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
+import LineCard from '@components/admin/LineCard'
 import ButtonLink from '@components/ButtonLink.astro'
-import LineCard from '@components/Linecard'
 import ProductForm from '@components/ProductForm'
 import SectionForm from '@components/SectionForm'
 import { getSectionById, supabase } from 'src/utils/supabase'
@@ -24,8 +24,6 @@ let { sectionId } = Astro.params
 sectionId = sectionId as number
 
 const section = await getSectionById({ sectionId })
-console.log({ section })
-console.log({ products: section.products })
 ---
 
 <Admin user={user}>

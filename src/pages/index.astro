@@ -1,9 +1,12 @@
 ---
+import { getRestaurant } from 'src/utils/supabase'
+
 import GeneralLayout from '../layouts/GeneralLayout.astro'
-import { RESTAURANT } from '../mock/auriga'
+
+const restaurant = await getRestaurant({ restaurantId: 1 })
 ---
 
-<GeneralLayout title={RESTAURANT.name} />
+<GeneralLayout title={restaurant.name} />
 
 <style is:global>
   #logo-container {
