@@ -5,9 +5,8 @@ import GeneralLayout from '@layouts/GeneralLayout.astro'
 import { CategorySI, ZoneSI } from 'src/types'
 import { getCategoryBySlug, getRestaurant, getZoneBySlug } from 'src/utils/supabase'
 
-let { slug } = Astro.params
-slug = slug as string
-console.log({ slug })
+const { slug } = Astro.params
+
 if (slug === 'favicon.ico') return
 
 const { name } = await getRestaurant({ restaurantId: 1 })
