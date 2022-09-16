@@ -6,7 +6,7 @@ import { createSlug } from 'src/utils/utilities'
 
 import Error from './admin/Error'
 import Info from './admin/Info'
-import Button from './Button'
+import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
 import LineCard from './LineCard'
 
@@ -191,9 +191,9 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
 
         {error && <Error>{error}</Error>}
 
-        <button type="submit" className="w-full bg-dark-text py-2 px-4 rounded text-light-text disabled:opacity-60" disabled={loading}>
+        <Button type={BUTTON_TYPES.SUBMIT} className="w-full" disabled={loading}>
           {updateMode ? 'Actualizar' : 'Añadir'}
-        </button>
+        </Button>
       </form>
 
       {updateMode &&

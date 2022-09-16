@@ -16,8 +16,8 @@ export const getRestaurant = async ({ restaurantId }) => {
   const { data, error } = await supabase.from<RestaurantSI>('restaurants').select('*').eq('id', restaurantId).single()
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -27,8 +27,8 @@ export const getZones = async ({ restaurantId }: { restaurantId: number }) => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', restaurantId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -36,8 +36,8 @@ export const getZoneById = async ({ zoneId }: { zoneId: number }) => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('id', zoneId).single()
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -47,8 +47,8 @@ export const createZone = async ({ restaurantId, name, slug }: { restaurantId: n
   const { data, error } = await supabase.from<ZoneSI>('zones').insert([{ restaurantId, name, slug }])
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
 
   return data
@@ -59,8 +59,8 @@ export const updateZone = async ({ restaurantId, name, slug }: { restaurantId: n
   const { data, error } = await supabase.from<ZoneSI>('zones').update({ name, slug }).eq('restaurantId', restaurantId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
 
   return data
@@ -71,8 +71,8 @@ export const getZoneBySlug = async ({ restaurantId, zoneSlug }: { restaurantId: 
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', restaurantId).eq('slug', zoneSlug).single()
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -85,8 +85,8 @@ export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string
     .single()
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -95,8 +95,8 @@ export const getCategoryById = async ({ categoryId }: { categoryId: number }) =>
   const { data, error } = await supabase.from<CategorySI>('categories').select('*').eq('id', categoryId).single()
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -107,8 +107,8 @@ export const getCategories = async () => {
     .select('*, zones:zones_categories(zone:zones (*)), orders:zones_categories(order)')
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
 
   return data
@@ -122,8 +122,8 @@ export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
     .eq('zoneId', zoneId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
 
   return data.map((d) => ({ ...d.categories, order: d.order }))
@@ -143,8 +143,8 @@ export const createCategory = async ({ selectedZones, categoryObj }: { selectedZ
   ])
 
   if (categoryError) {
-    console.error('error 1', categoryError)
-    return null
+    console.error('supabase:createCategory', { categoryError })
+    throw new Error(categoryError.message)
   }
 
   selectedZones.forEach(async (zoneId) => {
@@ -155,8 +155,8 @@ export const createCategory = async ({ selectedZones, categoryObj }: { selectedZ
       .from<ZonesCategoriesSI>('zones_categories')
       .insert([{ zoneId, categoryId: categoryData[0].id, order }])
     if (zoneCategoryError) {
-      console.error('error 2', zoneCategoryError)
-      return null
+      console.error('supabase:createCategory', { zoneCategoryError })
+      throw new Error(zoneCategoryError.message)
     }
 
     return [categoryData, zoneCategoryData]
@@ -217,8 +217,8 @@ export const deleteCategoryById = async ({ categoryId }: { categoryId: number })
   const { data, error } = await supabase.from<CategorySI>('categories').delete().eq('id', categoryId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -227,8 +227,8 @@ const deleteZoneCategoryByCategoryId = async ({ categoryId }: { categoryId: numb
   const { data, error } = await supabase.from<ZonesCategoriesSI>('zones_categories').delete().eq('categoryId', categoryId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -238,8 +238,8 @@ export const getProductById = async ({ productId }: { productId: number }) => {
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('id', productId).single()
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -249,8 +249,8 @@ export const getProducts = async ({ categoryId, sectionId }: { categoryId?: numb
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('categoryId', categoryId).eq('sectionId', sectionId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -259,8 +259,8 @@ export const getProductsByCategory = async ({ categoryId }: { categoryId: number
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('categoryId', categoryId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -269,8 +269,8 @@ export const getProductsBySection = async ({ sectionId }: { sectionId: number })
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('sectionId', sectionId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -281,8 +281,8 @@ export const createCategoryProduct = async ({ categoryId, productObj }: { catego
   const { data, error } = await supabase.from<ProductSI>('products').insert([{ categoryId, name, description, price, options, allergens, order }])
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
 
   return data
@@ -294,8 +294,8 @@ export const createSectionProduct = async ({ sectionId, productObj }: { sectionI
   const { data, error } = await supabase.from<ProductSI>('products').insert([{ sectionId, name, description, price, options, allergens, order }])
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
 
   return data
@@ -307,8 +307,8 @@ export const updateProduct = async ({ productObj }: { productObj: ProductSI }) =
   const { data, error } = await supabase.from<ProductSI>('products').update(productObj).eq('id', productObj.id)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
 
   return data
@@ -319,8 +319,8 @@ export const deleteProductById = async ({ productId }: { productId: number }) =>
   const { data, error } = await supabase.from<ProductSI>('products').delete().eq('id', productId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
 
   return data
@@ -333,8 +333,8 @@ const deleteProductsByFkId = async ({ sectionId, categoryId }: { sectionId?: num
     .eq(sectionId ? 'sectionId' : 'categoryId', sectionId || categoryId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
 
   return data
@@ -345,8 +345,8 @@ export const getSections = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase.from<SectionSI>('sections').select('*').eq('categoryId', categoryId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -355,8 +355,8 @@ export const getSectionsByCategory = async ({ categoryId }: { categoryId: number
   const { data, error } = await supabase.from<SectionSI>('sections').select('*, products (*)').eq('categoryId', categoryId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   console.log({ data })
   return data
@@ -366,8 +366,8 @@ export const getSectionById = async ({ sectionId }: { sectionId: number }) => {
   const { data, error } = await supabase.from<SectionSI>('sections').select('*, products ( * )').eq('id', sectionId).single()
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -378,8 +378,8 @@ export const createSection = async ({ categoryId, sectionObj }: { categoryId: nu
   const { data, error } = await supabase.from<SectionSI>('sections').insert([{ categoryId, title, extraServices, order }])
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -391,8 +391,8 @@ export const deleteSectionById = async ({ sectionId }: { sectionId: number }) =>
   const { data, error } = await supabase.from<SectionSI>('sections').delete().eq('id', sectionId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
 
   return data
@@ -403,8 +403,8 @@ export const updateSection = async ({ sectionObj }: { sectionObj: SectionSI }) =
   const { data, error } = await supabase.from<SectionSI>('sections').update(sectionObj).eq('id', sectionObj.id)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -414,8 +414,8 @@ export const getMenus = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase.from<MenuSI>('menus').select('*').eq('categoryId', categoryId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -424,8 +424,8 @@ export const getMenuById = async ({ menuId }: { menuId: number }) => {
   const { data, error } = await supabase.from<MenuSI>('menus').select('*').eq('id', menuId).single()
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -434,8 +434,8 @@ export const getMenuByCategory = async ({ categoryId }: { categoryId: number }) 
   const { data, error } = await supabase.from<MenuSI>('menus').select('*, courses(*)').eq('categoryId', categoryId).single()
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -445,8 +445,8 @@ export const getCourses = async ({ menuId }: { menuId: number }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').select('*').eq('menuId', menuId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -455,8 +455,8 @@ export const getCourseById = async ({ courseId }: { courseId: number }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').select('*').eq('id', courseId).single()
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -465,8 +465,8 @@ export const getCoursesByMenu = async ({ menuId }: { menuId: number }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').select('*').eq('menuId', menuId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -477,8 +477,8 @@ export const createCourse = async ({ courseObj }: { courseObj: CourseSI }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').insert([courseObj])
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -489,8 +489,8 @@ export const updateCourse = async ({ courseObj }: { courseObj: CourseSI }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').update(courseObj).eq('id', courseObj.id)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }
@@ -501,8 +501,8 @@ export const deleteCourseById = async ({ courseId }: { courseId: number }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').delete().eq('id', courseId)
 
   if (error) {
-    console.error('error', error)
-    return null
+    console.error('error', { error })
+    throw new Error(error.message)
   }
   return data
 }

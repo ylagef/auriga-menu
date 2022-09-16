@@ -1,8 +1,9 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import TrashIcon from 'src/icons/TrashIcon'
 import { ALLERGENS, CategorySI, ProductSI, SectionSI } from 'src/typesSupabase'
 import { createCategoryProduct, createSectionProduct, deleteProductById, updateProduct } from 'src/utils/supabase'
 
+import Error from './admin/Error'
 import Info from './admin/Info'
 import AllergenSelector from './AllergenSelector'
 import Button, { BUTTON_TYPES } from './Button'
@@ -24,6 +25,7 @@ export default function ProductForm({
 }) {
   const updateMode = !!product
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string>(null)
   const [confirmDeletion, setConfirmDeletion] = useState(false)
   const [open, setOpen] = useState(defaultOpen)
   const [allergens, setAllergens] = useState<ALLERGENS[]>(product?.allergens || [])
@@ -45,23 +47,29 @@ export default function ProductForm({
 
     const productObj: ProductSI = { name, description, price, options: parsedOptions, allergens, order }
 
-    console.log({ productObj })
+    try {
+      if (updateMode) {
+        productObj.id = product.id
+        await updateProduct({ productObj })
+      } else {
+        if (category) await createCategoryProduct({ categoryId: category.id, productObj })
+        if (section) await createSectionProduct({ sectionId: section.id, productObj })
+      }
 
-    if (updateMode) {
-      productObj.id = product.id
-      await updateProduct({ productObj })
-    } else {
-      if (category) await createCategoryProduct({ categoryId: category.id, productObj })
-      if (section) await createSectionProduct({ sectionId: section.id, productObj })
+      window.location.reload()
+    } catch (e) {
+      setError('Ha habido un error. Inténtalo de nuevo más tarde.')
     }
-
-    window.location.reload()
   }
 
   const deleteProduct = async () => {
     await deleteProductById({ productId: product.id })
     window.history.back()
   }
+
+  useEffect(() => {
+    setLoading(false)
+  }, [error])
 
   if (!open)
     return (
@@ -149,6 +157,8 @@ export default function ProductForm({
             ))}
           </div>
         </LineCard>
+
+        {error && <Error>{error}</Error>}
 
         <Button type={BUTTON_TYPES.SUBMIT} className="w-full" disabled={loading}>
           {updateMode ? 'Actualizar' : 'Añadir'}
