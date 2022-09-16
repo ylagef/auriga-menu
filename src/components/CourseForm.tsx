@@ -1,9 +1,10 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import TrashIcon from 'src/icons/TrashIcon'
 import { translations } from 'src/locales/translations'
 import { CategorySI, CourseSI, EXTRA_SERVICES, MenuSI, SectionSI } from 'src/typesSupabase'
 import { createCourse, createSection, deleteCourseById, deleteSectionById, updateCourse, updateSection } from 'src/utils/supabase'
 
+import Error from './admin/Error'
 import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
 import LineCard from './LineCard'
@@ -11,6 +12,7 @@ import LineCard from './LineCard'
 export default function CourseForm({ menu, defaultOpen, course }: { menu?: MenuSI; defaultOpen?: boolean; course?: CourseSI }) {
   const updateMode = !!course
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string>(null)
   const [confirmDeletion, setConfirmDeletion] = useState(false)
   const [open, setOpen] = useState(true) // TODO defaultOpen
   const [products, setProducts] = useState<string[]>(course?.products || ['']) // TODO defaultOpen
@@ -30,20 +32,28 @@ export default function CourseForm({ menu, defaultOpen, course }: { menu?: MenuS
       products: parsedOptions,
       order: menu.courses.sort((a, b) => b.order - a.order)[0].order + 1
     }
-    if (updateMode) {
-      courseObj.id = course.id
-      await updateCourse({ courseObj })
-    } else {
-      await createCourse({ courseObj })
-    }
+    try {
+      if (updateMode) {
+        courseObj.id = course.id
+        await updateCourse({ courseObj })
+      } else {
+        await createCourse({ courseObj })
+      }
 
-    window.location.reload()
+      window.location.reload()
+    } catch (e) {
+      setError('Ha habido un error. Inténtalo de nuevo más tarde.')
+    }
   }
 
   const deleteSection = async () => {
     await deleteCourseById({ courseId: course.id })
     window.history.back()
   }
+
+  useEffect(() => {
+    setLoading(false)
+  }, [error])
 
   if (!open)
     return (
@@ -90,6 +100,8 @@ export default function CourseForm({ menu, defaultOpen, course }: { menu?: MenuS
             {products.length === 0 ? 'Añadir opciones' : 'Añadir otra opción'}
           </Button>
         </LineCard>
+
+        {error && <Error>{error}</Error>}
 
         <Button type={BUTTON_TYPES.SUBMIT} className="w-full" disabled={loading}>
           {updateMode ? 'Actualizar' : 'Crear'}

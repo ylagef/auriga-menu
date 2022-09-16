@@ -1,8 +1,9 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { translations } from 'src/locales/translations'
 import { CategorySI, EXTRA_SERVICES, SectionSI } from 'src/typesSupabase'
 import { createSection, deleteSectionById, updateSection } from 'src/utils/supabase'
 
+import Error from './admin/Error'
 import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
 import LineCard from './LineCard'
@@ -20,6 +21,7 @@ export default function SectionForm({
 }) {
   const updateMode = !!section
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string>(null)
   const [confirmDeletion, setConfirmDeletion] = useState(false)
   const [open, setOpen] = useState(defaultOpen)
 
@@ -40,20 +42,29 @@ export default function SectionForm({
       extraServices,
       order: sections.sort((a, b) => b.order - a.order)[0].order + 1
     }
-    if (updateMode) {
-      sectionObj.id = section.id
-      await updateSection({ sectionObj })
-    } else {
-      await createSection({ categoryId: category.id, sectionObj })
-    }
 
-    window.location.reload()
+    try {
+      if (updateMode) {
+        sectionObj.id = section.id
+        await updateSection({ sectionObj })
+      } else {
+        await createSection({ categoryId: category.id, sectionObj })
+      }
+
+      window.location.reload()
+    } catch (e) {
+      setError('Ha habido un error. Inténtalo de nuevo más tarde.')
+    }
   }
 
   const deleteSection = async () => {
     await deleteSectionById({ sectionId: section.id })
     window.history.back()
   }
+
+  useEffect(() => {
+    setLoading(false)
+  }, [error])
 
   if (!open)
     return (
@@ -81,6 +92,8 @@ export default function SectionForm({
             ))}
           </div>
         </LineCard>
+
+        {error && <Error>{error}</Error>}
 
         <Button type={BUTTON_TYPES.SUBMIT} className="w-full" disabled={loading}>
           {updateMode ? 'Actualizar' : 'Crear'}
