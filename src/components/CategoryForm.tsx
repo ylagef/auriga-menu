@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 import { translations } from 'src/locales/translations'
-import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, ZoneSI } from 'src/types'
-import { createCategory, deleteCategoryById, getZones, updateCategory } from 'src/utils/supabase'
+import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, SectionSI, ZoneSI } from 'src/types'
+import { createCategory, deleteCategoryById as deleteCategoryCascade, getZones, updateCategory } from 'src/utils/supabase'
 import { createSlug } from 'src/utils/utilities'
 
 import Button, { BUTTON_TYPES } from './admin/Button'
@@ -10,7 +10,17 @@ import Info from './admin/Info'
 import LineCard from './admin/LineCard'
 import { Input } from './Input'
 
-export default function CategoryForm({ category, zone, defaultOpen }: { category?: CategorySI; zone?: ZoneSI; defaultOpen?: boolean }) {
+export default function CategoryForm({
+  category,
+  zone,
+  defaultOpen,
+  sections
+}: {
+  category?: CategorySI
+  zone?: ZoneSI
+  defaultOpen?: boolean
+  sections: SectionSI[]
+}) {
   const updateMode = !!category
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>(null)
@@ -72,7 +82,8 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
   const deleteCategory = async () => {
     try {
       setLoading(true)
-      await deleteCategoryById({ categoryId: category.id })
+
+      await deleteCategoryCascade({ category, sections })
       window.history.back()
     } catch (e) {
       setError('Ha habido un error. Inténtalo de nuevo más tarde.')
