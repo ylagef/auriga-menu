@@ -18,9 +18,7 @@ export default function BurgerMenu({ dark = false }: Props) {
   }
 
   const fetchCategories = async (zoneSlug) => {
-    console.log({ zoneSlug })
     const categoriesArr = await getCategoriesByZoneSlug({ zoneSlug })
-    console.log({ categoriesArr })
     setCategories(categoriesArr)
   }
 
