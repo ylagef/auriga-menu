@@ -19,7 +19,7 @@ export default function CategoryForm({
   category?: CategorySI
   zone?: ZoneSI
   defaultOpen?: boolean
-  sections: SectionSI[]
+  sections?: SectionSI[]
 }) {
   const updateMode = !!category
   const [loading, setLoading] = useState(false)

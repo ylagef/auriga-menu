@@ -9,6 +9,7 @@ import CategoryForm from '@components/CategoryForm'
 import CourseForm from '@components/CourseForm'
 import ProductForm from '@components/ProductForm'
 import SectionForm from '@components/SectionForm'
+import { translations } from 'src/locales/translations'
 import { CATEGORY_TYPES, MenuSI, ProductSI, SectionSI } from 'src/types'
 import { getCategoryBySlug, getMenuByCategory, getProductsByCategory, getSectionsByCategory, supabase } from 'src/utils/supabase'
 
@@ -123,7 +124,14 @@ switch (categoryType) {
               .map((section) => (
                 <div class="flex flex-col gap-4 items-center p-2 w-full">
                   <div class="flex justify-between items-center w-full gap-12">
-                    <h2>{section.title}</h2>
+                    <div class="flex flex-col gap-2">
+                      <h2>{section.title}</h2>
+                      <div class="flex flex-col gap-2 ml-4">
+                        {section.extraServices?.map((es) => (
+                          <small>- {translations.extraServices[es]}</small>
+                        ))}
+                      </div>
+                    </div>
                     <Button href={`/admin/secciones/${section.id}`}>Editar</Button>
                   </div>
                   <LineCard label="Productos">
