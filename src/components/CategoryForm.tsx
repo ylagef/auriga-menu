@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 import { translations } from 'src/locales/translations'
 import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, ZoneSI } from 'src/typesSupabase'
-import { createCategory, getZones } from 'src/utils/supabase'
+import { createCategory, deleteCategoryById, getZones, updateCategory } from 'src/utils/supabase'
 import { createSlug } from 'src/utils/utilities'
 
 import Info from './admin/Info'
@@ -40,12 +40,13 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
 
     if (updateMode) {
       // TODO change to edit
-      await createCategory({ selectedZones, categoryObj })
+      categoryObj.id = category.id
+      await updateCategory({ selectedZones, categoryObj })
     } else {
       await createCategory({ selectedZones, categoryObj })
     }
 
-    window.location.reload()
+    window.location.href = `/admin/categorias/${slug}`
   }
 
   const fetchZones = async () => {
@@ -66,7 +67,7 @@ export default function CategoryForm({ category, zone, defaultOpen }: { category
   }, [])
 
   const deleteCategory = async () => {
-    // await deleteSectionById({ sectionId: section.id })
+    await deleteCategoryById({ categoryId: category.id })
     window.history.back()
   }
 

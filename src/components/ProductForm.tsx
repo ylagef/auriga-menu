@@ -50,9 +50,10 @@ export default function ProductForm({
     if (updateMode) {
       productObj.id = product.id
       await updateProduct({ productObj })
+    } else {
+      if (category) await createCategoryProduct({ categoryId: category.id, productObj })
+      if (section) await createSectionProduct({ sectionId: section.id, productObj })
     }
-    if (category) await createCategoryProduct({ categoryId: category.id, productObj })
-    if (section) await createSectionProduct({ sectionId: section.id, productObj })
 
     window.location.reload()
   }
@@ -103,7 +104,13 @@ export default function ProductForm({
             <div className="flex flex-col w-full">
               {options.map((option, index) => (
                 <div className="flex gap-2 items-center ml-8" key={`option-${index}`}>
-                  <Input id={`option-${index}`} placeholder="De jamón, De calamares..." defaultValue={option} required />
+                  <Input
+                    id={`option-${index}`}
+                    label={`Opción ${index + 1}`}
+                    placeholder="De jamón, De calamares..."
+                    defaultValue={option}
+                    required
+                  />
                   {index === options.length - 1 && (
                     <button
                       onClick={() => {
