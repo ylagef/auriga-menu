@@ -11,6 +11,9 @@ module.exports = {
       },
       fontSize: {
         xxs: '.8rem'
+      },
+      dropShadow: {
+        allergen: '0 0 4px #737373'
       }
     }
   },
