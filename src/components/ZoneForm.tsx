@@ -1,13 +1,11 @@
-import React, { FormEvent, useEffect, useState } from 'react'
-import { translations } from 'src/locales/translations'
-import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, ZoneSI } from 'src/typesSupabase'
-import { createCategory, createZone, getZones, updateZone } from 'src/utils/supabase'
+import React, { FormEvent, useState } from 'react'
+import { ZoneSI } from 'src/typesSupabase'
+import { createZone, updateZone } from 'src/utils/supabase'
 import { createSlug } from 'src/utils/utilities'
 
 import Info from './admin/Info'
 import Button, { BUTTON_TYPES } from './Button'
 import { Input } from './Input'
-import LineCard from './LineCard'
 
 export default function ZoneForm({ zone, defaultOpen }: { zone?: ZoneSI; defaultOpen?: boolean }) {
   const updateMode = !!zone
