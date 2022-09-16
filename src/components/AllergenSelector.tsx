@@ -12,7 +12,7 @@ export default function AllergenSelector({ allergen, onClick, isSelected }: Prop
   return (
     <div className="flex flex-col justify-center items-center pointer" onClick={onClick} title={translations.allergens[allergen]}>
       <img
-        className={`h-12 ${!isSelected ? 'opacity-40' : ''}`}
+        className={`transition-opacity h-12 opacity-${!isSelected ? '40' : '100'}`}
         src={`/assets/images/allergens/${allergen}.png`}
         alt={translations.allergens[allergen]}
       />
