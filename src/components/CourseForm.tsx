@@ -1,13 +1,13 @@
 import { FormEvent, useEffect, useState } from 'react'
 import TrashIcon from 'src/icons/TrashIcon'
 import { translations } from 'src/locales/translations'
-import { CategorySI, CourseSI, EXTRA_SERVICES, MenuSI, SectionSI } from 'src/typesSupabase'
+import { CategorySI, CourseSI, EXTRA_SERVICES, MenuSI, SectionSI } from 'src/types'
 import { createCourse, createSection, deleteCourseById, deleteSectionById, updateCourse, updateSection } from 'src/utils/supabase'
 
+import Button, { BUTTON_TYPES } from './admin/Button'
 import Error from './admin/Error'
-import Button, { BUTTON_TYPES } from './Button'
+import LineCard from './admin/LineCard'
 import { Input } from './Input'
-import LineCard from './LineCard'
 
 export default function CourseForm({ menu, defaultOpen, course }: { menu?: MenuSI; defaultOpen?: boolean; course?: CourseSI }) {
   const updateMode = !!course
@@ -76,7 +76,7 @@ export default function CourseForm({ menu, defaultOpen, course }: { menu?: MenuS
             <div className="flex flex-col w-full">
               {products.map((option, index) => (
                 <div className="flex gap-2 items-center ml-8" key={`option-${index}`}>
-                  <Input id={`option-${index}`} placeholder={`Opción ${index + 1}`} defaultValue={option} required />
+                  <Input id={`option-${index}`} label={`Opción ${index + 1}`} placeholder={`Opción ${index + 1}`} defaultValue={option} required />
                   {products.length > 1 && index === products.length - 1 && (
                     <button
                       onClick={() => {
