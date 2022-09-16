@@ -165,10 +165,11 @@ export const createCategory = async ({ selectedZones, categoryObj }: { selectedZ
 
 export const updateCategory = async ({ selectedZones, categoryObj }: { selectedZones: number[]; categoryObj: CategorySI }) => {
   setAuthToken()
-  const { data, error } = await supabase.from<CategorySI>('categories').update(categoryObj).eq('id', categoryObj.id)
+  const { error } = await supabase.from<CategorySI>('categories').update(categoryObj).eq('id', categoryObj.id)
 
   if (error) {
-    console.error('error', error)
+    console.error('supabase:updateCategory', { error })
+    throw new Error(error.message)
   }
 
   const { data: categoryZonesData, error: categoryZonesErr } = await supabase
@@ -176,8 +177,9 @@ export const updateCategory = async ({ selectedZones, categoryObj }: { selectedZ
     .select('*')
     .eq('categoryId', categoryObj.id)
 
-  if (error) {
-    console.error('error', error)
+  if (categoryZonesErr) {
+    console.error('supabase:updateCategory', { categoryZonesErr })
+    throw new Error(error.message)
   }
 
   categoryZonesData
@@ -187,21 +189,22 @@ export const updateCategory = async ({ selectedZones, categoryObj }: { selectedZ
       const { error: deleteError } = await supabase.from<ZonesCategoriesSI>('zones_categories').delete().eq('id', zoneCategory.id)
 
       if (deleteError) {
-        console.error('error', deleteError)
+        console.error('supabase:updateCategory', { deleteError })
+        throw new Error(deleteError.message)
       }
     })
-  console.log({ selectedZones, categoryZonesData })
+
   selectedZones
     .filter((sz) => !categoryZonesData.find((czd) => czd.id === sz))
     .forEach(async (zoneId) => {
-      console.log('add relation', zoneId)
       // Create if was not selected and is selected now
-      const { data: zoneCategoryData, error: zoneCategoryError } = await supabase
+      const { error: zoneCategoryError } = await supabase
         .from<ZonesCategoriesSI>('zones_categories')
         .insert([{ zoneId, categoryId: categoryObj.id, order: 99 }])
 
       if (zoneCategoryError) {
-        console.error('error', zoneCategoryError)
+        console.error('supabase:updateCategory', { zoneCategoryError })
+        throw new Error(zoneCategoryError.message)
       }
     })
 }
