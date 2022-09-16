@@ -38,7 +38,10 @@ export default function ProductForm({
     const formData = new FormData(event.currentTarget)
     const name = formData.get('name') as string
     const description = formData.get('description') as string
-    const price = formData.get('price') as string
+
+    let price = formData.get('price') as string
+    price = price.replaceAll(',', '.')
+    if (!price.includes('€')) price += '€'
 
     const parsedOptions = options.map((_, index) => formData.get('option-' + index) as string)
 
@@ -110,7 +113,7 @@ export default function ProductForm({
           placeholder="Con ahumados y nuestra salsa, Frito estilo nikkei..."
           defaultValue={product?.description}
         />
-        <Input id="price" label="Precio" placeholder="6.50€, S/M€..." required defaultValue={product?.price} />
+        <Input id="price" type="number" label="Precio" placeholder="6.50, S/M..." required defaultValue={product?.price} customValue />
 
         <LineCard label="Opciones">
           {options.length > 0 && (
