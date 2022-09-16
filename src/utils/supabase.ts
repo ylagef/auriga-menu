@@ -131,35 +131,35 @@ export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
 
 export const createCategory = async ({ selectedZones, categoryObj }: { selectedZones: number[]; categoryObj: CategorySI }) => {
   setAuthToken()
-  selectedZones.forEach(async (zoneId) => {
-    const { data: data1, error: error1 } = await supabase.from<CategorySI>('categories').insert([
-      {
-        type: categoryObj.type,
-        slug: categoryObj.slug,
-        buttonText: categoryObj.buttonText,
-        categoryTitle: categoryObj.categoryTitle,
-        schedules: categoryObj.schedules,
-        extraServices: categoryObj.extraServices
-      }
-    ])
-
-    if (error1) {
-      console.error('error 1', error1)
-      return null
+  const { data: categoryData, error: categoryError } = await supabase.from<CategorySI>('categories').insert([
+    {
+      type: categoryObj.type,
+      slug: categoryObj.slug,
+      buttonText: categoryObj.buttonText,
+      categoryTitle: categoryObj.categoryTitle,
+      schedules: categoryObj.schedules,
+      extraServices: categoryObj.extraServices
     }
+  ])
 
+  if (categoryError) {
+    console.error('error 1', categoryError)
+    return null
+  }
+
+  selectedZones.forEach(async (zoneId) => {
     const zoneCategories = await getCategoriesByZoneId({ zoneId })
     const order = zoneCategories.sort((a, b) => b.order - a.order)[0].order + 1
 
-    const { data: data2, error: error2 } = await supabase
+    const { data: zoneCategoryData, error: zoneCategoryError } = await supabase
       .from<ZonesCategoriesSI>('zones_categories')
-      .insert([{ zoneId, categoryId: categoryObj.id, order }])
-    if (error2) {
-      console.error('error 2', error2)
+      .insert([{ zoneId, categoryId: categoryData[0].id, order }])
+    if (zoneCategoryError) {
+      console.error('error 2', zoneCategoryError)
       return null
     }
 
-    return [data1, data2]
+    return [categoryData, zoneCategoryData]
   })
 }
 
@@ -169,21 +169,65 @@ export const updateCategory = async ({ selectedZones, categoryObj }: { selectedZ
 
   if (error) {
     console.error('error', error)
-    return null
   }
 
-  // TODO update join
-  // selectedZones.forEach(async (zoneId) => {
-  //   const { data: data2, error: error2 } = await supabase
-  //     .from<ZonesCategoriesSI>('zones_categories')
-  //     .update({ zoneId })
-  //     .eq('categoryId', newCategory.id)
-  //   if (error2) {
-  //     console.error('error', error2)
-  //     return null
-  //   }
-  //   return data2
-  // })
+  const { data: categoryZonesData, error: categoryZonesErr } = await supabase
+    .from<ZonesCategoriesSI>('zones_categories')
+    .select('*')
+    .eq('categoryId', categoryObj.id)
+
+  if (error) {
+    console.error('error', error)
+  }
+
+  categoryZonesData
+    .filter((cz) => !selectedZones.includes(cz.id))
+    .forEach(async (zoneCategory) => {
+      // Delete if not was selected and is not selectednow
+      const { error: deleteError } = await supabase.from<ZonesCategoriesSI>('zones_categories').delete().eq('id', zoneCategory.id)
+
+      if (deleteError) {
+        console.error('error', deleteError)
+      }
+    })
+  console.log({ selectedZones, categoryZonesData })
+  selectedZones
+    .filter((sz) => !categoryZonesData.find((czd) => czd.id === sz))
+    .forEach(async (zoneId) => {
+      console.log('add relation', zoneId)
+      // Create if was not selected and is selected now
+      const { data: zoneCategoryData, error: zoneCategoryError } = await supabase
+        .from<ZonesCategoriesSI>('zones_categories')
+        .insert([{ zoneId, categoryId: categoryObj.id, order: 99 }])
+
+      if (zoneCategoryError) {
+        console.error('error', zoneCategoryError)
+      }
+    })
+}
+
+export const deleteCategoryById = async ({ categoryId }: { categoryId: number }) => {
+  setAuthToken()
+  await deleteProductsByFkId({ categoryId }) // Remove fk products
+  await deleteZoneCategoryByCategoryId({ categoryId }) // Remove fk zones_categories
+
+  const { data, error } = await supabase.from<CategorySI>('categories').delete().eq('id', categoryId)
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+  return data
+}
+
+const deleteZoneCategoryByCategoryId = async ({ categoryId }: { categoryId: number }) => {
+  const { data, error } = await supabase.from<ZonesCategoriesSI>('zones_categories').delete().eq('categoryId', categoryId)
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+  return data
 }
 
 // Products
@@ -256,6 +300,7 @@ export const createSectionProduct = async ({ sectionId, productObj }: { sectionI
 
 export const updateProduct = async ({ productObj }: { productObj: ProductSI }) => {
   setAuthToken()
+  console.log({ productObj })
   const { data, error } = await supabase.from<ProductSI>('products').update(productObj).eq('id', productObj.id)
 
   if (error) {
@@ -269,6 +314,20 @@ export const updateProduct = async ({ productObj }: { productObj: ProductSI }) =
 export const deleteProductById = async ({ productId }: { productId: number }) => {
   setAuthToken()
   const { data, error } = await supabase.from<ProductSI>('products').delete().eq('id', productId)
+
+  if (error) {
+    console.error('error', error)
+    return null
+  }
+
+  return data
+}
+
+const deleteProductsByFkId = async ({ sectionId, categoryId }: { sectionId?: number; categoryId?: number }) => {
+  const { data, error } = await supabase
+    .from<ProductSI>('products')
+    .delete()
+    .eq(sectionId ? 'sectionId' : 'categoryId', sectionId || categoryId)
 
   if (error) {
     console.error('error', error)
@@ -324,6 +383,8 @@ export const createSection = async ({ categoryId, sectionObj }: { categoryId: nu
 
 export const deleteSectionById = async ({ sectionId }: { sectionId: number }) => {
   setAuthToken()
+  await deleteProductsByFkId({ sectionId })
+
   const { data, error } = await supabase.from<SectionSI>('sections').delete().eq('id', sectionId)
 
   if (error) {
