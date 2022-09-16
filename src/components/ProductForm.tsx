@@ -75,6 +75,10 @@ export default function ProductForm({
     }
   }
 
+  const getDefaultPrice = () => {
+    return product?.price ? product.price.replace('€', '').trim() : ''
+  }
+
   useEffect(() => {
     setLoading(false)
   }, [error])
@@ -113,7 +117,7 @@ export default function ProductForm({
           placeholder="Con ahumados y nuestra salsa, Frito estilo nikkei..."
           defaultValue={product?.description}
         />
-        <Input id="price" type="number" label="Precio" placeholder="6.50, S/M..." required defaultValue={product?.price} customValue />
+        <Input id="price" type="number" label="Precio" placeholder="6.50, S/M..." required defaultValue={getDefaultPrice()} customValue />
 
         <LineCard label="Opciones">
           {options.length > 0 && (
