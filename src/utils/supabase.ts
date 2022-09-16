@@ -225,12 +225,21 @@ export const updateCategory = async ({ selectedZones, categoryObj }: { selectedZ
     })
 }
 
-export const deleteCategoryById = async ({ categoryId }: { categoryId: number }) => {
+export const deleteCategoryById = async ({ category, sections }: { category: CategorySI; sections?: SectionSI[] }) => {
   setAuthToken()
-  await deleteProductsByFkId({ categoryId }) // Remove fk products
-  await deleteZoneCategoryByCategoryId({ categoryId }) // Remove fk zones_categories
+  // If category has sections, delete sections
+  if (sections) {
+    for (const section of sections) {
+      console.log('deleting section', section.id)
+      await deleteSectionById({ sectionId: section.id }) // Remove fk products
+    }
+  } else {
+    await deleteProductsByFkId({ categoryId: category.id }) // Remove fk products
+  }
+  console.log('deleting zone_category')
+  await deleteZoneCategoryByCategoryId({ categoryId: category.id }) // Remove fk zones_categories
 
-  const { data, error } = await supabase.from<CategorySI>('categories').delete().eq('id', categoryId)
+  const { data, error } = await supabase.from<CategorySI>('categories').delete().eq('id', category.id)
 
   if (error) {
     console.error('error', { error })

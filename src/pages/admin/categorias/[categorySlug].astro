@@ -66,7 +66,7 @@ switch (categoryType) {
     </DetailSummaryContainer>
 
     <LineCard client:visible label="Datos categoría">
-      <CategoryForm client:visible category={category} />
+      <CategoryForm client:visible category={category} sections={sections} />
     </LineCard>
 
     <LineCard client:visible label={categoryTitle}>
@@ -122,7 +122,7 @@ switch (categoryType) {
               ?.sort((a, b) => a.title.localeCompare(b.title))
               .map((section) => (
                 <div class="flex flex-col gap-4 items-center p-2 w-full">
-                  <div class="flex justify-between items-center w-full">
+                  <div class="flex justify-between items-center w-full gap-12">
                     <h2>{section.title}</h2>
                     <Button href={`/admin/secciones/${section.id}`}>Editar</Button>
                   </div>

@@ -106,6 +106,7 @@ export interface CategorySI {
   order?: number
   orders?: { order: number }[]
   zones?: { zone: ZoneSI }[]
+  sections?: SectionSI[]
 }
 
 export interface ZonesCategoriesSI {

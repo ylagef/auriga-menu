@@ -37,10 +37,11 @@ export default function SectionForm({
       .filter((extraService) => formData.get(extraService) === 'on')
       .map((extraService) => extraService)
 
+    console.log({ sections })
     const sectionObj: SectionSI = {
       title,
       extraServices,
-      order: sections.sort((a, b) => b.order - a.order)[0].order + 1
+      order: sections.length > 0 ? sections.sort((a, b) => b.order - a.order)[0].order + 1 : 0
     }
 
     try {

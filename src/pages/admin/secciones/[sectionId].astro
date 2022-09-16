@@ -32,11 +32,11 @@ const section = await getSectionById({ sectionId })
       <h3>{section.title}</h3>
     </DetailSummaryContainer>
 
-    <LineCard client:visible label="Datos categoría">
+    <LineCard client:visible label="Datos sección">
       <SectionForm client:visible section={section} defaultOpen />
     </LineCard>
 
-    <!-- <LineCard label="Productos">
+    <LineCard label="Productos">
       {section.products.length === 0 && <span class="text-gray-600">Aún no hay productos</span>}
 
       {
@@ -44,7 +44,7 @@ const section = await getSectionById({ sectionId })
           ?.sort((a, b) => a.name.localeCompare(b.name))
           .map((product) => <ButtonLink href={`/admin/productos/${product.id}`}>{product.name}</ButtonLink>)
       }
-    </LineCard> -->
+    </LineCard>
 
     <LineCard client:visible label="Añadir producto">
       <ProductForm client:visible section={section} />
