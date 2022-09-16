@@ -5,7 +5,7 @@ import ExtraServices from '@components/ExtraServices.astro'
 import Menu from '@components/Menu.astro'
 import Products from '@components/Products.astro'
 import Sections from '@components/Sections.astro'
-import { CategorySI } from 'src/typesSupabase'
+import { CATEGORY_TYPES, CategorySI, MenuSI, ProductSI, SectionSI } from 'src/types'
 import { getMenuByCategory, getProductsByCategory, getSectionsByCategory } from 'src/utils/supabase'
 
 import { translations } from '../locales/translations'
@@ -14,15 +14,21 @@ export interface Props {
 }
 
 const {
-  category: { id, schedules, categoryTitle, extraServices }
+  category: { id, schedules, categoryTitle, extraServices, type }
 } = Astro.props
 
-// Call all getters with await and set to variables
-const [products, sections, menu] = await Promise.all([
-  getProductsByCategory({ categoryId: id }),
-  getSectionsByCategory({ categoryId: id }),
-  getMenuByCategory({ categoryId: id })
-])
+let menu: MenuSI, products: ProductSI[], sections: SectionSI[]
+switch (type) {
+  case CATEGORY_TYPES.MENU:
+    menu = await getMenuByCategory({ categoryId: id })
+    break
+  case CATEGORY_TYPES.PRODUCTS:
+    products = await getProductsByCategory({ categoryId: id })
+    break
+  case CATEGORY_TYPES.SECTIONS:
+    sections = await getSectionsByCategory({ categoryId: id })
+    break
+}
 ---
 
 <Card>

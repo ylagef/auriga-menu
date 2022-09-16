@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { supabase } from 'src/utils/supabase'
 
-import Button, { BUTTON_TYPES } from './Button'
+import Button, { BUTTON_TYPES } from './admin/Button'
 import { Input } from './Input'
 
 export default function SetPasswordForm() {

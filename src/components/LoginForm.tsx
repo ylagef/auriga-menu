@@ -2,7 +2,7 @@ import { FormEvent, useState } from 'react'
 import { setCookie } from 'src/utils/cookies'
 import { supabase } from 'src/utils/supabase'
 
-import Button, { BUTTON_TYPES } from './Button'
+import Button, { BUTTON_TYPES } from './admin/Button'
 import { Input } from './Input'
 
 export default function LoginForm() {

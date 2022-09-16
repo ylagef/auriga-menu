@@ -1,12 +1,12 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { translations } from 'src/locales/translations'
-import { CategorySI, EXTRA_SERVICES, SectionSI } from 'src/typesSupabase'
+import { CategorySI, EXTRA_SERVICES, SectionSI } from 'src/types'
 import { createSection, deleteSectionById, updateSection } from 'src/utils/supabase'
 
+import Button, { BUTTON_TYPES } from './admin/Button'
 import Error from './admin/Error'
-import Button, { BUTTON_TYPES } from './Button'
+import LineCard from './admin/LineCard'
 import { Input } from './Input'
-import LineCard from './LineCard'
 
 export default function SectionForm({
   category,

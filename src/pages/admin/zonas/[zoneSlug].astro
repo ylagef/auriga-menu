@@ -1,10 +1,10 @@
 ---
 import Admin from '@components/Admin.astro'
 import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
+import LineCard from '@components/admin/LineCard'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import CategoryForm from '@components/CategoryForm'
-import LineCard from '@components/Linecard'
 import ZoneForm from '@components/ZoneForm'
 import { getCategoriesByZoneId, getZoneBySlug, supabase } from 'src/utils/supabase'
 const cookies = Astro.request.headers.get('cookie')
@@ -27,7 +27,6 @@ const { zoneSlug } = Astro.params
 
 const zone = await getZoneBySlug({ restaurantId: 1, zoneSlug: String(zoneSlug) })
 const categories = await getCategoriesByZoneId({ zoneId: zone.id })
-console.log({ categories })
 ---
 
 <Admin user={user}>

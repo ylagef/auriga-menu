@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-import { CategorySI, CourseSI, MenuSI, ProductSI, RestaurantSI, SectionSI, ZonesCategoriesSI, ZoneSI } from './../typesSupabase'
+import { CategorySI, CourseSI, MenuSI, ProductSI, RestaurantSI, SectionSI, ZonesCategoriesSI, ZoneSI } from '../types'
 import { getCookie } from './cookies'
 
 // Create a single supabase client for interacting with your database
@@ -66,7 +66,6 @@ export const updateZone = async ({ restaurantId, name, slug }: { restaurantId: n
   return data
 }
 
-// Categories
 export const getZoneBySlug = async ({ restaurantId, zoneSlug }: { restaurantId: number; zoneSlug: string }) => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', restaurantId).eq('slug', zoneSlug).single()
 
@@ -77,6 +76,7 @@ export const getZoneBySlug = async ({ restaurantId, zoneSlug }: { restaurantId: 
   return data
 }
 
+// Categories
 export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string }) => {
   const { data, error } = await supabase
     .from<CategorySI>('categories')
@@ -127,6 +127,22 @@ export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
   }
 
   return data.map((d) => ({ ...d.categories, order: d.order }))
+}
+
+export const getCategoriesByZoneSlug = async ({ zoneSlug }: { zoneSlug: string }) => {
+  const zone = await getZoneBySlug({ zoneSlug, restaurantId: 1 })
+
+  const { data, error } = await supabase
+    .from<ZonesCategoriesSI>('zones_categories')
+    .select('order, category:categories ( id, buttonText, slug )')
+    .eq('zoneId', zone.id)
+
+  if (error) {
+    console.error('error', { error })
+    throw new Error(error.message)
+  }
+
+  return data.map((d) => ({ ...d.category, order: d.order }))
 }
 
 export const createCategory = async ({ selectedZones, categoryObj }: { selectedZones: number[]; categoryObj: CategorySI }) => {
@@ -303,7 +319,6 @@ export const createSectionProduct = async ({ sectionId, productObj }: { sectionI
 
 export const updateProduct = async ({ productObj }: { productObj: ProductSI }) => {
   setAuthToken()
-  console.log({ productObj })
   const { data, error } = await supabase.from<ProductSI>('products').update(productObj).eq('id', productObj.id)
 
   if (error) {
@@ -358,7 +373,7 @@ export const getSectionsByCategory = async ({ categoryId }: { categoryId: number
     console.error('error', { error })
     throw new Error(error.message)
   }
-  console.log({ data })
+
   return data
 }
 

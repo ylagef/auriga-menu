@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import MenuIcon from 'src/icons/MenuIcon'
-import { RESTAURANT } from 'src/mock/auriga'
-import { CategoryI } from 'src/types'
+import { CategorySI } from 'src/types'
+import { getCategoriesByZoneId, getCategoriesByZoneSlug } from 'src/utils/supabase'
 
 interface Props {
   dark?: boolean
@@ -11,15 +11,23 @@ export default function BurgerMenu({ dark = false }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [zone, setZone] = useState<string>(null)
   const [sectionSlug, setSectionSlug] = useState<string>(null)
-  const [sections, setSections] = useState<CategoryI[]>([])
+  const [categories, setCategories] = useState<CategorySI[]>([])
 
   const handleOpen = () => {
     setIsOpen((prev) => !prev)
   }
 
+  const fetchCategories = async (zoneSlug) => {
+    console.log({ zoneSlug })
+    const categoriesArr = await getCategoriesByZoneSlug({ zoneSlug })
+    console.log({ categoriesArr })
+    setCategories(categoriesArr)
+  }
+
   useEffect(() => {
     if (!zone) return
-    setSections(RESTAURANT.zones[zone]?.categories)
+
+    fetchCategories(zone)
   }, [zone])
 
   useEffect(() => {
@@ -41,10 +49,10 @@ export default function BurgerMenu({ dark = false }: Props) {
 
       <div className={`absolute top-0 w-screen h-full bg-black/80 p-4 transition-[left] overflow-y-auto ${isOpen ? 'left-0' : 'left-full'}`}>
         <div className="flex flex-col items-center gap-4 mt-16">
-          {sections?.map((section) => {
+          {categories?.map((category) => {
             return (
-              <a key={section.id} href={`/${zone}/${section.id}`} className="text-light-text font-medium text-xl">
-                {section.buttonText}
+              <a key={category.id} href={`/${zone}/${category.id}`} className="text-light-text font-medium text-xl">
+                {category.buttonText}
               </a>
             )
           })}
