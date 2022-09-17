@@ -28,7 +28,7 @@ export default function ZoneForm({ zone, defaultOpen }: { zone?: ZoneSI; default
       window.location.href = `/admin/zonas/${newSlug}`
     } catch (e) {
       if (e.message === '23505') {
-        return setError('Ya existe una zona con este nombre (y la url debe ser única).')
+        return setError('Ya existe una zona con este nombre.')
       }
 
       setError('Ha habido un error. Inténtalo de nuevo más tarde.')
