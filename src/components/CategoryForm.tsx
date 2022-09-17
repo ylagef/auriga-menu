@@ -1,8 +1,8 @@
 import React, { FormEvent, useEffect, useState } from 'react'
+import slug from 'slug'
 import { translations } from 'src/locales/translations'
 import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, SectionSI, ZoneSI } from 'src/types'
 import { createCategory, deleteCategoryById as deleteCategoryCascade, getZones, updateCategory } from 'src/utils/supabase'
-import { createSlug } from 'src/utils/utilities'
 
 import Button, { BUTTON_TYPES } from './admin/Button'
 import Error from './admin/Error'
@@ -67,9 +67,9 @@ export default function CategoryForm({
       .filter((schedule) => formData.get(schedule) === 'on')
       .map((schedule) => schedule)
 
-    const slug = createSlug(categoryTitle)
+    const categorySlug = slug(categoryTitle)
 
-    const categoryObj: CategorySI = { categoryTitle, buttonText, type, extraServices, schedules, slug, price }
+    const categoryObj: CategorySI = { categoryTitle, buttonText, type, extraServices, schedules, slug: categorySlug, price }
 
     try {
       if (updateMode) {
@@ -79,8 +79,9 @@ export default function CategoryForm({
         await createCategory({ selectedZones, categoryObj })
       }
 
-      window.location.href = `/admin/categorias/${slug}`
+      window.location.href = `/admin/categorias/${categorySlug}`
     } catch (e) {
+      console.error('Error creating category', e)
       setError('Ha habido un error. Inténtalo de nuevo más tarde.')
     }
   }
