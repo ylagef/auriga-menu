@@ -1,17 +1,16 @@
 ---
 import Admin from '@components/Admin.astro'
-import Button from '@components/admin/Button'
+import CoursesCardList from '@components/admin/CoursesCardList.astro'
 import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
 import LineCard from '@components/admin/LineCard'
-import ButtonLink from '@components/ButtonLink.astro'
-import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
+import ProductsCardList from '@components/admin/ProductsCardList.astro'
+import SectionsCardList from '@components/admin/SectionsCardList.astro'
 import CategoryForm from '@components/CategoryForm'
 import CourseForm from '@components/CourseForm'
 import ProductForm from '@components/ProductForm'
 import SectionForm from '@components/SectionForm'
-import { translations } from 'src/locales/translations'
-import { CATEGORY_TYPES, MenuSI, ProductSI, SectionSI } from 'src/types'
-import { getCategoryBySlug, getMenuByCategory, getProductsByCategory, getSectionsByCategory, supabase } from 'src/utils/supabase'
+import { CATEGORY_TYPES, CourseSI, ProductSI, SectionSI } from 'src/types'
+import { getCategoryBySlug, getCoursesByCategory, getProductsByCategory, getSectionsByCategory, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
 
@@ -31,7 +30,7 @@ categorySlug = categorySlug as string
 
 const category = await getCategoryBySlug({ categorySlug })
 const categoryType = category?.type
-const categoryTitle = categoryType === CATEGORY_TYPES.MENU ? 'Platos' : categoryType === CATEGORY_TYPES.SECTIONS ? 'Secciones' : 'Productos'
+
 let createTitle
 switch (categoryType) {
   case CATEGORY_TYPES.SECTIONS:
@@ -45,10 +44,10 @@ switch (categoryType) {
     break
 }
 
-let menu: MenuSI, products: ProductSI[], sections: SectionSI[]
+let courses: CourseSI[], products: ProductSI[], sections: SectionSI[]
 switch (categoryType) {
   case CATEGORY_TYPES.MENU:
-    menu = await getMenuByCategory({ categoryId: category?.id })
+    courses = await getCoursesByCategory({ categoryId: category?.id })
     break
   case CATEGORY_TYPES.PRODUCTS:
     products = await getProductsByCategory({ categoryId: category?.id })
@@ -57,6 +56,12 @@ switch (categoryType) {
     sections = await getSectionsByCategory({ categoryId: category?.id })
     break
 }
+
+const isMenu = categoryType === CATEGORY_TYPES.MENU
+const isProducts = categoryType === CATEGORY_TYPES.PRODUCTS
+const isSections = categoryType === CATEGORY_TYPES.SECTIONS
+
+const typeCanBeUpdated = courses || products || sections
 ---
 
 <Admin user={user}>
@@ -64,95 +69,21 @@ switch (categoryType) {
     <DetailSummaryContainer title="Categoría">
       <h3>{category.buttonText}</h3>
       <h4>{category.categoryTitle}</h4>
+      {category.price && <h4>{category.price}€</h4>}
     </DetailSummaryContainer>
 
     <LineCard client:visible label="Datos categoría">
-      <CategoryForm client:visible category={category} sections={sections} />
+      <CategoryForm client:visible category={category} sections={sections} typeCanBeUpdated={typeCanBeUpdated} />
     </LineCard>
 
-    <LineCard client:visible label={categoryTitle}>
-      {
-        categoryType === CATEGORY_TYPES.MENU && (
-          <div class="flex flex-col items-center justify-center w-full">
-            {menu?.courses?.length === 0 && <span class="text-gray-600">Aún no hay platos</span>}
-
-            {menu?.courses
-              ?.sort((a, z) => a.order - z.order)
-              ?.map((course) => (
-                <div class="flex flex-col gap-4 items-center p-2 w-full">
-                  <div class="flex justify-between items-center w-full">
-                    <h2>{course.name}</h2>
-                    <Button href={`/admin/platos/${course.id}`}>Editar</Button>
-                  </div>
-                  <LineCard label="Opciones">
-                    {course.products?.length === 0 && <span class="text-gray-600">Aún no hay productos</span>}
-                    {course.products
-                      ?.sort((a, z) => a.localeCompare(z))
-                      ?.map((product) => (
-                        <p>- {product}</p>
-                      ))}
-                  </LineCard>
-                </div>
-              ))}
-          </div>
-        )
-      }
-
-      {
-        categoryType === CATEGORY_TYPES.PRODUCTS && (
-          <div class="flex items-center justify-center">
-            {products.length === 0 && <span class="text-gray-600">Aún no hay productos</span>}
-
-            <ButtonLinksContainer>
-              {products
-                ?.sort((a, b) => a.name.localeCompare(b.name))
-                .map((product) => (
-                  <ButtonLink href={`/admin/productos/${product.id}`}>{product.name}</ButtonLink>
-                ))}
-            </ButtonLinksContainer>
-          </div>
-        )
-      }
-
-      {
-        categoryType === CATEGORY_TYPES.SECTIONS && (
-          <div class="flex flex-col items-center justify-center">
-            {sections.length === 0 && <span class="text-gray-600">Aún no hay secciones</span>}
-
-            {sections
-              ?.sort((a, b) => a.title.localeCompare(b.title))
-              .map((section) => (
-                <div class="flex flex-col gap-4 items-center p-2 w-full">
-                  <div class="flex justify-between items-center w-full gap-12">
-                    <div class="flex flex-col gap-2">
-                      <h2>{section.title}</h2>
-                      <div class="flex flex-col gap-2 ml-4">
-                        {section.extraServices?.map((es) => (
-                          <small>- {translations.extraServices[es]}</small>
-                        ))}
-                      </div>
-                    </div>
-                    <Button href={`/admin/secciones/${section.id}`}>Editar</Button>
-                  </div>
-                  <LineCard label="Productos">
-                    {section.products.length === 0 && <span class="text-gray-600">Aún no hay productos</span>}
-                    {section.products
-                      ?.sort((a, b) => a.name.localeCompare(b.name))
-                      .map((product) => (
-                        <ButtonLink href={`/admin/productos/${product.id}`}>{product.name}</ButtonLink>
-                      ))}
-                  </LineCard>
-                </div>
-              ))}
-          </div>
-        )
-      }
-    </LineCard>
+    {isMenu && <CoursesCardList courses={courses} />}
+    {isProducts && <ProductsCardList products={products} />}
+    {isSections && <SectionsCardList sections={sections} />}
 
     <LineCard client:visible label={createTitle}>
-      {categoryType === CATEGORY_TYPES.MENU && <CourseForm client:visible menu={menu} />}
-      {categoryType === CATEGORY_TYPES.SECTIONS && <SectionForm client:visible category={category} sections={sections} />}
-      {categoryType === CATEGORY_TYPES.PRODUCTS && <ProductForm client:visible category={category} products={products} />}
+      {isMenu && <CourseForm client:visible category={category} />}
+      {isSections && <SectionForm client:visible category={category} sections={sections} />}
+      {isProducts && <ProductForm client:visible category={category} />}
     </LineCard>
   </div>
 </Admin>

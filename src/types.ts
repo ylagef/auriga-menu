@@ -45,7 +45,7 @@ export interface ProductSI {
   name: string
   description?: string
   options?: string[]
-  price: string // String for "S/M"
+  price: string
   allergens?: ALLERGENS[]
 }
 
@@ -64,24 +64,12 @@ export interface SectionSI {
 
 export interface CourseSI {
   // fk
-  menuId?: number
+  categoryId?: number
 
   id?: number
   name: string
   products: string[]
   order: number
-}
-
-export interface MenuSI {
-  // fk
-  categoryId: number
-
-  id: number
-  extraServices: EXTRA_SERVICES[]
-  price: number
-
-  // join
-  courses: CourseSI[]
 }
 
 export interface ZoneSI {
@@ -101,6 +89,7 @@ export interface CategorySI {
   categoryTitle: string
   schedules?: string[]
   extraServices?: EXTRA_SERVICES[]
+  price?: number // in case of menu
 
   // join
   order?: number

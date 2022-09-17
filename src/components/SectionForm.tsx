@@ -41,7 +41,7 @@ export default function SectionForm({
     const sectionObj: SectionSI = {
       title,
       extraServices,
-      order: section.order || sections?.length > 0 ? sections?.sort((a, b) => b.order - a.order)[0].order + 1 : 0
+      order: section?.order || -1
     }
 
     try {

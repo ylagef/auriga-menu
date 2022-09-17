@@ -14,13 +14,11 @@ export default function ProductForm({
   category,
   section,
   product,
-  products,
   defaultOpen
 }: {
   category?: CategorySI
   section?: SectionSI
   product?: ProductSI
-  products?: ProductSI[]
   defaultOpen?: boolean
 }) {
   const updateMode = !!product
@@ -45,8 +43,7 @@ export default function ProductForm({
 
     const parsedOptions = options.map((_, index) => formData.get('option-' + index) as string)
 
-    const productsArray = products || section.products || []
-    const order = productsArray.sort((a, b) => a.order - b.order).pop()?.order + 1 || 0
+    const order = product?.order || -1
 
     const productObj: ProductSI = { name, description, price, options: parsedOptions, allergens, order }
 
@@ -117,7 +114,16 @@ export default function ProductForm({
           placeholder="Con ahumados y nuestra salsa, Frito estilo nikkei..."
           defaultValue={product?.description}
         />
-        <Input id="price" type="number" label="Precio" placeholder="6.50, S/M..." required defaultValue={getDefaultPrice()} customValue />
+        <Input
+          id="price"
+          type="number"
+          label="Precio"
+          placeholder="6.50, S/M..."
+          required
+          defaultValue={getDefaultPrice()}
+          customValue
+          steps={0.01}
+        />
 
         <LineCard label="Opciones">
           {options.length > 0 && (

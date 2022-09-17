@@ -1,21 +1,20 @@
 import { FormEvent, useEffect, useState } from 'react'
 import TrashIcon from 'src/icons/TrashIcon'
-import { translations } from 'src/locales/translations'
-import { CategorySI, CourseSI, EXTRA_SERVICES, MenuSI, SectionSI } from 'src/types'
-import { createCourse, createSection, deleteCourseById, deleteSectionById, updateCourse, updateSection } from 'src/utils/supabase'
+import { CategorySI, CourseSI } from 'src/types'
+import { createCourse, deleteCourseById, updateCourse } from 'src/utils/supabase'
 
 import Button, { BUTTON_TYPES } from './admin/Button'
 import Error from './admin/Error'
 import LineCard from './admin/LineCard'
 import { Input } from './Input'
 
-export default function CourseForm({ menu, defaultOpen, course }: { menu?: MenuSI; defaultOpen?: boolean; course?: CourseSI }) {
+export default function CourseForm({ category, defaultOpen, course }: { category?: CategorySI; defaultOpen?: boolean; course?: CourseSI }) {
   const updateMode = !!course
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>(null)
   const [confirmDeletion, setConfirmDeletion] = useState(false)
-  const [open, setOpen] = useState(true) // TODO defaultOpen
-  const [products, setProducts] = useState<string[]>(course?.products || ['']) // TODO defaultOpen
+  const [open, setOpen] = useState(defaultOpen)
+  const [products, setProducts] = useState<string[]>(course?.products || [''])
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -27,10 +26,10 @@ export default function CourseForm({ menu, defaultOpen, course }: { menu?: MenuS
     const parsedOptions = products.map((_, index) => formData.get('option-' + index) as string)
 
     const courseObj: CourseSI = {
-      menuId: menu.id,
+      categoryId: category.id,
       name,
       products: parsedOptions,
-      order: menu.courses.sort((a, b) => b.order - a.order)[0].order + 1
+      order: course?.order || -1
     }
     try {
       if (updateMode) {

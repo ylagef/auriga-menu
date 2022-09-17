@@ -8,7 +8,8 @@ export function Input({
   required = false,
   defaultValue,
   onChange,
-  customValue = false
+  customValue = false,
+  steps
 }: {
   id: string
   label?: string
@@ -18,6 +19,7 @@ export function Input({
   defaultValue?: string
   onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void
   customValue?: boolean
+  steps?: number
 }) {
   const [customEnabled, setCustomEnabled] = useState(false)
 
@@ -68,6 +70,7 @@ export function Input({
         defaultValue={defaultValue}
         required={required}
         onChange={onChange}
+        step={steps}
       />
     </div>
   )
