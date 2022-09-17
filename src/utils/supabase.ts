@@ -13,7 +13,11 @@ const setAuthToken = () => {
 
 // Restaurant
 export const getRestaurant = async () => {
-  const { data, error } = await supabase.from<RestaurantSI>('restaurants').select('*').eq('id', 1).single()
+  const { data, error } = await supabase
+    .from<RestaurantSI>('restaurants')
+    .select('*')
+    .eq('id', import.meta.env.RESTAURANT_ID)
+    .single()
 
   if (error) {
     console.error('error', { error })
@@ -24,7 +28,10 @@ export const getRestaurant = async () => {
 
 // Zones
 export const getZones = async () => {
-  const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', 1)
+  const { data, error } = await supabase
+    .from<ZoneSI>('zones')
+    .select('*')
+    .eq('restaurantId', import.meta.env.RESTAURANT_ID)
 
   if (error) {
     console.error('error', { error })
@@ -44,7 +51,7 @@ export const getZoneById = async ({ zoneId }: { zoneId: number }) => {
 
 export const createZone = async ({ name, slug }: { name: string; slug: string }) => {
   setAuthToken()
-  const { data, error } = await supabase.from<ZoneSI>('zones').insert([{ restaurantId: 1, name, slug }])
+  const { data, error } = await supabase.from<ZoneSI>('zones').insert([{ restaurantId: import.meta.env.RESTAURANT_ID, name, slug }])
 
   if (error) {
     console.error('error', { error })
@@ -56,7 +63,10 @@ export const createZone = async ({ name, slug }: { name: string; slug: string })
 
 export const updateZone = async ({ name, slug }: { name: string; slug: string }) => {
   setAuthToken()
-  const { data, error } = await supabase.from<ZoneSI>('zones').update({ name, slug }).eq('restaurantId', 1)
+  const { data, error } = await supabase
+    .from<ZoneSI>('zones')
+    .update({ name, slug })
+    .eq('restaurantId', import.meta.env.RESTAURANT_ID)
 
   if (error) {
     console.error('error', { error })
@@ -67,7 +77,12 @@ export const updateZone = async ({ name, slug }: { name: string; slug: string })
 }
 
 export const getZoneBySlug = async ({ zoneSlug }: { zoneSlug: string }) => {
-  const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', 1).eq('slug', zoneSlug).single()
+  const { data, error } = await supabase
+    .from<ZoneSI>('zones')
+    .select('*')
+    .eq('restaurantId', import.meta.env.RESTAURANT_ID)
+    .eq('slug', zoneSlug)
+    .single()
 
   if (error) {
     console.error('error', { error })
