@@ -1,14 +1,15 @@
 ---
-import Card from '@components/Card.astro'
+import Card from '@components/app/Card.astro'
+import ExtraServices from '@components/app/ExtraServices.astro'
+import Menu from '@components/app/Menu.astro'
+import Products from '@components/app/Products.astro'
+import Sections from '@components/app/Sections.astro'
 import Divider from '@components/Divider.astro'
-import ExtraServices from '@components/ExtraServices.astro'
-import Menu from '@components/Menu.astro'
-import Products from '@components/Products.astro'
-import Sections from '@components/Sections.astro'
 import { CATEGORY_TYPES, CategorySI, CourseSI, ProductSI, SectionSI } from 'src/types'
 import { getCoursesByCategory, getProductsByCategory, getSectionsByCategory } from 'src/utils/supabase'
 
-import { translations } from '../locales/translations'
+import { translations } from '../../locales/translations'
+
 export interface Props {
   category: CategorySI
 }

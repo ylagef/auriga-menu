@@ -1,9 +1,8 @@
 ---
-import Admin from '@components/Admin.astro'
+import Admin from '@components/admin/Admin.astro'
 import LineCard from '@components/admin/LineCard'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
-import ZoneForm from '@components/ZoneForm'
 import { getZones, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
@@ -39,9 +38,5 @@ const zones = await getZones({ restaurantId: 1 })
         }
       </ButtonLinksContainer>
     </LineCard>
-
-    <!-- <LineCard client:visible label="Nueva zona">
-      <ZoneForm client:visible />
-    </LineCard> -->
   </div>
 </Admin>

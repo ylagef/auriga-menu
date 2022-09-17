@@ -5,9 +5,13 @@ import { supabase } from 'src/utils/supabase'
 export default function LogoutButton() {
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut()
-    eraseCookie('sup-access-token')
-    eraseCookie('sup-refresh-token')
-    window.location.href = '/admin/login'
+    if (!error) {
+      eraseCookie('sup-access-token')
+      eraseCookie('sup-refresh-token')
+      window.location.href = '/admin/login'
+    } else {
+      alert(`Error cerrando sesión: ${error.message}`)
+    }
   }
 
   return (
