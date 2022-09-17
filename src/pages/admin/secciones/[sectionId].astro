@@ -2,6 +2,7 @@
 import Admin from '@components/Admin.astro'
 import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
 import LineCard from '@components/admin/LineCard'
+import ProductsCardList from '@components/admin/ProductsCardList.astro'
 import ButtonLink from '@components/ButtonLink.astro'
 import ProductForm from '@components/ProductForm'
 import SectionForm from '@components/SectionForm'
@@ -36,15 +37,7 @@ const section = await getSectionById({ sectionId })
       <SectionForm client:visible section={section} defaultOpen />
     </LineCard>
 
-    <LineCard label="Productos">
-      {section.products.length === 0 && <span class="text-gray-600">Aún no hay productos</span>}
-
-      {
-        section.products
-          ?.sort((a, b) => a.name.localeCompare(b.name))
-          .map((product) => <ButtonLink href={`/admin/productos/${product.id}`}>{product.name}</ButtonLink>)
-      }
-    </LineCard>
+    <ProductsCardList products={section.products} />
 
     <LineCard client:visible label="Añadir producto">
       <ProductForm client:visible section={section} />

@@ -155,12 +155,9 @@ export const createCategory = async ({ selectedZones, categoryObj }: { selectedZ
   }
 
   selectedZones.forEach(async (zoneId) => {
-    const zoneCategories = await getCategoriesByZoneId({ zoneId })
-    const order = zoneCategories.sort((a, b) => b.order - a.order)[0].order + 1
-
     const { data: zoneCategoryData, error: zoneCategoryError } = await supabase
       .from<ZonesCategoriesSI>('zones_categories')
-      .insert([{ zoneId, categoryId: categoryData[0].id, order }])
+      .insert([{ zoneId, categoryId: categoryData[0].id, order: -1 }])
     if (zoneCategoryError) {
       console.error('supabase:createCategory', { zoneCategoryError })
       throw new Error(zoneCategoryError.message)
