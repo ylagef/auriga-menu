@@ -61,7 +61,7 @@ const isMenu = categoryType === CATEGORY_TYPES.MENU
 const isProducts = categoryType === CATEGORY_TYPES.PRODUCTS
 const isSections = categoryType === CATEGORY_TYPES.SECTIONS
 
-const typeCanBeUpdated = courses || products || sections
+const typeCanBeUpdated = !!(courses || products || sections)
 ---
 
 <Admin user={user}>
