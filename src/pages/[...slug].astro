@@ -11,17 +11,17 @@ if (slug === 'favicon.ico') return
 
 const [zoneSlug, sectionSlug] = slug.toString().split('/')
 
-const zones = await getZones({ restaurantId: 1 })
+const zones = await getZones()
 
 if (!zones.find((z: ZoneSI) => z.slug === zoneSlug)) {
   return Astro.redirect('/')
 }
 
-const { name } = await getRestaurant({ restaurantId: 1 })
+const { name } = await getRestaurant()
 
 let zone: ZoneSI, category: CategorySI
 if (!sectionSlug) {
-  zone = await getZoneBySlug({ restaurantId: 1, zoneSlug })
+  zone = await getZoneBySlug({ zoneSlug })
 } else {
   category = await getCategoryBySlug({ categorySlug: sectionSlug })
 }

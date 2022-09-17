@@ -5,6 +5,7 @@ import LineCard from '@components/admin/LineCard'
 import ProductForm from '@components/admin/ProductForm'
 import ProductsCardList from '@components/admin/ProductsCardList.astro'
 import SectionForm from '@components/admin/SectionForm'
+import { SectionSI } from 'src/types'
 import { getSectionById, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
@@ -23,7 +24,18 @@ if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 let { sectionId } = Astro.params
 sectionId = sectionId as number
 
-const section = await getSectionById({ sectionId })
+let section: SectionSI
+
+try {
+  section = await getSectionById({ sectionId })
+} catch (e) {
+  console.error('ERR!', e.message)
+
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  })
+}
 ---
 
 <Admin user={user}>

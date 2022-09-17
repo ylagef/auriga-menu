@@ -3,6 +3,7 @@ import Admin from '@components/admin/Admin.astro'
 import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
 import LineCard from '@components/admin/LineCard'
 import ProductForm from '@components/admin/ProductForm'
+import { CategorySI, ProductSI, SectionSI } from 'src/types'
 import { getCategoryById, getProductById, getSectionById, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
@@ -20,9 +21,20 @@ if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 
 const { productId } = Astro.params
 
-const product = await getProductById({ productId: Number(productId) })
-const category = product.categoryId && (await getCategoryById({ categoryId: product.categoryId }))
-const section = product.sectionId && (await getSectionById({ sectionId: product.sectionId }))
+let product: ProductSI, category: CategorySI, section: SectionSI
+
+try {
+  product = await getProductById({ productId: Number(productId) })
+  category = product.categoryId && (await getCategoryById({ categoryId: product.categoryId }))
+  section = product.sectionId && (await getSectionById({ sectionId: product.sectionId }))
+} catch (e) {
+  console.error('ERR!', e.message)
+
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  })
+}
 ---
 
 <Admin user={user}>

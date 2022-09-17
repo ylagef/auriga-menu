@@ -3,6 +3,7 @@ import Admin from '@components/admin/Admin.astro'
 import CourseForm from '@components/admin/CourseForm'
 import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
 import LineCard from '@components/admin/LineCard'
+import { CategorySI, CourseSI } from 'src/types'
 import { getCategoryById, getCourseById, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
@@ -20,8 +21,18 @@ if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 
 const { courseId } = Astro.params
 
-const course = await getCourseById({ courseId: Number(courseId) })
-const category = await getCategoryById({ categoryId: course.categoryId })
+let course: CourseSI, category: CategorySI
+try {
+  course = await getCourseById({ courseId: Number(courseId) })
+  category = await getCategoryById({ categoryId: course.categoryId })
+} catch (e) {
+  console.error('ERR!', e.message)
+
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  })
+}
 ---
 
 <Admin user={user}>

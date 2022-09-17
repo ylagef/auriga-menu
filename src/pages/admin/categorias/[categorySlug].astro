@@ -45,16 +45,25 @@ switch (categoryType) {
 }
 
 let courses: CourseSI[], products: ProductSI[], sections: SectionSI[]
-switch (categoryType) {
-  case CATEGORY_TYPES.MENU:
-    courses = await getCoursesByCategory({ categoryId: category?.id })
-    break
-  case CATEGORY_TYPES.PRODUCTS:
-    products = await getProductsByCategory({ categoryId: category?.id })
-    break
-  case CATEGORY_TYPES.SECTIONS:
-    sections = await getSectionsByCategory({ categoryId: category?.id })
-    break
+try {
+  switch (categoryType) {
+    case CATEGORY_TYPES.MENU:
+      courses = await getCoursesByCategory({ categoryId: category?.id })
+      break
+    case CATEGORY_TYPES.PRODUCTS:
+      products = await getProductsByCategory({ categoryId: category?.id })
+      break
+    case CATEGORY_TYPES.SECTIONS:
+      sections = await getSectionsByCategory({ categoryId: category?.id })
+      break
+  }
+} catch (e) {
+  console.error('ERR!', e.message)
+
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  })
 }
 
 const isMenu = categoryType === CATEGORY_TYPES.MENU

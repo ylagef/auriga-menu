@@ -6,6 +6,7 @@ import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
 import LineCard from '@components/admin/LineCard'
 import ZoneForm from '@components/admin/ZoneForm'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
+import { CategorySI, ZoneSI } from 'src/types'
 import { getCategoriesByZoneId, getZoneBySlug, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
@@ -26,8 +27,18 @@ export interface Props {
 
 const { zoneSlug } = Astro.params
 
-const zone = await getZoneBySlug({ restaurantId: 1, zoneSlug: String(zoneSlug) })
-const categories = await getCategoriesByZoneId({ zoneId: zone.id })
+let zone: ZoneSI, categories: CategorySI[]
+try {
+  zone = await getZoneBySlug({ zoneSlug: String(zoneSlug) })
+  categories = await getCategoriesByZoneId({ zoneId: zone.id })
+} catch (e) {
+  console.error('ERR!', e.message)
+
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  })
+}
 ---
 
 <Admin user={user}>
