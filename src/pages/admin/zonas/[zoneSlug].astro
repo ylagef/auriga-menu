@@ -1,5 +1,6 @@
 ---
 import Admin from '@components/Admin.astro'
+import CategoryButtonLink from '@components/admin/CategoryButtonLink.astro'
 import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
 import LineCard from '@components/admin/LineCard'
 import ButtonLink from '@components/ButtonLink.astro'
@@ -41,19 +42,11 @@ const categories = await getCategoriesByZoneId({ zoneId: zone.id })
 
     <LineCard client:visible label="Categorías">
       <ButtonLinksContainer>
-        {
-          categories
-            .sort((a, b) => a.buttonText.localeCompare(b.buttonText))
-            .map((category) => (
-              <ButtonLink href={`/admin/categorias/${category.slug}`}>
-                <span>{category.buttonText}</span>
-              </ButtonLink>
-            ))
-        }
+        {categories.sort((a, b) => a.buttonText.localeCompare(b.buttonText)).map((category) => <CategoryButtonLink category={category} />)}
       </ButtonLinksContainer>
     </LineCard>
 
-    <LineCard client:visible label="Añadir nueva categoría">
+    <LineCard client:visible label="Nueva categoría">
       <CategoryForm client:visible zone={zone} />
     </LineCard>
   </div>
