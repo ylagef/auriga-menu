@@ -5,7 +5,7 @@ import { Input } from '@components/admin/Input'
 import React, { FormEvent, useEffect, useState } from 'react'
 import slug from 'slug'
 import { ZoneSI } from 'src/types'
-import { createZone, updateZone } from 'src/utils/supabase'
+import { updateZone } from 'src/utils/supabase'
 
 export default function ZoneForm({ zone, defaultOpen }: { zone?: ZoneSI; defaultOpen?: boolean }) {
   const updateMode = !!zone
@@ -21,16 +21,16 @@ export default function ZoneForm({ zone, defaultOpen }: { zone?: ZoneSI; default
     // get inputs from form
     const formData = new FormData(event.currentTarget)
     const name = formData.get('name') as string
+    const newSlug = slug(name)
 
     try {
-      if (updateMode) {
-        await updateZone({ name, slug: slug(name) })
-      } else {
-        await createZone({ name, slug: slug(name) })
+      await updateZone({ id: zone.id, name, slug: newSlug })
+      window.location.href = `/admin/zonas/${newSlug}`
+    } catch (e) {
+      if (e.message === '23505') {
+        return setError('Ya existe una zona con este nombre (y la url debe ser única).')
       }
 
-      window.location.reload()
-    } catch (e) {
       setError('Ha habido un error. Inténtalo de nuevo más tarde.')
     }
   }
