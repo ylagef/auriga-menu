@@ -53,7 +53,7 @@ try {
 
     <LineCard client:visible label="Categorías">
       <ButtonLinksContainer>
-        {categories.sort((a, b) => a.buttonText.localeCompare(b.buttonText)).map((category) => <CategoryButtonLink category={category} />)}
+        {categories.sort((a, z) => a.order - z.order).map((category) => <CategoryButtonLink category={category} />)}
       </ButtonLinksContainer>
     </LineCard>
 

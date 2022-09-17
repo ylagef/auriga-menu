@@ -18,7 +18,7 @@ const { sections } = Astro.props
 
     {
       sections
-        ?.sort((a, b) => a.title.localeCompare(b.title))
+        ?.sort((a, z) => a.order - z.order)
         .map((section) => (
           <div class="flex flex-col gap-4 items-center p-2 w-full">
             <div class="flex flex-col gap-4 w-full">
