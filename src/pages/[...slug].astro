@@ -3,14 +3,21 @@ import Category from '@components/app/Category.astro'
 import Zone from '@components/app/Zone.astro'
 import GeneralLayout from '@layouts/GeneralLayout.astro'
 import { CategorySI, ZoneSI } from 'src/types'
-import { getCategoryBySlug, getRestaurant, getZoneBySlug } from 'src/utils/supabase'
+import { getCategoryBySlug, getRestaurant, getZoneBySlug, getZones } from 'src/utils/supabase'
 
 const { slug } = Astro.params
 
 if (slug === 'favicon.ico') return
 
-const { name } = await getRestaurant({ restaurantId: 1 })
 const [zoneSlug, sectionSlug] = slug.toString().split('/')
+
+const zones = await getZones({ restaurantId: 1 })
+
+if (!zones.find((z: ZoneSI) => z.slug === zoneSlug)) {
+  return Astro.redirect('/')
+}
+
+const { name } = await getRestaurant({ restaurantId: 1 })
 
 let zone: ZoneSI, category: CategorySI
 if (!sectionSlug) {
