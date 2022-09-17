@@ -24,7 +24,7 @@ export default function CategoryForm({
   typeCanBeUpdated?: boolean
 }) {
   const updateMode = !!category
-
+  console.log({ category })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>(null)
   const [confirmDeletion, setConfirmDeletion] = useState(false)
@@ -43,21 +43,25 @@ export default function CategoryForm({
     const price: string = type === CATEGORY_TYPES.MENU ? formatPrice(formData.get('price') as string) : null
 
     const selectedZones = zone ? [zone.id] : zones.filter((zone) => formData.get(`zone-${zone.id}`) === 'on').map((zone) => zone.id)
+    const selectedZonesOrder = selectedZones.map((zoneId) => {
+      const order = formData.get(`order-${zoneId}`) as string
+      return { zoneId, order: order ? Number(order) : -1 }
+    })
 
     if (selectedZones.length < 1) return setError('Debes seleccionar al menos una zona.')
 
-    let changesInZones = false
-    if (category?.zones) {
-      const currentZones = category.zones.map((z) => z.zone.id)
-      // Check if arrays contain the same elements
-      changesInZones = !(
-        currentZones.length === selectedZones.length &&
-        currentZones.sort().every((v, i) => v === selectedZones[i]) &&
-        selectedZones.sort().every((v, i) => v === currentZones[i])
-      )
+    const changesInZones = true // TODO IMPROVE THIS: Must be only true if zones or zones order has changed
+    // if (category?.zones) {
+    //   const currentZones = category.zones.map((z) => z.zone.id)
+    //   // Check if arrays contain the same elements
+    //   changesInZones = !(
+    //     currentZones.length === selectedZones.length &&
+    //     currentZones.sort().every((v, i) => v === selectedZones[i]) &&
+    //     selectedZones.sort().every((v, i) => v === currentZones[i])
+    //   )
 
-      if (changesInZones) console.info('Has changed the zones')
-    }
+    //   if (changesInZones) console.info('Has changed the zones')
+    // }
 
     const extraServices = Object.values(EXTRA_SERVICES)
       .filter((extraService) => formData.get(extraService) === 'on')
@@ -73,9 +77,9 @@ export default function CategoryForm({
     try {
       if (updateMode) {
         categoryObj.id = category.id
-        await updateCategory({ selectedZones, categoryObj, changesInZones })
+        await updateCategory({ selectedZones, categoryObj, changesInZones, selectedZonesOrder })
       } else {
-        await createCategory({ selectedZones, categoryObj })
+        await createCategory({ selectedZones, categoryObj, selectedZonesOrder })
       }
 
       window.location.href = `/admin/categorias/${categorySlug}`
@@ -113,6 +117,10 @@ export default function CategoryForm({
   }
 
   const getDefaultPrice = () => (category?.price ? category.price.replace('€', '').replace(',', '.').trim() : '')
+  const getDefaultOrder = (zoneId: number) => {
+    const order = category?.orders.find((o) => o.zoneId === zoneId)?.order
+    return order ? String(order) : ''
+  }
 
   useEffect(() => {
     setLoading(false)
@@ -149,14 +157,30 @@ export default function CategoryForm({
           <LineCard label="Zona/s">
             <div className="flex flex-col gap-4 max-w-xl">
               {zones?.map((zone) => (
-                <div key={zone.id} className="flex items-center gap-2">
-                  <input
-                    id={`zone-${zone.id}`}
-                    name={`zone-${zone.id}`}
-                    type="checkbox"
-                    defaultChecked={!!category?.zones?.find((z) => z.zone.id === zone.id)}
-                  />
-                  <label htmlFor={`zone-${zone.id}`}>{zone.name}</label>
+                <div key={zone.id} className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <input
+                      id={`zone-${zone.id}`}
+                      name={`zone-${zone.id}`}
+                      type="checkbox"
+                      defaultChecked={!!category?.zones?.find((z) => z.zone.id === zone.id)}
+                    />
+                    <label htmlFor={`zone-${zone.id}`}>{zone.name}</label>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <div className="w-[50%]">
+                      <Input
+                        id={`order-${zone.id}`}
+                        placeholder="1, 2..."
+                        type="number"
+                        label="Orden"
+                        defaultValue={getDefaultOrder(zone.id)}
+                        steps={1}
+                        min={1}
+                      />
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

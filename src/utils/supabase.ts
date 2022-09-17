@@ -82,7 +82,7 @@ export const getZoneBySlug = async ({ zoneSlug }: { zoneSlug: string }) => {
 export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string }) => {
   const { data, error } = await supabase
     .from<CategorySI>('categories')
-    .select('*, zones:zones_categories(zone:zones(id)), orders:zones_categories(order)')
+    .select('*, zones:zones_categories(zone:zones(id)), orders:zones_categories(zoneId,order)')
     .eq('slug', categorySlug)
     .single()
 
@@ -147,7 +147,15 @@ export const getCategoriesByZoneSlug = async ({ zoneSlug }: { zoneSlug: string }
   return data.map((d) => ({ ...d.category, order: d.order }))
 }
 
-export const createCategory = async ({ selectedZones, categoryObj }: { selectedZones: number[]; categoryObj: CategorySI }) => {
+export const createCategory = async ({
+  selectedZones,
+  categoryObj,
+  selectedZonesOrder
+}: {
+  selectedZones: number[]
+  categoryObj: CategorySI
+  selectedZonesOrder?: { zoneId: number; order: number }[]
+}) => {
   setAuthToken()
   const { data: categoryData, error: categoryError } = await supabase.from<CategorySI>('categories').insert([categoryObj])
 
@@ -156,27 +164,29 @@ export const createCategory = async ({ selectedZones, categoryObj }: { selectedZ
     throw new Error(categoryError.code)
   }
 
-  selectedZones.forEach(async (zoneId) => {
-    const { data: zoneCategoryData, error: zoneCategoryError } = await supabase
+  for (const zoneId of selectedZones) {
+    const { error: zoneCategoryError } = await supabase
       .from<ZonesCategoriesSI>('zones_categories')
-      .insert([{ zoneId, categoryId: categoryData[0].id, order: -1 }])
+      .insert([{ zoneId, categoryId: categoryData[0].id, order: selectedZonesOrder?.find((szo) => szo.zoneId === zoneId)?.order }])
     if (zoneCategoryError) {
       console.error('supabase:createCategory', { zoneCategoryError })
       throw new Error(zoneCategoryError.code)
     }
+  }
 
-    return [categoryData, zoneCategoryData]
-  })
+  return [categoryData]
 }
 
 export const updateCategory = async ({
   selectedZones,
   categoryObj,
-  changesInZones
+  changesInZones,
+  selectedZonesOrder
 }: {
   selectedZones: number[]
   categoryObj: CategorySI
   changesInZones: boolean
+  selectedZonesOrder?: { zoneId: number; order: number }[]
 }) => {
   setAuthToken()
   const { error } = await supabase.from<CategorySI>('categories').update(categoryObj).eq('id', categoryObj.id)
@@ -199,31 +209,34 @@ export const updateCategory = async ({
       throw new Error(error.code)
     }
 
-    categoryZonesData
-      .filter((cz) => !selectedZones.includes(cz.id))
-      .forEach(async (zoneCategory) => {
-        // Delete if not was selected and is not selectednow
-        const { error: deleteError } = await supabase.from<ZonesCategoriesSI>('zones_categories').delete().eq('id', zoneCategory.id)
+    const filteredCategoryZones = categoryZonesData.filter((cz) => !selectedZones.includes(cz.id))
 
-        if (deleteError) {
-          console.error(`ERR! ${error.code}: ${error.message}`)
-          throw new Error(deleteError.code)
-        }
-      })
+    for (const zoneCategory of filteredCategoryZones) {
+      // Delete if not was selected and is not selected now
+      const { error: deleteError } = await supabase.from<ZonesCategoriesSI>('zones_categories').delete().eq('id', zoneCategory.id)
 
-    selectedZones
-      .filter((sz) => !categoryZonesData.find((czd) => czd.id === sz))
-      .forEach(async (zoneId) => {
-        // Create if was not selected and is selected now
-        const { error: zoneCategoryError } = await supabase
-          .from<ZonesCategoriesSI>('zones_categories')
-          .insert([{ zoneId, categoryId: categoryObj.id, order: -1 }])
+      if (deleteError) {
+        console.error(`ERR! ${error.code}: ${error.message}`)
+        throw new Error(deleteError.code)
+      }
+    }
 
-        if (zoneCategoryError) {
-          console.error(`ERR! ${error.code}: ${error.message}`)
-          throw new Error(zoneCategoryError.code)
-        }
-      })
+    console.log({ selectedZones, selectedZonesOrder })
+
+    const filteredSelectedZones = selectedZones.filter((sz) => !categoryZonesData.find((czd) => czd.id === sz))
+
+    for (const zoneId of filteredSelectedZones) {
+      console.log({ zoneId })
+      // Create if was not selected and is selected now
+      const { error: zoneCategoryError } = await supabase
+        .from<ZonesCategoriesSI>('zones_categories')
+        .insert([{ zoneId, categoryId: categoryObj.id, order: selectedZonesOrder?.find((szo) => szo.zoneId === zoneId)?.order }])
+
+      if (zoneCategoryError) {
+        console.error(`ERR! ${error.code}: ${error.message}`)
+        throw new Error(zoneCategoryError.code)
+      }
+    }
   }
 }
 

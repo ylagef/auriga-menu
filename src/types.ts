@@ -93,7 +93,7 @@ export interface CategorySI {
 
   // join
   order?: number
-  orders?: { order: number }[]
+  orders?: { order: number; zoneId: number }[]
   zones?: { zone: ZoneSI }[]
   sections?: SectionSI[]
 }
