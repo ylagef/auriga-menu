@@ -37,7 +37,6 @@ export default function SectionForm({
       .filter((extraService) => formData.get(extraService) === 'on')
       .map((extraService) => extraService)
 
-    console.log({ sections })
     const sectionObj: SectionSI = {
       title,
       extraServices,

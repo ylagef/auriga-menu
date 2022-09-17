@@ -147,18 +147,7 @@ export const getCategoriesByZoneSlug = async ({ zoneSlug }: { zoneSlug: string }
 
 export const createCategory = async ({ selectedZones, categoryObj }: { selectedZones: number[]; categoryObj: CategorySI }) => {
   setAuthToken()
-  const { type } = categoryObj
-
-  const { data: categoryData, error: categoryError } = await supabase.from<CategorySI>('categories').insert([
-    {
-      type: categoryObj.type,
-      slug: categoryObj.slug,
-      buttonText: categoryObj.buttonText,
-      categoryTitle: categoryObj.categoryTitle,
-      schedules: categoryObj.schedules,
-      extraServices: categoryObj.extraServices
-    }
-  ])
+  const { data: categoryData, error: categoryError } = await supabase.from<CategorySI>('categories').insert([categoryObj])
 
   if (categoryError) {
     console.error('supabase:createCategory', { categoryError })
@@ -181,7 +170,15 @@ export const createCategory = async ({ selectedZones, categoryObj }: { selectedZ
   })
 }
 
-export const updateCategory = async ({ selectedZones, categoryObj }: { selectedZones: number[]; categoryObj: CategorySI }) => {
+export const updateCategory = async ({
+  selectedZones,
+  categoryObj,
+  changesInZones
+}: {
+  selectedZones: number[]
+  categoryObj: CategorySI
+  changesInZones: boolean
+}) => {
   setAuthToken()
   const { error } = await supabase.from<CategorySI>('categories').update(categoryObj).eq('id', categoryObj.id)
 
@@ -190,41 +187,45 @@ export const updateCategory = async ({ selectedZones, categoryObj }: { selectedZ
     throw new Error(error.message)
   }
 
-  const { data: categoryZonesData, error: categoryZonesErr } = await supabase
-    .from<ZonesCategoriesSI>('zones_categories')
-    .select('*')
-    .eq('categoryId', categoryObj.id)
+  if (changesInZones) {
+    // Only if zones has changed
 
-  if (categoryZonesErr) {
-    console.error('supabase:updateCategory', { categoryZonesErr })
-    throw new Error(error.message)
+    const { data: categoryZonesData, error: categoryZonesErr } = await supabase
+      .from<ZonesCategoriesSI>('zones_categories')
+      .select('*')
+      .eq('categoryId', categoryObj.id)
+
+    if (categoryZonesErr) {
+      console.error('supabase:updateCategory', { categoryZonesErr })
+      throw new Error(error.message)
+    }
+
+    categoryZonesData
+      .filter((cz) => !selectedZones.includes(cz.id))
+      .forEach(async (zoneCategory) => {
+        // Delete if not was selected and is not selectednow
+        const { error: deleteError } = await supabase.from<ZonesCategoriesSI>('zones_categories').delete().eq('id', zoneCategory.id)
+
+        if (deleteError) {
+          console.error('supabase:updateCategory', { deleteError })
+          throw new Error(deleteError.message)
+        }
+      })
+
+    selectedZones
+      .filter((sz) => !categoryZonesData.find((czd) => czd.id === sz))
+      .forEach(async (zoneId) => {
+        // Create if was not selected and is selected now
+        const { error: zoneCategoryError } = await supabase
+          .from<ZonesCategoriesSI>('zones_categories')
+          .insert([{ zoneId, categoryId: categoryObj.id, order: -1 }])
+
+        if (zoneCategoryError) {
+          console.error('supabase:updateCategory', { zoneCategoryError })
+          throw new Error(zoneCategoryError.message)
+        }
+      })
   }
-
-  categoryZonesData
-    .filter((cz) => !selectedZones.includes(cz.id))
-    .forEach(async (zoneCategory) => {
-      // Delete if not was selected and is not selectednow
-      const { error: deleteError } = await supabase.from<ZonesCategoriesSI>('zones_categories').delete().eq('id', zoneCategory.id)
-
-      if (deleteError) {
-        console.error('supabase:updateCategory', { deleteError })
-        throw new Error(deleteError.message)
-      }
-    })
-
-  selectedZones
-    .filter((sz) => !categoryZonesData.find((czd) => czd.id === sz))
-    .forEach(async (zoneId) => {
-      // Create if was not selected and is selected now
-      const { error: zoneCategoryError } = await supabase
-        .from<ZonesCategoriesSI>('zones_categories')
-        .insert([{ zoneId, categoryId: categoryObj.id, order: 99 }])
-
-      if (zoneCategoryError) {
-        console.error('supabase:updateCategory', { zoneCategoryError })
-        throw new Error(zoneCategoryError.message)
-      }
-    })
 }
 
 export const deleteCategoryById = async ({ category, sections }: { category: CategorySI; sections?: SectionSI[] }) => {
@@ -232,13 +233,12 @@ export const deleteCategoryById = async ({ category, sections }: { category: Cat
   // If category has sections, delete sections
   if (sections) {
     for (const section of sections) {
-      console.log('deleting section', section.id)
       await deleteSectionById({ sectionId: section.id }) // Remove fk products
     }
   } else {
     await deleteProductsByFkId({ categoryId: category.id }) // Remove fk products
   }
-  console.log('deleting zone_category')
+
   await deleteZoneCategoryByCategoryId({ categoryId: category.id }) // Remove fk zones_categories
 
   const { data, error } = await supabase.from<CategorySI>('categories').delete().eq('id', category.id)

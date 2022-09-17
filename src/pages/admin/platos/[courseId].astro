@@ -31,7 +31,7 @@ const category = await getCategoryById({ categoryId: course.categoryId })
     </DetailSummaryContainer>
 
     <LineCard client:visible label="Datos plato">
-      <CourseForm client:visible category={category} course={course} />
+      <CourseForm client:visible category={category} course={course} defaultOpen />
     </LineCard>
   </div>
 </Admin>

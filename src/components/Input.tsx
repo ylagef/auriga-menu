@@ -73,7 +73,7 @@ export function Input({
         required={required}
         onChange={onChange}
         step={steps}
-        min={type === 'number' && !customEnabled && min}
+        min={type === 'number' && !customEnabled ? min : undefined}
       />
     </div>
   )
