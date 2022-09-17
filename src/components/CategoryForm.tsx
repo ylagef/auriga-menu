@@ -24,7 +24,6 @@ export default function CategoryForm({
   typeCanBeUpdated?: boolean
 }) {
   const updateMode = !!category
-  console.log({ category, zone, defaultOpen, sections })
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>(null)
@@ -42,10 +41,24 @@ export default function CategoryForm({
     const categoryTitle = formData.get('categoryTitle') as string
     const buttonText = formData.get('buttonText') as string
     let price: number | string = type === CATEGORY_TYPES.MENU ? (formData.get('price') as string)?.replaceAll(',', '.') : null
-    price = price ? parseFloat(price) : undefined
+    price = price ? parseFloat(price) : null
 
     const selectedZones = zone ? [zone.id] : zones.filter((zone) => formData.get(`zone-${zone.id}`) === 'on').map((zone) => zone.id)
+
     if (selectedZones.length < 1) return setError('Debes seleccionar al menos una zona.')
+
+    let changesInZones = false
+    if (category?.zones) {
+      const currentZones = category.zones.map((z) => z.zone.id)
+      // Check if arrays contain the same elements
+      changesInZones = !(
+        currentZones.length === selectedZones.length &&
+        currentZones.sort().every((v, i) => v === selectedZones[i]) &&
+        selectedZones.sort().every((v, i) => v === currentZones[i])
+      )
+
+      if (changesInZones) console.log('Has changed the zones')
+    }
 
     const extraServices = Object.values(EXTRA_SERVICES)
       .filter((extraService) => formData.get(extraService) === 'on')
@@ -61,7 +74,7 @@ export default function CategoryForm({
     try {
       if (updateMode) {
         categoryObj.id = category.id
-        await updateCategory({ selectedZones, categoryObj })
+        await updateCategory({ selectedZones, categoryObj, changesInZones })
       } else {
         await createCategory({ selectedZones, categoryObj })
       }
@@ -189,7 +202,11 @@ export default function CategoryForm({
             ))}
           </select>
 
-          {!typeCanBeUpdated && <small>El tipo no puede ser editado si ya hay elementos en la categoría (platos, secciones y/o productos).</small>}
+          {!typeCanBeUpdated && (
+            <Info>
+              <small>El tipo no puede ser editado si ya hay elementos en la categoría (platos, secciones y/o productos).</small>
+            </Info>
+          )}
 
           <ul className="text-sm">
             <li>
