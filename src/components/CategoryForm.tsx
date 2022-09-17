@@ -41,7 +41,7 @@ export default function CategoryForm({
     const formData = new FormData(event.currentTarget)
     const categoryTitle = formData.get('categoryTitle') as string
     const buttonText = formData.get('buttonText') as string
-    let price: number | string = (formData.get('price') as string)?.replaceAll(',', '.')
+    let price: number | string = type === CATEGORY_TYPES.MENU ? (formData.get('price') as string)?.replaceAll(',', '.') : null
     price = price ? parseFloat(price) : undefined
 
     const selectedZones = zone ? [zone.id] : zones.filter((zone) => formData.get(`zone-${zone.id}`) === 'on').map((zone) => zone.id)
@@ -219,6 +219,7 @@ export default function CategoryForm({
             placeholder="6.50, 12.5..."
             defaultValue={category?.price?.toString()}
             steps={0.01}
+            min={0}
             required
           />
         )}
