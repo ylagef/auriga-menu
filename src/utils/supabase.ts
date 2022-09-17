@@ -435,37 +435,6 @@ export const updateSection = async ({ sectionObj }: { sectionObj: SectionSI }) =
   return data
 }
 
-// Menus
-// export const getMenus = async ({ categoryId }: { categoryId: number }) => {
-//   const { data, error } = await supabase.from<MenuSI>('menus').select('*').eq('categoryId', categoryId)
-
-//   if (error) {
-//     console.error('error', { error })
-//     throw new Error(error.message)
-//   }
-//   return data
-// }
-
-// export const getMenuById = async ({ menuId }: { menuId: number }) => {
-//   const { data, error } = await supabase.from<MenuSI>('menus').select('*').eq('id', menuId).single()
-
-//   if (error) {
-//     console.error('error', { error })
-//     throw new Error(error.message)
-//   }
-//   return data
-// }
-
-// export const getMenuByCategory = async ({ categoryId }: { categoryId: number }) => {
-//   const { data, error } = await supabase.from<MenuSI>('menus').select('*, courses(*)').eq('categoryId', categoryId).single()
-
-//   if (error) {
-//     console.error('error', { error })
-//     throw new Error(error.message)
-//   }
-//   return data
-// }
-
 // Courses
 export const getCourses = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').select('*').eq('categoryId', categoryId)
