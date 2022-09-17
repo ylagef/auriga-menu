@@ -18,7 +18,7 @@ export const getRestaurant = async () => {
   const { data, error } = await supabase.from<RestaurantSI>('restaurants').select('*').eq('id', RESTAURANT_ID).single()
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -29,7 +29,7 @@ export const getZones = async () => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', RESTAURANT_ID)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -38,7 +38,7 @@ export const getZoneById = async ({ zoneId }: { zoneId: number }) => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('id', zoneId).single()
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -49,7 +49,7 @@ export const createZone = async ({ name, slug }: { name: string; slug: string })
   const { data, error } = await supabase.from<ZoneSI>('zones').insert([{ restaurantId: RESTAURANT_ID, name, slug }])
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -61,7 +61,7 @@ export const updateZone = async ({ id, name, slug }: { id: number; name: string;
   const { data, error } = await supabase.from<ZoneSI>('zones').update({ name, slug }).eq('restaurantId', RESTAURANT_ID).eq('id', id)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -72,7 +72,7 @@ export const getZoneBySlug = async ({ zoneSlug }: { zoneSlug: string }) => {
   const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', RESTAURANT_ID).eq('slug', zoneSlug).single()
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -87,7 +87,7 @@ export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string
     .single()
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -97,7 +97,7 @@ export const getCategoryById = async ({ categoryId }: { categoryId: number }) =>
   const { data, error } = await supabase.from<CategorySI>('categories').select('*').eq('id', categoryId).single()
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -109,7 +109,7 @@ export const getCategories = async () => {
     .select('*, zones:zones_categories(zone:zones (*)), orders:zones_categories(order)')
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -124,7 +124,7 @@ export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
     .eq('zoneId', zoneId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -140,7 +140,7 @@ export const getCategoriesByZoneSlug = async ({ zoneSlug }: { zoneSlug: string }
     .eq('zoneId', zone.id)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -243,7 +243,7 @@ export const deleteCategoryById = async ({ category, sections }: { category: Cat
   const { data, error } = await supabase.from<CategorySI>('categories').delete().eq('id', category.id)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -253,7 +253,7 @@ const deleteZoneCategoryByCategoryId = async ({ categoryId }: { categoryId: numb
   const { data, error } = await supabase.from<ZonesCategoriesSI>('zones_categories').delete().eq('categoryId', categoryId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -264,7 +264,7 @@ export const getProductById = async ({ productId }: { productId: number }) => {
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('id', productId).single()
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -275,7 +275,7 @@ export const getProducts = async ({ categoryId, sectionId }: { categoryId?: numb
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('categoryId', categoryId).eq('sectionId', sectionId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -285,7 +285,7 @@ export const getProductsByCategory = async ({ categoryId }: { categoryId: number
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('categoryId', categoryId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -295,7 +295,7 @@ export const getProductsBySection = async ({ sectionId }: { sectionId: number })
   const { data, error } = await supabase.from<ProductSI>('products').select('*').eq('sectionId', sectionId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -307,7 +307,7 @@ export const createCategoryProduct = async ({ categoryId, productObj }: { catego
   const { data, error } = await supabase.from<ProductSI>('products').insert([{ categoryId, name, description, price, options, allergens, order }])
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -320,7 +320,7 @@ export const createSectionProduct = async ({ sectionId, productObj }: { sectionI
   const { data, error } = await supabase.from<ProductSI>('products').insert([{ sectionId, name, description, price, options, allergens, order }])
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -332,7 +332,7 @@ export const updateProduct = async ({ productObj }: { productObj: ProductSI }) =
   const { data, error } = await supabase.from<ProductSI>('products').update(productObj).eq('id', productObj.id)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -344,7 +344,7 @@ export const deleteProductById = async ({ productId }: { productId: number }) =>
   const { data, error } = await supabase.from<ProductSI>('products').delete().eq('id', productId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -358,7 +358,7 @@ const deleteProductsByFkId = async ({ sectionId, categoryId }: { sectionId?: num
     .eq(sectionId ? 'sectionId' : 'categoryId', sectionId || categoryId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -370,7 +370,7 @@ export const getSections = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase.from<SectionSI>('sections').select('*').eq('categoryId', categoryId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -380,7 +380,7 @@ export const getSectionsByCategory = async ({ categoryId }: { categoryId: number
   const { data, error } = await supabase.from<SectionSI>('sections').select('*, products (*)').eq('categoryId', categoryId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -391,7 +391,7 @@ export const getSectionById = async ({ sectionId }: { sectionId: number }) => {
   const { data, error } = await supabase.from<SectionSI>('sections').select('*, products ( * )').eq('id', sectionId).single()
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -403,7 +403,7 @@ export const createSection = async ({ categoryId, sectionObj }: { categoryId: nu
   const { data, error } = await supabase.from<SectionSI>('sections').insert([{ categoryId, title, extraServices, order }])
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -416,7 +416,7 @@ export const deleteSectionById = async ({ sectionId }: { sectionId: number }) =>
   const { data, error } = await supabase.from<SectionSI>('sections').delete().eq('id', sectionId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -428,7 +428,7 @@ export const updateSection = async ({ sectionObj }: { sectionObj: SectionSI }) =
   const { data, error } = await supabase.from<SectionSI>('sections').update(sectionObj).eq('id', sectionObj.id)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -439,7 +439,7 @@ export const getCourses = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').select('*').eq('categoryId', categoryId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -449,7 +449,7 @@ export const getCourseById = async ({ courseId }: { courseId: number }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').select('*').eq('id', courseId).single()
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -459,7 +459,7 @@ export const getCoursesByCategory = async ({ categoryId }: { categoryId: number 
   const { data, error } = await supabase.from<CourseSI>('courses').select('*').eq('categoryId', categoryId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -471,7 +471,7 @@ export const createCourse = async ({ courseObj }: { courseObj: CourseSI }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').insert([courseObj])
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -483,7 +483,7 @@ export const updateCourse = async ({ courseObj }: { courseObj: CourseSI }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').update(courseObj).eq('id', courseObj.id)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data
@@ -495,7 +495,7 @@ export const deleteCourseById = async ({ courseId }: { courseId: number }) => {
   const { data, error } = await supabase.from<CourseSI>('courses').delete().eq('id', courseId)
 
   if (error) {
-    console.error('error', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
   return data

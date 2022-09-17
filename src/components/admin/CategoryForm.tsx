@@ -80,7 +80,10 @@ export default function CategoryForm({
 
       window.location.href = `/admin/categorias/${categorySlug}`
     } catch (e) {
-      console.error('Error creating category', e)
+      if (e.message === '23505') {
+        return setError('Ya existe una categoría con este nombre.')
+      }
+
       setError('Ha habido un error. Inténtalo de nuevo más tarde.')
     }
   }
