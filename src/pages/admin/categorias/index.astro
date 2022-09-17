@@ -26,7 +26,7 @@ const categories = await getCategories()
       <ButtonLinksContainer>
         {
           categories
-            .sort((a, b) => a.buttonText.localeCompare(b.buttonText))
+            .sort((a, z) => a.order - z.order)
             .map((category) => (
               <ButtonLink href={`/admin/categorias/${category.slug}`}>
                 <span>{category.buttonText}</span>
