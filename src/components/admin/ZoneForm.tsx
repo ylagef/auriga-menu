@@ -24,9 +24,9 @@ export default function ZoneForm({ zone, defaultOpen }: { zone?: ZoneSI; default
 
     try {
       if (updateMode) {
-        await updateZone({ restaurantId: 1, name, slug: slug(name) })
+        await updateZone({ name, slug: slug(name) })
       } else {
-        await createZone({ restaurantId: 1, name, slug: slug(name) })
+        await createZone({ name, slug: slug(name) })
       }
 
       window.location.reload()

@@ -2,7 +2,7 @@
 import GeneralLayout from '@layouts/GeneralLayout.astro'
 import { getRestaurant } from 'src/utils/supabase'
 
-const restaurant = await getRestaurant({ restaurantId: 1 })
+const restaurant = await getRestaurant()
 ---
 
 <GeneralLayout title={restaurant.name} />

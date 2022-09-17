@@ -12,8 +12,8 @@ const setAuthToken = () => {
 }
 
 // Restaurant
-export const getRestaurant = async ({ restaurantId }) => {
-  const { data, error } = await supabase.from<RestaurantSI>('restaurants').select('*').eq('id', restaurantId).single()
+export const getRestaurant = async () => {
+  const { data, error } = await supabase.from<RestaurantSI>('restaurants').select('*').eq('id', 1).single()
 
   if (error) {
     console.error('error', { error })
@@ -23,8 +23,8 @@ export const getRestaurant = async ({ restaurantId }) => {
 }
 
 // Zones
-export const getZones = async ({ restaurantId }: { restaurantId: number }) => {
-  const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', restaurantId)
+export const getZones = async () => {
+  const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', 1)
 
   if (error) {
     console.error('error', { error })
@@ -42,9 +42,9 @@ export const getZoneById = async ({ zoneId }: { zoneId: number }) => {
   return data
 }
 
-export const createZone = async ({ restaurantId, name, slug }: { restaurantId: number; name: string; slug: string }) => {
+export const createZone = async ({ name, slug }: { name: string; slug: string }) => {
   setAuthToken()
-  const { data, error } = await supabase.from<ZoneSI>('zones').insert([{ restaurantId, name, slug }])
+  const { data, error } = await supabase.from<ZoneSI>('zones').insert([{ restaurantId: 1, name, slug }])
 
   if (error) {
     console.error('error', { error })
@@ -54,9 +54,9 @@ export const createZone = async ({ restaurantId, name, slug }: { restaurantId: n
   return data
 }
 
-export const updateZone = async ({ restaurantId, name, slug }: { restaurantId: number; name: string; slug: string }) => {
+export const updateZone = async ({ name, slug }: { name: string; slug: string }) => {
   setAuthToken()
-  const { data, error } = await supabase.from<ZoneSI>('zones').update({ name, slug }).eq('restaurantId', restaurantId)
+  const { data, error } = await supabase.from<ZoneSI>('zones').update({ name, slug }).eq('restaurantId', 1)
 
   if (error) {
     console.error('error', { error })
@@ -66,8 +66,8 @@ export const updateZone = async ({ restaurantId, name, slug }: { restaurantId: n
   return data
 }
 
-export const getZoneBySlug = async ({ restaurantId, zoneSlug }: { restaurantId: number; zoneSlug: string }) => {
-  const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', restaurantId).eq('slug', zoneSlug).single()
+export const getZoneBySlug = async ({ zoneSlug }: { zoneSlug: string }) => {
+  const { data, error } = await supabase.from<ZoneSI>('zones').select('*').eq('restaurantId', 1).eq('slug', zoneSlug).single()
 
   if (error) {
     console.error('error', { error })
@@ -130,7 +130,7 @@ export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
 }
 
 export const getCategoriesByZoneSlug = async ({ zoneSlug }: { zoneSlug: string }) => {
-  const zone = await getZoneBySlug({ zoneSlug, restaurantId: 1 })
+  const zone = await getZoneBySlug({ zoneSlug })
 
   const { data, error } = await supabase
     .from<ZonesCategoriesSI>('zones_categories')

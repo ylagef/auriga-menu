@@ -86,7 +86,7 @@ export default function CategoryForm({
   }
 
   const fetchZones = async () => {
-    const data = await getZones({ restaurantId: 1 })
+    const data = await getZones()
     setZones(data)
   }
 

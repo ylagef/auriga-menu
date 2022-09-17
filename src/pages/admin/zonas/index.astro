@@ -17,7 +17,7 @@ if (!token) return Astro.redirect('/admin/login')
 const { data: user } = await supabase.auth.api.getUser(token)
 if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 
-const zones = await getZones({ restaurantId: 1 })
+const zones = await getZones()
 ---
 
 <Admin user={user}>
