@@ -29,7 +29,7 @@ const restaurant = await getRestaurant({ restaurantId: 1 })
       <img class="max-h-20 max-w-[70%] h-fit" src={`/assets/images/${slug(restaurant.shortName)}-logo.svg`} alt={`${restaurant.name} logo`} />
     </div>
 
-    <main class="flex-grow max-w-lg mx-auto w-full p-4">
+    <main class="flex flex-grow max-w-lg mx-auto w-full p-4">
       <slot />
     </main>
 
