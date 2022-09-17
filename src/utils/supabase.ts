@@ -182,7 +182,7 @@ export const updateCategory = async ({
   const { error } = await supabase.from<CategorySI>('categories').update(categoryObj).eq('id', categoryObj.id)
 
   if (error) {
-    console.error('supabase:updateCategory', { error })
+    console.error(`ERR! ${error.code}: ${error.message}`)
     throw new Error(error.code)
   }
 
@@ -195,7 +195,7 @@ export const updateCategory = async ({
       .eq('categoryId', categoryObj.id)
 
     if (categoryZonesErr) {
-      console.error('supabase:updateCategory', { categoryZonesErr })
+      console.error(`ERR! ${error.code}: ${error.message}`)
       throw new Error(error.code)
     }
 
@@ -206,7 +206,7 @@ export const updateCategory = async ({
         const { error: deleteError } = await supabase.from<ZonesCategoriesSI>('zones_categories').delete().eq('id', zoneCategory.id)
 
         if (deleteError) {
-          console.error('supabase:updateCategory', { deleteError })
+          console.error(`ERR! ${error.code}: ${error.message}`)
           throw new Error(deleteError.code)
         }
       })
@@ -220,7 +220,7 @@ export const updateCategory = async ({
           .insert([{ zoneId, categoryId: categoryObj.id, order: -1 }])
 
         if (zoneCategoryError) {
-          console.error('supabase:updateCategory', { zoneCategoryError })
+          console.error(`ERR! ${error.code}: ${error.message}`)
           throw new Error(zoneCategoryError.code)
         }
       })
@@ -229,6 +229,7 @@ export const updateCategory = async ({
 
 export const deleteCategoryById = async ({ category, sections }: { category: CategorySI; sections?: SectionSI[] }) => {
   setAuthToken()
+  console.log({ category, sections })
   // If category has sections, delete sections
   if (sections) {
     for (const section of sections) {
