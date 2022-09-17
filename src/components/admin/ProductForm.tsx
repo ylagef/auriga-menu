@@ -8,6 +8,7 @@ import { FormEvent, useEffect, useState } from 'react'
 import TrashIcon from 'src/icons/TrashIcon'
 import { ALLERGENS, CategorySI, ProductSI, SectionSI } from 'src/types'
 import { createCategoryProduct, createSectionProduct, deleteProductById, updateProduct } from 'src/utils/supabase'
+import { formatPrice } from 'src/utils/utilities'
 
 export default function ProductForm({
   category,
@@ -33,18 +34,15 @@ export default function ProductForm({
     setLoading(true)
 
     const formData = new FormData(event.currentTarget)
+    const order = formData.get('order') as string
     const name = formData.get('name') as string
     const description = formData.get('description') as string
 
-    let price = formData.get('price') as string
-    price = price.replaceAll(',', '.')
-    if (!price.includes('€')) price += '€'
+    const price = formatPrice(formData.get('price') as string)
 
     const parsedOptions = options.map((_, index) => formData.get('option-' + index) as string)
 
-    const order = product?.order || -1
-
-    const productObj: ProductSI = { name, description, price, options: parsedOptions, allergens, order }
+    const productObj: ProductSI = { name, description, price, options: parsedOptions, allergens, order: Number(order) }
 
     try {
       if (updateMode) {
@@ -65,15 +63,14 @@ export default function ProductForm({
     try {
       setLoading(true)
       await deleteProductById({ productId: product.id })
-      window.history.back()
+      window.location.reload()
     } catch (e) {
       setError('Ha habido un error. Inténtalo de nuevo más tarde.')
     }
   }
 
-  const getDefaultPrice = () => {
-    return product?.price ? product.price.replace('€', '').trim() : ''
-  }
+  const getDefaultPrice = () => (product?.price ? product.price.replace('€', '').replace(',', '.').trim() : '')
+  const getDefaultOrder = () => (product?.order ? (product.order > 0 ? String(product.order) : '1') : '1')
 
   useEffect(() => {
     setLoading(false)
@@ -103,8 +100,11 @@ export default function ProductForm({
             Este producto se {updateMode ? 'actualizará en' : 'añadirá a'} la sección actual: <strong>{section.title}</strong>.
           </span>
         )}
+        <span>El orden será de menor a mayor.</span>
       </Info>
+
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+        <Input id="order" type="number" label="Orden" required defaultValue={getDefaultOrder()} steps={1} min={1} />
         <Input id="name" label="Nombre" placeholder="Costilla, Brochetas de pollo..." required defaultValue={product?.name} />
         <Input
           id="description"

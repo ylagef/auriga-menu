@@ -60,7 +60,7 @@ export default function SectionForm({
     try {
       setLoading(true)
       await deleteSectionById({ sectionId: section.id })
-      window.history.back()
+      window.location.reload()
     } catch (e) {
       setError('Ha habido un error. Inténtalo de nuevo más tarde.')
     }

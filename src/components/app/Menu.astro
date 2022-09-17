@@ -30,5 +30,5 @@ const { category, courses } = Astro.props
     {category.extraServices?.map((extraService) => <h4 class="text-center">{translations.extraServices[extraService]}</h4>)}
   </div>
 
-  <h2 class="text-center text-4xl">{category.price?.toFixed(2)}€</h2>
+  <h2 class="text-center text-4xl">{category.price}</h2>
 </div>
