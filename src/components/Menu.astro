@@ -13,27 +13,21 @@ const { category, courses } = Astro.props
 
 <div class="flex flex-col gap-8">
   {
-    courses?.map((course) => {
-      return (
-        <div class="flex flex-col gap-2">
-          <h2 class="text-center">{course.name}</h2>
+    courses?.map((course) => (
+      <div class="flex flex-col gap-2">
+        <h2 class="text-center">{course.name}</h2>
 
-          <div class="flex flex-col gap-2 items-center">
-            {course.products.map((product) => (
-              <p>{product}</p>
-            ))}
-          </div>
+        <div class="flex flex-col gap-2 items-center">
+          {course.products.map((product) => (
+            <p>{product}</p>
+          ))}
         </div>
-      )
-    })
+      </div>
+    ))
   }
 
   <div class="flex flex-col gap-2 items-center">
-    {
-      category.extraServices?.map((extraService) => {
-        return <h4 class="text-center">{translations.extraServices[extraService]}</h4>
-      })
-    }
+    {category.extraServices?.map((extraService) => <h4 class="text-center">{translations.extraServices[extraService]}</h4>)}
   </div>
 
   <h2 class="text-center text-4xl">{category.price?.toFixed(2)}€</h2>
