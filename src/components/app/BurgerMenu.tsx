@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import MenuIcon from 'src/icons/MenuIcon'
 import { CategorySI } from 'src/types'
-import { getCategoriesByZoneId, getCategoriesByZoneSlug } from 'src/utils/supabase'
+import { getCategoriesByZoneSlug } from 'src/utils/supabase'
 
 interface Props {
   dark?: boolean
@@ -19,6 +19,7 @@ export default function BurgerMenu({ dark = false }: Props) {
 
   const fetchCategories = async (zoneSlug) => {
     const categoriesArr = await getCategoriesByZoneSlug({ zoneSlug })
+
     setCategories(categoriesArr)
   }
 
