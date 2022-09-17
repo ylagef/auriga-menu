@@ -1,18 +1,14 @@
 ---
-import { MenuSI } from 'src/types'
-import { getCoursesByMenu } from 'src/utils/supabase'
+import { CategorySI, CourseSI } from 'src/types'
 
 import { translations } from '../locales/translations'
 
 export interface Props {
-  menu: MenuSI
+  courses: CourseSI[]
+  category: CategorySI
 }
 
-const {
-  menu: { id, extraServices, price }
-} = Astro.props
-
-const courses = await getCoursesByMenu({ menuId: id })
+const { category, courses } = Astro.props
 ---
 
 <div class="flex flex-col gap-8">
@@ -34,11 +30,11 @@ const courses = await getCoursesByMenu({ menuId: id })
 
   <div class="flex flex-col gap-2 items-center">
     {
-      extraServices?.map((extraService) => {
+      category.extraServices?.map((extraService) => {
         return <h4 class="text-center">{translations.extraServices[extraService]}</h4>
       })
     }
   </div>
 
-  <h2 class="text-center text-4xl">{price?.toFixed(2)}€</h2>
+  <h2 class="text-center text-4xl">{category.price?.toFixed(2)}€</h2>
 </div>

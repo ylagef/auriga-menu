@@ -57,7 +57,7 @@ export default function CategoryForm({
         selectedZones.sort().every((v, i) => v === currentZones[i])
       )
 
-      if (changesInZones) console.log('Has changed the zones')
+      if (changesInZones) console.info('Has changed the zones')
     }
 
     const extraServices = Object.values(EXTRA_SERVICES)

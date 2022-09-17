@@ -5,22 +5,21 @@ import ExtraServices from '@components/ExtraServices.astro'
 import Menu from '@components/Menu.astro'
 import Products from '@components/Products.astro'
 import Sections from '@components/Sections.astro'
-import { CATEGORY_TYPES, CategorySI, MenuSI, ProductSI, SectionSI } from 'src/types'
-import { getMenuByCategory, getProductsByCategory, getSectionsByCategory } from 'src/utils/supabase'
+import { CATEGORY_TYPES, CategorySI, CourseSI, ProductSI, SectionSI } from 'src/types'
+import { getCoursesByCategory, getProductsByCategory, getSectionsByCategory } from 'src/utils/supabase'
 
 import { translations } from '../locales/translations'
 export interface Props {
   category: CategorySI
 }
 
-const {
-  category: { id, schedules, categoryTitle, extraServices, type }
-} = Astro.props
+const { category } = Astro.props
+const { id, schedules, categoryTitle, extraServices, type } = category
 
-let menu: MenuSI, products: ProductSI[], sections: SectionSI[]
+let courses: CourseSI[], products: ProductSI[], sections: SectionSI[]
 switch (type) {
   case CATEGORY_TYPES.MENU:
-    menu = await getMenuByCategory({ categoryId: id })
+    courses = await getCoursesByCategory({ categoryId: id })
     break
   case CATEGORY_TYPES.PRODUCTS:
     products = await getProductsByCategory({ categoryId: id })
@@ -52,5 +51,5 @@ switch (type) {
 
   {products && <Products products={products} />}
 
-  {menu && <Menu menu={menu} />}
+  {courses && <Menu category={category} courses={courses} />}
 </Card>
