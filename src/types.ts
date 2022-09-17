@@ -89,7 +89,7 @@ export interface CategorySI {
   categoryTitle: string
   schedules?: string[]
   extraServices?: EXTRA_SERVICES[]
-  price?: number // in case of menu
+  price?: string // in case of menu
 
   // join
   order?: number

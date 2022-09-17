@@ -8,6 +8,7 @@ import slug from 'slug'
 import { translations } from 'src/locales/translations'
 import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, SectionSI, ZoneSI } from 'src/types'
 import { createCategory, deleteCategoryById as deleteCategoryCascade, getZones, updateCategory } from 'src/utils/supabase'
+import { formatPrice } from 'src/utils/utilities'
 
 export default function CategoryForm({
   category,
@@ -39,8 +40,7 @@ export default function CategoryForm({
     const formData = new FormData(event.currentTarget)
     const categoryTitle = formData.get('categoryTitle') as string
     const buttonText = formData.get('buttonText') as string
-    let price: number | string = type === CATEGORY_TYPES.MENU ? (formData.get('price') as string)?.replaceAll(',', '.') : null
-    price = price ? parseFloat(price) : null
+    const price: string = type === CATEGORY_TYPES.MENU ? formatPrice(formData.get('price') as string) : null
 
     const selectedZones = zone ? [zone.id] : zones.filter((zone) => formData.get(`zone-${zone.id}`) === 'on').map((zone) => zone.id)
 
@@ -106,11 +106,13 @@ export default function CategoryForm({
       setLoading(true)
 
       await deleteCategoryCascade({ category, sections })
-      window.history.back()
+      window.location.reload()
     } catch (e) {
       setError('Ha habido un error. Inténtalo de nuevo más tarde.')
     }
   }
+
+  const getDefaultPrice = () => (category?.price ? category.price.replace('€', '').replace(',', '.').trim() : '')
 
   useEffect(() => {
     setLoading(false)
@@ -232,16 +234,7 @@ export default function CategoryForm({
         </LineCard>
 
         {type === CATEGORY_TYPES.MENU && (
-          <Input
-            id="price"
-            type="number"
-            label="Precio"
-            placeholder="6.50, 12.5..."
-            defaultValue={category?.price?.toString()}
-            steps={0.01}
-            min={0}
-            required
-          />
+          <Input id="price" type="number" label="Precio" placeholder="6.50, 12.5..." defaultValue={getDefaultPrice()} steps={0.01} min={0} required />
         )}
 
         {error && <Error>{error}</Error>}

@@ -65,6 +65,7 @@ export function Input({
         )}
       </div>
       <input
+        lang="es"
         className="border-b-dark-text py-2 px-4 rounded"
         type={customEnabled ? 'text' : type}
         name={id}
