@@ -61,7 +61,9 @@ export default function ZoneForm({ zone, defaultOpen }: { zone?: ZoneSI; default
   return (
     <div className="flex flex-col gap-10">
       <Info>
-        <p>Modificar el nombre modificará también la ruta:</p>
+        <p>
+          Modificar el nombre modificará también la ruta <strong>(el QR ya no será válido)</strong>:
+        </p>
         {slug && <p className="text-center font-medium">auriga-menu.netlify.app/{slug}</p>}
       </Info>
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
