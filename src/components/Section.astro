@@ -15,10 +15,11 @@ const {
 const products = await getProductsBySection({ sectionId: id })
 ---
 
-<div class="flex flex-col gap-4">
-  <h2 class="text-center">{title}</h2>
-
-  {extraServices && <ExtraServices extraServices={extraServices} />}
+<div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-1">
+    <h2 class="text-center">{title}</h2>
+    {extraServices && <ExtraServices extraServices={extraServices} />}
+  </div>
 
   <Products products={products} />
 </div>
