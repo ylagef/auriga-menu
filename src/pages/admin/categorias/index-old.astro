@@ -1,5 +1,6 @@
 ---
 import Admin from '@components/admin/Admin.astro'
+import CategoryButtonLink from '@components/admin/CategoryButtonLink.astro'
 import LineCard from '@components/admin/LineCard'
 import ButtonLink from '@components/ButtonLink.astro'
 import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
@@ -24,22 +25,7 @@ const categories = await getCategories()
   <div class="flex flex-col gap-6">
     <LineCard client:visible label="Categorías">
       <ButtonLinksContainer>
-        {
-          categories
-            .sort((a, z) => a.order - z.order)
-            .map((category) => (
-              <ButtonLink href={`/admin/categorias/${category.slug}`}>
-                <span>{category.buttonText}</span>
-
-                <div class="text-sm text-gray-500 mt-2">
-                  {category.zones
-                    ?.sort((a, z) => a.zone.name.localeCompare(z.zone.name))
-                    .map(({ zone }) => zone.name)
-                    .join(', ')}
-                </div>
-              </ButtonLink>
-            ))
-        }
+        {categories.sort((a, z) => a.order - z.order).map((category) => <CategoryButtonLink category={category} />)}
       </ButtonLinksContainer>
     </LineCard>
   </div>
