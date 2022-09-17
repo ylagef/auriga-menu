@@ -1,0 +1,45 @@
+---
+import { translations } from 'src/locales/translations'
+import { SectionSI } from 'src/types'
+
+import Button from './Button'
+import LineCard from './LineCard'
+import ProductsCardList from './ProductsCardList.astro'
+
+export interface Props {
+  sections: SectionSI[]
+}
+
+const { sections } = Astro.props
+---
+
+<LineCard label="Secciones">
+  <div class="flex flex-col items-center justify-center w-full gap-4">
+    {sections.length === 0 && <span class="text-gray-600">Aún no hay secciones</span>}
+
+    {
+      sections
+        ?.sort((a, b) => a.title.localeCompare(b.title))
+        .map((section) => (
+          <div class="flex flex-col gap-4 items-center p-2 w-full">
+            <div class="flex flex-col gap-4 w-full">
+              <div class="flex gap-2 items-center justify-between w-full">
+                <h2>{section.title}</h2>
+                <Button href={`/admin/secciones/${section.id}`}>Editar</Button>
+              </div>
+
+              {section.extraServices?.length > 0 && (
+                <div class="flex flex-col mb-2 opacity-70">
+                  {section.extraServices?.map((es) => (
+                    <small>- {translations.extraServices[es]}</small>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <ProductsCardList products={section.products} />
+          </div>
+        ))
+    }
+  </div>
+</LineCard>

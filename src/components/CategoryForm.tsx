@@ -14,14 +14,18 @@ export default function CategoryForm({
   category,
   zone,
   defaultOpen,
-  sections
+  sections,
+  typeCanBeUpdated = true
 }: {
   category?: CategorySI
   zone?: ZoneSI
   defaultOpen?: boolean
   sections?: SectionSI[]
+  typeCanBeUpdated?: boolean
 }) {
   const updateMode = !!category
+  console.log({ category, zone, defaultOpen, sections })
+
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>(null)
   const [confirmDeletion, setConfirmDeletion] = useState(false)
@@ -37,6 +41,8 @@ export default function CategoryForm({
     const formData = new FormData(event.currentTarget)
     const categoryTitle = formData.get('categoryTitle') as string
     const buttonText = formData.get('buttonText') as string
+    let price: number | string = (formData.get('price') as string)?.replaceAll(',', '.')
+    price = price ? parseFloat(price) : undefined
 
     const selectedZones = zone ? [zone.id] : zones.filter((zone) => formData.get(`zone-${zone.id}`) === 'on').map((zone) => zone.id)
     if (selectedZones.length < 1) return setError('Debes seleccionar al menos una zona.')
@@ -50,7 +56,7 @@ export default function CategoryForm({
 
     const slug = createSlug(categoryTitle)
 
-    const categoryObj: CategorySI = { categoryTitle, buttonText, type, extraServices, schedules, slug }
+    const categoryObj: CategorySI = { categoryTitle, buttonText, type, extraServices, schedules, slug, price }
 
     try {
       if (updateMode) {
@@ -171,7 +177,7 @@ export default function CategoryForm({
             defaultValue={category?.type || ''}
             onChange={handleSelectChange}
             required
-            disabled={updateMode}
+            disabled={!typeCanBeUpdated}
           >
             <option disabled value="">
               Selecciona tipo
@@ -183,7 +189,7 @@ export default function CategoryForm({
             ))}
           </select>
 
-          {updateMode && <small>El tipo no puede ser editado</small>}
+          {!typeCanBeUpdated && <small>El tipo no puede ser editado si ya hay elementos en la categoría (platos, secciones y/o productos).</small>}
 
           <ul className="text-sm">
             <li>
@@ -204,6 +210,18 @@ export default function CategoryForm({
             </li>
           </ul>
         </LineCard>
+
+        {type === CATEGORY_TYPES.MENU && (
+          <Input
+            id="price"
+            type="number"
+            label="Precio"
+            placeholder="6.50, 12.5..."
+            defaultValue={category?.price?.toString()}
+            steps={0.01}
+            required
+          />
+        )}
 
         {error && <Error>{error}</Error>}
 

@@ -3,8 +3,7 @@ import Admin from '@components/Admin.astro'
 import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
 import LineCard from '@components/admin/LineCard'
 import CourseForm from '@components/CourseForm'
-import ProductForm from '@components/ProductForm'
-import { getCourseById, getMenuById, getProductById, getProductsByCategory, getProductsBySection, supabase } from 'src/utils/supabase'
+import { getCategoryById, getCourseById, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
 
@@ -22,7 +21,7 @@ if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
 const { courseId } = Astro.params
 
 const course = await getCourseById({ courseId: Number(courseId) })
-const menu = await getMenuById({ menuId: course.menuId })
+const category = await getCategoryById({ categoryId: course.categoryId })
 ---
 
 <Admin user={user}>
@@ -32,7 +31,7 @@ const menu = await getMenuById({ menuId: course.menuId })
     </DetailSummaryContainer>
 
     <LineCard client:visible label="Datos plato">
-      <CourseForm client:visible menu={menu} course={course} />
+      <CourseForm client:visible category={category} course={course} />
     </LineCard>
   </div>
 </Admin>
