@@ -19,7 +19,7 @@ export const getRestaurant = async () => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -30,7 +30,7 @@ export const getZones = async () => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -39,7 +39,7 @@ export const getZoneById = async ({ zoneId }: { zoneId: number }) => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -50,19 +50,19 @@ export const createZone = async ({ name, slug }: { name: string; slug: string })
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   return data
 }
 
-export const updateZone = async ({ name, slug }: { name: string; slug: string }) => {
+export const updateZone = async ({ id, name, slug }: { id: number; name: string; slug: string }) => {
   setAuthToken()
-  const { data, error } = await supabase.from<ZoneSI>('zones').update({ name, slug }).eq('restaurantId', RESTAURANT_ID)
+  const { data, error } = await supabase.from<ZoneSI>('zones').update({ name, slug }).eq('restaurantId', RESTAURANT_ID).eq('id', id)
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   return data
@@ -73,7 +73,7 @@ export const getZoneBySlug = async ({ zoneSlug }: { zoneSlug: string }) => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -88,7 +88,7 @@ export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -98,7 +98,7 @@ export const getCategoryById = async ({ categoryId }: { categoryId: number }) =>
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -110,7 +110,7 @@ export const getCategories = async () => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   return data
@@ -125,7 +125,7 @@ export const getCategoriesByZoneId = async ({ zoneId }: { zoneId: number }) => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   return data.map((d) => ({ ...d.categories, order: d.order }))
@@ -141,7 +141,7 @@ export const getCategoriesByZoneSlug = async ({ zoneSlug }: { zoneSlug: string }
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   return data.map((d) => ({ ...d.category, order: d.order }))
@@ -153,7 +153,7 @@ export const createCategory = async ({ selectedZones, categoryObj }: { selectedZ
 
   if (categoryError) {
     console.error('supabase:createCategory', { categoryError })
-    throw new Error(categoryError.message)
+    throw new Error(categoryError.code)
   }
 
   selectedZones.forEach(async (zoneId) => {
@@ -162,7 +162,7 @@ export const createCategory = async ({ selectedZones, categoryObj }: { selectedZ
       .insert([{ zoneId, categoryId: categoryData[0].id, order: -1 }])
     if (zoneCategoryError) {
       console.error('supabase:createCategory', { zoneCategoryError })
-      throw new Error(zoneCategoryError.message)
+      throw new Error(zoneCategoryError.code)
     }
 
     return [categoryData, zoneCategoryData]
@@ -183,7 +183,7 @@ export const updateCategory = async ({
 
   if (error) {
     console.error('supabase:updateCategory', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   if (changesInZones) {
@@ -196,7 +196,7 @@ export const updateCategory = async ({
 
     if (categoryZonesErr) {
       console.error('supabase:updateCategory', { categoryZonesErr })
-      throw new Error(error.message)
+      throw new Error(error.code)
     }
 
     categoryZonesData
@@ -207,7 +207,7 @@ export const updateCategory = async ({
 
         if (deleteError) {
           console.error('supabase:updateCategory', { deleteError })
-          throw new Error(deleteError.message)
+          throw new Error(deleteError.code)
         }
       })
 
@@ -221,7 +221,7 @@ export const updateCategory = async ({
 
         if (zoneCategoryError) {
           console.error('supabase:updateCategory', { zoneCategoryError })
-          throw new Error(zoneCategoryError.message)
+          throw new Error(zoneCategoryError.code)
         }
       })
   }
@@ -244,7 +244,7 @@ export const deleteCategoryById = async ({ category, sections }: { category: Cat
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -254,7 +254,7 @@ const deleteZoneCategoryByCategoryId = async ({ categoryId }: { categoryId: numb
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -265,7 +265,7 @@ export const getProductById = async ({ productId }: { productId: number }) => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -276,7 +276,7 @@ export const getProducts = async ({ categoryId, sectionId }: { categoryId?: numb
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -286,7 +286,7 @@ export const getProductsByCategory = async ({ categoryId }: { categoryId: number
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -296,7 +296,7 @@ export const getProductsBySection = async ({ sectionId }: { sectionId: number })
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -308,7 +308,7 @@ export const createCategoryProduct = async ({ categoryId, productObj }: { catego
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   return data
@@ -321,7 +321,7 @@ export const createSectionProduct = async ({ sectionId, productObj }: { sectionI
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   return data
@@ -333,7 +333,7 @@ export const updateProduct = async ({ productObj }: { productObj: ProductSI }) =
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   return data
@@ -345,7 +345,7 @@ export const deleteProductById = async ({ productId }: { productId: number }) =>
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   return data
@@ -359,7 +359,7 @@ const deleteProductsByFkId = async ({ sectionId, categoryId }: { sectionId?: num
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   return data
@@ -371,7 +371,7 @@ export const getSections = async ({ categoryId }: { categoryId: number }) => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -381,7 +381,7 @@ export const getSectionsByCategory = async ({ categoryId }: { categoryId: number
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   return data
@@ -392,7 +392,7 @@ export const getSectionById = async ({ sectionId }: { sectionId: number }) => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -404,7 +404,7 @@ export const createSection = async ({ categoryId, sectionObj }: { categoryId: nu
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -417,7 +417,7 @@ export const deleteSectionById = async ({ sectionId }: { sectionId: number }) =>
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
 
   return data
@@ -429,7 +429,7 @@ export const updateSection = async ({ sectionObj }: { sectionObj: SectionSI }) =
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -440,7 +440,7 @@ export const getCourses = async ({ categoryId }: { categoryId: number }) => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -450,7 +450,7 @@ export const getCourseById = async ({ courseId }: { courseId: number }) => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -460,7 +460,7 @@ export const getCoursesByCategory = async ({ categoryId }: { categoryId: number 
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -472,7 +472,7 @@ export const createCourse = async ({ courseObj }: { courseObj: CourseSI }) => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -484,7 +484,7 @@ export const updateCourse = async ({ courseObj }: { courseObj: CourseSI }) => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
@@ -496,7 +496,7 @@ export const deleteCourseById = async ({ courseId }: { courseId: number }) => {
 
   if (error) {
     console.error('error', { error })
-    throw new Error(error.message)
+    throw new Error(error.code)
   }
   return data
 }
