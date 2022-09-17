@@ -123,6 +123,7 @@ export default function ProductForm({
           defaultValue={getDefaultPrice()}
           customValue
           steps={0.01}
+          min={0}
         />
 
         <LineCard label="Opciones">
