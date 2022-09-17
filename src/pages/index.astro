@@ -1,7 +1,6 @@
 ---
+import GeneralLayout from '@layouts/GeneralLayout.astro'
 import { getRestaurant } from 'src/utils/supabase'
-
-import GeneralLayout from '../layouts/GeneralLayout.astro'
 
 const restaurant = await getRestaurant({ restaurantId: 1 })
 ---

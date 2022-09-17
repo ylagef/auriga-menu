@@ -1,9 +1,9 @@
 ---
-import Admin from '@components/Admin.astro'
+import Admin from '@components/admin/Admin.astro'
 import Button, { BUTTON_TYPES } from '@components/admin/Button'
 import Info from '@components/admin/Info'
+import { Input } from '@components/admin/Input'
 import LineCard from '@components/admin/LineCard'
-import { Input } from '@components/Input'
 import { getRestaurant, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')

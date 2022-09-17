@@ -1,12 +1,11 @@
+import Button, { BUTTON_TYPES } from '@components/admin/Button'
+import Error from '@components/admin/Error'
+import { Input } from '@components/admin/Input'
+import LineCard from '@components/admin/LineCard'
 import { FormEvent, useEffect, useState } from 'react'
 import TrashIcon from 'src/icons/TrashIcon'
 import { CategorySI, CourseSI } from 'src/types'
 import { createCourse, deleteCourseById, updateCourse } from 'src/utils/supabase'
-
-import Button, { BUTTON_TYPES } from './admin/Button'
-import Error from './admin/Error'
-import LineCard from './admin/LineCard'
-import { Input } from './Input'
 
 export default function CourseForm({ category, defaultOpen, course }: { category?: CategorySI; defaultOpen?: boolean; course?: CourseSI }) {
   const updateMode = !!course

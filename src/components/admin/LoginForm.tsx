@@ -1,9 +1,8 @@
+import Button, { BUTTON_TYPES } from '@components/admin/Button'
+import { Input } from '@components/admin/Input'
 import { FormEvent, useState } from 'react'
 import { setCookie } from 'src/utils/cookies'
 import { supabase } from 'src/utils/supabase'
-
-import Button, { BUTTON_TYPES } from './admin/Button'
-import { Input } from './Input'
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false)

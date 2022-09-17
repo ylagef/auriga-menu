@@ -1,14 +1,13 @@
+import Button, { BUTTON_TYPES } from '@components/admin/Button'
+import Error from '@components/admin/Error'
+import Info from '@components/admin/Info'
+import { Input } from '@components/admin/Input'
+import LineCard from '@components/admin/LineCard'
 import React, { FormEvent, useEffect, useState } from 'react'
 import slug from 'slug'
 import { translations } from 'src/locales/translations'
 import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, SectionSI, ZoneSI } from 'src/types'
 import { createCategory, deleteCategoryById as deleteCategoryCascade, getZones, updateCategory } from 'src/utils/supabase'
-
-import Button, { BUTTON_TYPES } from './admin/Button'
-import Error from './admin/Error'
-import Info from './admin/Info'
-import LineCard from './admin/LineCard'
-import { Input } from './Input'
 
 export default function CategoryForm({
   category,

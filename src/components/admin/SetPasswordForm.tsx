@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
+import Button, { BUTTON_TYPES } from '@components/admin/Button'
+import { Input } from '@components/admin/Input'
+import React from 'react'
 import { supabase } from 'src/utils/supabase'
-
-import Button, { BUTTON_TYPES } from './admin/Button'
-import { Input } from './Input'
 
 export default function SetPasswordForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

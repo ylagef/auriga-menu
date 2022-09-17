@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { translations } from 'src/locales/translations'
 
-import type { ALLERGENS } from '../types'
+import type { ALLERGENS } from '../../types'
 
 export interface Props {
   allergen: ALLERGENS
 }
 
-export default function Allergen({ allergen }: Props): JSX.Element {
+export default function Allergen({ allergen }: Props) {
   const [allergenOpen, setAllergenOpen] = useState<ALLERGENS>(null)
 
   useEffect(() => {

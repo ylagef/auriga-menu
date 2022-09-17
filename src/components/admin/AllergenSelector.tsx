@@ -1,6 +1,6 @@
 import { translations } from 'src/locales/translations'
 
-import type { ALLERGENS } from '../types'
+import type { ALLERGENS } from '.@components/admintypes'
 
 export interface Props {
   allergen: ALLERGENS

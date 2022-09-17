@@ -1,14 +1,13 @@
+import AllergenSelector from '@components/admin/AllergenSelector'
+import Button, { BUTTON_TYPES } from '@components/admin/Button'
+import Error from '@components/admin/Error'
+import Info from '@components/admin/Info'
+import { Input } from '@components/admin/Input'
+import LineCard from '@components/admin/LineCard'
 import { FormEvent, useEffect, useState } from 'react'
 import TrashIcon from 'src/icons/TrashIcon'
 import { ALLERGENS, CategorySI, ProductSI, SectionSI } from 'src/types'
 import { createCategoryProduct, createSectionProduct, deleteProductById, updateProduct } from 'src/utils/supabase'
-
-import Button, { BUTTON_TYPES } from './admin/Button'
-import Error from './admin/Error'
-import Info from './admin/Info'
-import LineCard from './admin/LineCard'
-import AllergenSelector from './AllergenSelector'
-import { Input } from './Input'
 
 export default function ProductForm({
   category,

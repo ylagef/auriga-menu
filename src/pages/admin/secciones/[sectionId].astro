@@ -1,11 +1,10 @@
 ---
-import Admin from '@components/Admin.astro'
+import Admin from '@components/admin/Admin.astro'
 import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
 import LineCard from '@components/admin/LineCard'
+import ProductForm from '@components/admin/ProductForm'
 import ProductsCardList from '@components/admin/ProductsCardList.astro'
-import ButtonLink from '@components/ButtonLink.astro'
-import ProductForm from '@components/ProductForm'
-import SectionForm from '@components/SectionForm'
+import SectionForm from '@components/admin/SectionForm'
 import { getSectionById, supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
