@@ -1,5 +1,6 @@
 ---
 import Allergen from '@components/app/Allergen'
+import { translations } from 'src/locales/translations'
 
 import type { ALLERGENS } from '../../types'
 
@@ -11,5 +12,9 @@ const { allergens } = Astro.props
 ---
 
 <div class="flex flex-row gap-2">
-  {allergens.sort((a, b) => a.localeCompare(b)).map((allergen) => <Allergen client:load allergen={allergen} />)}
+  {
+    allergens
+      .sort((a, b) => translations.allergens[a].localeCompare(translations.allergens[b]))
+      .map((allergen) => <Allergen client:load allergen={allergen} />)
+  }
 </div>
