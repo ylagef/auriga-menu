@@ -5,6 +5,8 @@ import ProductsCardList from '@components/admin/ProductsCardList.astro'
 import { translations } from 'src/locales/translations'
 import { SectionSI } from 'src/types'
 
+import SectionButtonLink from './SectionButtonLink.astro'
+
 export interface Props {
   sections: SectionSI[]
 }
@@ -20,24 +22,25 @@ const { sections } = Astro.props
       sections
         ?.sort((a, z) => a.order - z.order)
         .map((section) => (
-          <div class="flex flex-col gap-4 items-center p-2 w-full">
-            <div class="flex flex-col gap-4 w-full">
-              <div class="flex gap-2 items-center justify-between w-full">
-                <h2>{section.title}</h2>
-                <Button href={`/admin/secciones/${section.id}`}>Editar</Button>
-              </div>
+          <SectionButtonLink section={section} />
+          // <div class="flex flex-col gap-4 items-center p-2 w-full">
+          //   <div class="flex flex-col gap-4 w-full">
+          //     <div class="flex gap-2 items-center justify-between w-full">
+          //       <h2>{section.title}</h2>
+          //       <Button href={`/admin/secciones/${section.id}`}>Editar</Button>
+          //     </div>
 
-              {section.extraServices?.length > 0 && (
-                <div class="flex flex-col mb-2 opacity-70">
-                  {section.extraServices?.map((es) => (
-                    <small>- {translations.extraServices[es]}</small>
-                  ))}
-                </div>
-              )}
-            </div>
+          //     {section.extraServices?.length > 0 && (
+          //       <div class="flex flex-col mb-2 opacity-70">
+          //         {section.extraServices?.map((es) => (
+          //           <small>- {translations.extraServices[es]}</small>
+          //         ))}
+          //       </div>
+          //     )}
+          //   </div>
 
-            <ProductsCardList products={section.products} />
-          </div>
+          //   <ProductsCardList products={section.products} />
+          // </div>
         ))
     }
   </div>
