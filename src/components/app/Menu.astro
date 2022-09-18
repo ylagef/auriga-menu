@@ -13,17 +13,19 @@ const { category, courses } = Astro.props
 
 <div class="flex flex-col gap-8">
   {
-    courses?.map((course) => (
-      <div class="flex flex-col gap-2">
-        <h2 class="text-center">{course.name}</h2>
+    courses
+      ?.sort((a, z) => a.order - z.order)
+      .map((course) => (
+        <div class="flex flex-col gap-2">
+          <h2 class="text-center">{course.name}</h2>
 
-        <div class="flex flex-col gap-2 items-center">
-          {course.products.map((product) => (
-            <p class="text-center">{product}</p>
-          ))}
+          <div class="flex flex-col gap-2 items-center">
+            {course.products.map((product) => (
+              <p class="text-center">{product}</p>
+            ))}
+          </div>
         </div>
-      </div>
-    ))
+      ))
   }
 
   <div class="flex flex-col gap-2 items-center">
