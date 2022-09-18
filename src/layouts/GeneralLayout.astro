@@ -21,6 +21,7 @@ const restaurant = await getRestaurant()
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <script defer data-domain="auriga-menu.netlify.app" src="https://plausible.io/js/plausible.js"></script>
   </head>
   <body class="m-0 relative bg-black z-10 flex flex-col overflow-y-auto">
     <BurgerMenu client:load />
