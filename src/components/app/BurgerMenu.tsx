@@ -49,7 +49,7 @@ export default function BurgerMenu({ dark = false }: Props) {
       <div className={`absolute top-0 w-screen h-full bg-black/80 p-4 transition-[left] overflow-y-auto ${isOpen ? 'left-0' : 'left-full'}`}>
         <div className="flex flex-col items-center gap-4 mt-16">
           {categories?.map((category) => (
-            <a key={category.id} href={`/${zone}/${category.id}`} className="text-light-text font-medium text-xl">
+            <a key={category.id} href={`/${zone}/${category.slug}`} className="text-light-text font-medium text-xl">
               {category.buttonText}
             </a>
           ))}
