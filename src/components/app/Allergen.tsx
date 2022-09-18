@@ -27,7 +27,9 @@ export default function Allergen({ allergen }: Props) {
       }}
     >
       <img className="h-6" src={`/assets/images/allergens/${allergen}.png`} alt={translations.allergens[allergen]} />
-      <small className={`${allergenOpen === allergen ? 'w-screen pl-2' : 'w-0'} transition-all max-w-fit`}>{translations.allergens[allergen]}</small>
+      <small className={`${allergenOpen === allergen ? 'w-screen pl-2' : 'w-0'} transition-all max-w-fit whitespace-nowrap`}>
+        {translations.allergens[allergen]}
+      </small>
     </div>
   )
 }
