@@ -11,23 +11,25 @@ const {
 } = Astro.props
 ---
 
-<div class="flex justify-between items-center">
-  <div class="flex flex-col pr-4 gap-2">
-    <p>{name}</p>
+<div class="flex flex-col gap-2">
+  <div class="flex justify-between items-center">
+    <div class="flex flex-col pr-4 gap-2">
+      <p class="font-medium">{name}</p>
 
-    {description && <small class="text-dark-text/70">{description}</small>}
-    {
-      options && (
-        <div class="flex flex-col gap-2">
-          {options.map((option) => (
-            <small class="text-dark-text/70">- {option}</small>
-          ))}
-        </div>
-      )
-    }
+      {description && <small class="text-dark-text/70">{description}</small>}
 
-    {allergens && <Allergens allergens={allergens} />}
+      {
+        options?.length > 0 && (
+          <div class="flex flex-col gap-2">
+            {options.map((option) => (
+              <small class="text-dark-text/70">- {option}</small>
+            ))}
+          </div>
+        )
+      }
+    </div>
+
+    <p class="font-medium text-center">{price}</p>
   </div>
-
-  <p class="text-center">{price}</p>
+  {allergens?.length > 0 && <Allergens allergens={allergens} />}
 </div>

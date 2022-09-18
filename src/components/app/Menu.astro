@@ -27,7 +27,7 @@ const { category, courses } = Astro.props
   }
 
   <div class="flex flex-col gap-2 items-center">
-    {category.extraServices?.map((extraService) => <h4 class="text-center">{translations.extraServices[extraService]}</h4>)}
+    {category.extraServices?.map((extraService) => <h5 class="text-center">{translations.extraServices[extraService]}</h5>)}
   </div>
 
   <h2 class="text-center text-4xl">{category.price}</h2>

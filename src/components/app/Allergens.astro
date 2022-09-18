@@ -11,7 +11,7 @@ export interface Props {
 const { allergens } = Astro.props
 ---
 
-<div class="flex flex-row gap-2">
+<div class="flex flex-wrap gap-2">
   {
     allergens
       .sort((a, b) => translations.allergens[a].localeCompare(translations.allergens[b]))

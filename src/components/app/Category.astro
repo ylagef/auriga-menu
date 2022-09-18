@@ -35,7 +35,7 @@ switch (type) {
   <h1 class="text-center">{categoryTitle}</h1>
 
   {
-    schedules && (
+    schedules?.length > 0 && (
       <div class="flex flex-col gap-1 py-4">
         {schedules.map((schedule) => (
           <small class="text-center">{translations.schedules[schedule]}</small>
@@ -44,7 +44,7 @@ switch (type) {
     )
   }
 
-  {extraServices && <ExtraServices extraServices={extraServices} />}
+  {extraServices && !courses && <ExtraServices extraServices={extraServices} />}
 
   <Divider theme="dark" />
 
