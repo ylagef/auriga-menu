@@ -21,6 +21,7 @@ export default function CourseForm({ category, defaultOpen, course }: { category
 
     // get inputs from form
     const formData = new FormData(event.currentTarget)
+    const order = formData.get('order') as string
     const name = formData.get('name') as string
     const parsedOptions = products.map((_, index) => formData.get('option-' + index) as string)
 
@@ -28,7 +29,7 @@ export default function CourseForm({ category, defaultOpen, course }: { category
       categoryId: category.id,
       name,
       products: parsedOptions,
-      order: course?.order || -1
+      order: Number(order)
     }
     try {
       if (updateMode) {
@@ -54,6 +55,8 @@ export default function CourseForm({ category, defaultOpen, course }: { category
     }
   }
 
+  const getDefaultOrder = () => (course?.order ? (course.order > 0 ? String(course.order) : '1') : '1')
+
   useEffect(() => {
     setLoading(false)
   }, [error])
@@ -72,16 +75,18 @@ export default function CourseForm({ category, defaultOpen, course }: { category
   return (
     <div className="flex flex-col gap-10 w-full">
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+        <Input id="order" type="number" label="Orden" required defaultValue={getDefaultOrder()} steps={1} min={1} />
         <Input id="name" label="Nombre" placeholder="Nombre" required defaultValue={course?.name} />
 
         <LineCard label="Opciones">
           {products.length > 0 && (
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col w-full gap-4">
               {products.map((option, index) => (
-                <div className="flex gap-2 items-center ml-8" key={`option-${index}`}>
+                <div className="flex gap-2 items-center" key={`option-${index}`}>
                   <Input id={`option-${index}`} label={`Opción ${index + 1}`} placeholder={`Opción ${index + 1}`} defaultValue={option} required />
                   {products.length > 1 && index === products.length - 1 && (
                     <button
+                      className="mt-7"
                       onClick={() => {
                         // remove last option
                         setProducts((prev) => prev.slice(0, -1))
