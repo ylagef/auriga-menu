@@ -91,7 +91,7 @@ const typeCanBeUpdated = courses?.length === 0 || products?.length === 0 || sect
 
     <LineCard client:visible label={createTitle}>
       {isMenu && <CourseForm client:visible category={category} />}
-      {isSections && <SectionForm client:visible category={category} sections={sections} />}
+      {isSections && <SectionForm client:visible category={category} />}
       {isProducts && <ProductForm client:visible category={category} />}
     </LineCard>
   </div>

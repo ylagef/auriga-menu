@@ -7,17 +7,7 @@ import { translations } from 'src/locales/translations'
 import { CategorySI, EXTRA_SERVICES, SectionSI } from 'src/types'
 import { createSection, deleteSectionById, updateSection } from 'src/utils/supabase'
 
-export default function SectionForm({
-  category,
-  sections,
-  section,
-  defaultOpen
-}: {
-  category?: CategorySI
-  sections?: SectionSI[]
-  section?: SectionSI
-  defaultOpen?: boolean
-}) {
+export default function SectionForm({ category, section, defaultOpen }: { category?: CategorySI; section?: SectionSI; defaultOpen?: boolean }) {
   const updateMode = !!section
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>(null)
@@ -31,6 +21,7 @@ export default function SectionForm({
     // get inputs from form
     const formData = new FormData(event.currentTarget)
     const title = formData.get('title') as string
+    const order = formData.get('order') as string
 
     const extraServices = Object.values(EXTRA_SERVICES)
       .filter((extraService) => formData.get(extraService) === 'on')
@@ -39,7 +30,7 @@ export default function SectionForm({
     const sectionObj: SectionSI = {
       title,
       extraServices,
-      order: section?.order || -1
+      order: Number(order)
     }
 
     try {
@@ -66,6 +57,8 @@ export default function SectionForm({
     }
   }
 
+  const getDefaultOrder = () => (section?.order ? (section.order > 0 ? String(section.order) : '1') : '1')
+
   useEffect(() => {
     setLoading(false)
   }, [error])
@@ -84,6 +77,7 @@ export default function SectionForm({
   return (
     <div className="flex flex-col gap-10">
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+        <Input id="order" type="number" label="Orden" required defaultValue={getDefaultOrder()} steps={1} min={1} />
         <Input id="title" label="Título" placeholder="Título" required defaultValue={section?.title} />
 
         <LineCard label="Servicios extra">

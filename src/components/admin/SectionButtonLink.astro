@@ -1,0 +1,22 @@
+---
+import ButtonLink from '@components/ButtonLink.astro'
+import { SectionSI } from 'src/types'
+
+import OrderCorner from './OrderCorner.astro'
+
+export interface Props {
+  section: SectionSI
+}
+
+const { section } = Astro.props
+---
+
+<ButtonLink href={`/admin/secciones/${section.id}`}>
+  <OrderCorner order={section.order} />
+  <div class="flex flex-col gap-2">
+    <p class="font-medium">{section.title}</p>
+    <div class="opacity-70 flex flex-col gap-2">
+      {section.products?.length > 0 ? <small class="w-full">{section.products.length} productos</small> : <small class="w-full">Sin productos</small>}
+    </div>
+  </div>
+</ButtonLink>
