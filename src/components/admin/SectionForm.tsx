@@ -20,8 +20,8 @@ export default function SectionForm({ category, section, defaultOpen }: { catego
 
     // get inputs from form
     const formData = new FormData(event.currentTarget)
-    const title = formData.get('title') as string
     const order = formData.get('order') as string
+    const title = formData.get('title') as string
 
     const extraServices = Object.values(EXTRA_SERVICES)
       .filter((extraService) => formData.get(extraService) === 'on')
