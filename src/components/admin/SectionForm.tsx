@@ -21,7 +21,7 @@ export default function SectionForm({
   hasSubsections?: boolean
 }) {
   const updateMode = !!section && !hasSubsections
-  console.log({ section, hasSubsections })
+
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>(null)
   const [confirmDeletion, setConfirmDeletion] = useState(false)

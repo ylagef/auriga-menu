@@ -51,6 +51,7 @@ export interface ProductSI {
   options?: string[]
   price: string
   allergens?: ALLERGENS[]
+  customPrice?: boolean
 }
 
 export interface SectionSI {

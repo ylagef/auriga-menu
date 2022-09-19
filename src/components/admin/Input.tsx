@@ -8,9 +8,10 @@ export function Input({
   required = false,
   defaultValue,
   onChange,
-  customValue = false,
+  customValueEnabled,
   steps,
-  min
+  min,
+  handleCustomValueEnabled
 }: {
   id: string
   label?: string
@@ -19,12 +20,11 @@ export function Input({
   required?: boolean
   defaultValue?: string
   onChange?: (evt: React.ChangeEvent<HTMLInputElement>) => void
-  customValue?: boolean
+  customValueEnabled?: boolean
   steps?: number
   min?: number
+  handleCustomValueEnabled?: (value: boolean) => void
 }) {
-  const [customEnabled, setCustomEnabled] = useState(false)
-
   if (type === 'textarea') {
     return (
       <div className="flex flex-col gap-1 w-full">
@@ -49,7 +49,7 @@ export function Input({
           {label} {required && '*'}
         </label>
 
-        {customValue && (
+        {customValueEnabled !== undefined && (
           <div className="flex gap-2 items-center justify-center">
             <label htmlFor={`${id}-custom-value`}>Personalizado</label>
             <input
@@ -58,8 +58,9 @@ export function Input({
               id={`${id}-custom-value`}
               className="w-5 h-5"
               onChange={(ev) => {
-                setCustomEnabled(ev.target.checked)
+                handleCustomValueEnabled(ev.target.checked)
               }}
+              checked={customValueEnabled}
             />
           </div>
         )}
@@ -67,14 +68,14 @@ export function Input({
       <input
         lang="es"
         className="border-b-dark-text py-2 px-4 rounded"
-        type={customEnabled ? 'text' : type}
+        type={customValueEnabled ? 'text' : type}
         name={id}
         placeholder={placeholder}
         defaultValue={defaultValue}
         required={required}
         onChange={onChange}
         step={steps}
-        min={type === 'number' && !customEnabled ? min : undefined}
+        min={type === 'number' && !customValueEnabled ? min : undefined}
       />
     </div>
   )

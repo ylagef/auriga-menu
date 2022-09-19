@@ -28,6 +28,7 @@ export default function ProductForm({
   const [open, setOpen] = useState(defaultOpen)
   const [allergens, setAllergens] = useState<ALLERGENS[]>(product?.allergens || [])
   const [options, setOptions] = useState<string[]>(product?.options || [])
+  const [customValueEnabled, setCustomValueEnabled] = useState(product?.customPrice || false)
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -42,7 +43,15 @@ export default function ProductForm({
 
     const parsedOptions = options.map((_, index) => formData.get('option-' + index) as string)
 
-    const productObj: ProductSI = { name, description, price, options: parsedOptions, allergens, order: Number(order) }
+    const productObj: ProductSI = {
+      name,
+      description,
+      price,
+      options: parsedOptions,
+      allergens,
+      order: Number(order),
+      customPrice: customValueEnabled
+    }
 
     try {
       if (updateMode) {
@@ -71,6 +80,10 @@ export default function ProductForm({
 
   const getDefaultPrice = () => (product?.price ? product.price.replace('€', '').replace(',', '.').trim() : '')
   const getDefaultOrder = () => (product?.order ? (product.order > 0 ? String(product.order) : '1') : '1')
+
+  const handleCustomValueEnabled = (val: boolean) => {
+    setCustomValueEnabled(val)
+  }
 
   useEffect(() => {
     setLoading(false)
@@ -118,9 +131,9 @@ export default function ProductForm({
           type="number"
           label="Precio"
           placeholder="6.50, S/M..."
-          required
           defaultValue={getDefaultPrice()}
-          customValue
+          customValueEnabled={customValueEnabled}
+          handleCustomValueEnabled={handleCustomValueEnabled}
           steps={0.01}
           min={0}
         />

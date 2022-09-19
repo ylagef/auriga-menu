@@ -80,7 +80,6 @@ export const getZoneBySlug = async ({ zoneSlug }: { zoneSlug: string }) => {
 
 // Categories
 export const getCategoryBySlug = async ({ categorySlug }: { categorySlug: string }) => {
-  console.log({ categorySlug })
   const { data, error } = await supabase
     .from<CategorySI>('categories')
     .select('*, zones:zones_categories(zone:zones(id)), orders:zones_categories(zoneId,order)')
