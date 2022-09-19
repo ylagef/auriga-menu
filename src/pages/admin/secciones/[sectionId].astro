@@ -29,10 +29,9 @@ let section: SectionSI, hasSubsections: boolean, isSubsection: boolean
 
 try {
   section = await getSectionById({ sectionId })
-  console.log({ section })
+
   hasSubsections = section.type === SECTION_TYPES.SUBSECTIONS
   isSubsection = !!section.parentSectionId
-  console.log({ section })
 } catch (e) {
   console.error('ERR!', e.message)
 
