@@ -1,18 +1,26 @@
 ---
 import ExtraServices from '@components/app/ExtraServices.astro'
 import Products from '@components/app/Products.astro'
-import { SectionSI } from 'src/types'
-import { getProductsBySection } from 'src/utils/supabase'
+import { ProductSI, SECTION_TYPES, SectionSI } from 'src/types'
+import { getProductsBySection, getSubsectionsBySection } from 'src/utils/supabase'
 
 export interface Props {
   section: SectionSI
 }
 
 const {
-  section: { id, title, extraServices }
+  section: { id, title, extraServices, type, products, subsections }
 } = Astro.props
 
-const products = await getProductsBySection({ sectionId: id })
+// TODO all data in same obj?!
+
+// let products: ProductSI[], sections: SectionSI[]
+// if (type === SECTION_TYPES.PRODUCTS) {
+//   products = await getProductsBySection({ sectionId: id })
+// } else if (type === SECTION_TYPES.SUBSECTIONS) {
+//   sections = await getSubsectionsBySection({ sectionId: id })
+// }
+console.log({ id, type, products, subsections })
 ---
 
 <div class="flex flex-col gap-6">

@@ -63,7 +63,7 @@ export default function ProductForm({
     try {
       setLoading(true)
       await deleteProductById({ productId: product.id })
-      window.location.reload()
+      window.history.back()
     } catch (e) {
       setError('Ha habido un error. Inténtalo de nuevo más tarde.')
     }

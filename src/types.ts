@@ -34,6 +34,10 @@ export enum CATEGORY_TYPES {
   SECTIONS = 'sections',
   PRODUCTS = 'products'
 }
+export enum SECTION_TYPES {
+  SUBSECTIONS = 'subsections',
+  PRODUCTS = 'products'
+}
 
 export interface ProductSI {
   // fk
@@ -52,14 +56,17 @@ export interface ProductSI {
 export interface SectionSI {
   // fk
   categoryId?: number
+  parentSectionId?: number
 
   id?: number
   order?: number
   title?: string
   extraServices?: EXTRA_SERVICES[]
+  type?: SECTION_TYPES
 
   // join
   products?: ProductSI[]
+  subsections?: SectionSI[]
 }
 
 export interface CourseSI {

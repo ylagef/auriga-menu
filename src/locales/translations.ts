@@ -38,5 +38,9 @@ export const translations = {
     menu: 'Menú',
     sections: 'Secciones',
     products: 'Productos'
+  },
+  sectionTypes: {
+    subsections: 'Subsecciones',
+    products: 'Productos'
   }
 }
