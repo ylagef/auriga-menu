@@ -24,7 +24,6 @@ export default function CategoryForm({
   typeCanBeUpdated?: boolean
 }) {
   const updateMode = !!category
-  console.log({ category })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>(null)
   const [confirmDeletion, setConfirmDeletion] = useState(false)
@@ -99,10 +98,9 @@ export default function CategoryForm({
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectElement = event.currentTarget
-    const id = selectElement.id
     const selectedValue = selectElement.value
 
-    if (id === 'type') setType(selectedValue as CATEGORY_TYPES)
+    setType(selectedValue as CATEGORY_TYPES)
   }
 
   const deleteCategory = async () => {
@@ -110,7 +108,7 @@ export default function CategoryForm({
       setLoading(true)
 
       await deleteCategoryCascade({ category, sections })
-      window.location.reload()
+      window.history.back()
     } catch (e) {
       setError('Ha habido un error. Inténtalo de nuevo más tarde.')
     }
@@ -214,7 +212,7 @@ export default function CategoryForm({
 
         <LineCard label="Tipo *">
           <select
-            id="type"
+            id="category-type"
             className="border-b-dark-text py-2 px-4 rounded"
             defaultValue={category?.type || ''}
             onChange={handleSelectChange}

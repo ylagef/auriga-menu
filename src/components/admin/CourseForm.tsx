@@ -49,7 +49,7 @@ export default function CourseForm({ category, defaultOpen, course }: { category
     try {
       setLoading(true)
       await deleteCourseById({ courseId: course.id })
-      window.location.reload()
+      window.history.back()
     } catch (e) {
       setError('Ha habido un error. Inténtalo de nuevo más tarde.')
     }
