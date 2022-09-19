@@ -4,11 +4,12 @@ import { SectionSI } from 'src/types'
 
 export interface Props {
   sections: SectionSI[]
+  isSubsections?: boolean
 }
 
-const { sections } = Astro.props
+const { sections, isSubsections } = Astro.props
 ---
 
 <div class="flex flex-col gap-8">
-  {sections.sort((a, z) => a.order - z.order).map((section) => <Section section={section} />)}
+  {sections.sort((a, z) => a.order - z.order).map((section) => <Section section={section} isSubsection={isSubsections} />)}
 </div>
