@@ -1,33 +1,30 @@
 ---
 import ExtraServices from '@components/app/ExtraServices.astro'
 import Products from '@components/app/Products.astro'
-import { ProductSI, SECTION_TYPES, SectionSI } from 'src/types'
-import { getProductsBySection, getSubsectionsBySection } from 'src/utils/supabase'
+import { SectionSI } from 'src/types'
+
+import Sections from './Sections.astro'
 
 export interface Props {
   section: SectionSI
+  isSubsection?: boolean
 }
 
 const {
-  section: { id, title, extraServices, type, products, subsections }
+  section: { id, title, extraServices, type, products, subsections },
+  isSubsection
 } = Astro.props
 
-// TODO all data in same obj?!
-
-// let products: ProductSI[], sections: SectionSI[]
-// if (type === SECTION_TYPES.PRODUCTS) {
-//   products = await getProductsBySection({ sectionId: id })
-// } else if (type === SECTION_TYPES.SUBSECTIONS) {
-//   sections = await getSubsectionsBySection({ sectionId: id })
-// }
-console.log({ id, type, products, subsections })
+console.log({ id, type, products, subsections, isSubsection })
 ---
 
 <div class="flex flex-col gap-6">
   <div class="flex flex-col gap-1">
-    <h2 class="text-center">{title}</h2>
+    {isSubsection ? <h4 class="text-center">{title}</h4> : <h2 class="text-center">{title}</h2>}
+
     {extraServices && <ExtraServices extraServices={extraServices} />}
   </div>
 
-  <Products products={products} />
+  {products?.length > 0 && <Products products={products} />}
+  {subsections?.length > 0 && <Sections sections={subsections} isSubsections />}
 </div>

@@ -401,7 +401,7 @@ export const getSections = async ({ categoryId }: { categoryId: number }) => {
 export const getSectionsByCategory = async ({ categoryId }: { categoryId: number }) => {
   const { data, error } = await supabase
     .from<SectionSI>('sections')
-    .select('*, products ( * ), subsections:sections ( * )')
+    .select('*, products ( * ), subsections:sections ( *, products ( * ) )')
     .eq('categoryId', categoryId)
 
   if (error) {
@@ -415,7 +415,7 @@ export const getSectionsByCategory = async ({ categoryId }: { categoryId: number
 export const getSectionById = async ({ sectionId }: { sectionId: number }) => {
   const { data, error } = await supabase
     .from<SectionSI>('sections')
-    .select('*, products ( * ), subsections:sections ( * )')
+    .select('*, products ( * ), subsections:sections ( *, products ( * ) )')
     .eq('id', sectionId)
     .single()
 

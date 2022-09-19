@@ -42,7 +42,7 @@ export default function SectionForm({
       .map((extraService) => extraService)
 
     const sectionObj: SectionSI = {
-      type,
+      type: hasSubsections ? SECTION_TYPES.PRODUCTS : type,
       title,
       extraServices,
       order: Number(order)
