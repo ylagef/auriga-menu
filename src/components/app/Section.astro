@@ -18,7 +18,7 @@ const {
 console.log({ id, type, products, subsections, isSubsection })
 ---
 
-<div class="flex flex-col gap-6">
+<div class={`flex flex-col gap-${isSubsection ? '2' : '4'}`}>
   <div class="flex flex-col gap-1">
     {isSubsection ? <h4 class="text-center">{title}</h4> : <h2 class="text-center">{title}</h2>}
 

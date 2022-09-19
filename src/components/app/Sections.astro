@@ -10,6 +10,6 @@ export interface Props {
 const { sections, isSubsections } = Astro.props
 ---
 
-<div class="flex flex-col gap-8">
+<div class={`flex flex-col gap-${isSubsections ? '4' : '8'}`}>
   {sections.sort((a, z) => a.order - z.order).map((section) => <Section section={section} isSubsection={isSubsections} />)}
 </div>
