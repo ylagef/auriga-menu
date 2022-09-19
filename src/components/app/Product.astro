@@ -14,7 +14,7 @@ const {
 <div class="flex flex-col gap-2">
   <div class="flex justify-between items-center">
     <div class="flex flex-col pr-4 gap-2">
-      <p class="font-medium">{name}</p>
+      <p>{name}</p>
 
       {description && <small class="text-dark-text/70">{description}</small>}
 
@@ -29,7 +29,7 @@ const {
       }
     </div>
 
-    <p class="font-medium text-center">{price}</p>
+    <p class="text-center">{price}</p>
   </div>
   {allergens?.length > 0 && <Allergens allergens={allergens} />}
 </div>
