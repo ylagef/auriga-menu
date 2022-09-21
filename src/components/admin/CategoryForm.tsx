@@ -3,12 +3,15 @@ import Error from '@components/admin/Error'
 import Info from '@components/admin/Info'
 import { Input } from '@components/admin/Input'
 import LineCard from '@components/admin/LineCard'
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useRef, useState } from 'react'
+import ReactToPrint from 'react-to-print'
 import slug from 'slug'
 import { translations } from 'src/locales/translations'
 import { CATEGORY_TYPES, CategorySI, EXTRA_SERVICES, SCHEDULES, SectionSI, ZoneSI } from 'src/types'
 import { createCategory, deleteCategoryById as deleteCategoryCascade, getZones, updateCategory } from 'src/utils/supabase'
 import { formatPrice } from 'src/utils/utilities'
+
+import MenuToPrint from './MenuToPrint'
 
 export default function CategoryForm({
   category,
@@ -24,6 +27,8 @@ export default function CategoryForm({
   typeCanBeUpdated?: boolean
 }) {
   const updateMode = !!category
+  const componentRef = useRef()
+
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>(null)
   const [confirmDeletion, setConfirmDeletion] = useState(false)
@@ -130,13 +135,33 @@ export default function CategoryForm({
 
   if (!open)
     return (
-      <Button
-        onClick={() => {
-          setOpen(true)
-        }}
-      >
-        Abrir editor
-      </Button>
+      <div>
+        <div className="flex flex-col gap-4">
+          <Button
+            onClick={() => {
+              setOpen(true)
+            }}
+          >
+            Abrir editor
+          </Button>
+
+          {type === CATEGORY_TYPES.MENU && (
+            <ReactToPrint
+              trigger={() => <button>Imprimir menú</button>}
+              content={() => componentRef.current}
+              documentTitle={slug(category.categoryTitle)}
+            />
+          )}
+        </div>
+
+        {type === CATEGORY_TYPES.MENU && (
+          <div className="hidden">
+            <div ref={componentRef}>
+              <MenuToPrint category={category} />
+            </div>
+          </div>
+        )}
+      </div>
     )
 
   return (
@@ -222,7 +247,7 @@ export default function CategoryForm({
             <option disabled value="">
               Selecciona tipo
             </option>
-            {Object.values(CATEGORY_TYPES).map((type) => (
+            {Object.values(CATEGORY_TYPES).map((type: CATEGORY_TYPES) => (
               <option key={type} value={type}>
                 {translations.categoryTypes[type]}
               </option>
