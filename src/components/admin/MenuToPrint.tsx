@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { translations } from 'src/locales/translations'
 import { CategorySI, CourseSI } from 'src/types'
 import { getCoursesByCategory } from 'src/utils/supabase'
 
 export default function MenuToPrint({ category }: { category: CategorySI }) {
-  const [courses, setCourses] = React.useState<CourseSI[]>([])
+  const [courses, setCourses] = useState<CourseSI[]>([])
 
   const fetchCourses = async () => {
     const courses = await getCoursesByCategory({ categoryId: category.id })
