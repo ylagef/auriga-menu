@@ -27,7 +27,7 @@ export default function CategoryForm({
   typeCanBeUpdated?: boolean
 }) {
   const updateMode = !!category
-  const componentRef = useRef()
+  const componentRef = useRef(null)
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>(null)
@@ -145,7 +145,7 @@ export default function CategoryForm({
             Abrir editor
           </Button>
 
-          {type === CATEGORY_TYPES.MENU && (
+          {type === CATEGORY_TYPES.MENU && componentRef.current && (
             <ReactToPrint
               trigger={() => <button>Imprimir menú</button>}
               content={() => componentRef.current}
