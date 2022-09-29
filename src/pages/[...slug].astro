@@ -11,19 +11,27 @@ if (slug === 'favicon.ico') return
 
 const [zoneSlug, sectionSlug] = slug.toString().split('/')
 
-const zones = await getZones()
+let name: string, zones: ZoneSI[], zone: ZoneSI, category: CategorySI
+try {
+  name = (await getRestaurant())?.name
+  zones = await getZones()
 
-if (!zones.find((z: ZoneSI) => z.slug === zoneSlug)) {
-  return Astro.redirect('/')
-}
+  if (!zones.find((z: ZoneSI) => z.slug === zoneSlug)) {
+    return Astro.redirect('/')
+  }
 
-const { name } = await getRestaurant()
+  if (!sectionSlug) {
+    zone = await getZoneBySlug({ zoneSlug })
+  } else {
+    category = await getCategoryBySlug({ categorySlug: sectionSlug })
+  }
+} catch (e) {
+  console.error('ERR!', e.message)
 
-let zone: ZoneSI, category: CategorySI
-if (!sectionSlug) {
-  zone = await getZoneBySlug({ zoneSlug })
-} else {
-  category = await getCategoryBySlug({ categorySlug: sectionSlug })
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  })
 }
 ---
 
