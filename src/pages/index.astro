@@ -1,18 +1,26 @@
 ---
+import ButtonLink from '@components/ButtonLink.astro'
+import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
 import GeneralLayout from '@layouts/GeneralLayout.astro'
-import { getRestaurant } from 'src/utils/supabase'
+import { RestaurantSI, ZoneSI } from 'src/types'
+import { getRestaurant, getZones } from 'src/utils/supabase'
 
-const restaurant = await getRestaurant()
+let restaurant: RestaurantSI, zones: ZoneSI[]
+try {
+  restaurant = await getRestaurant()
+  zones = await getZones()
+} catch (e) {
+  console.error('ERR!', e.message)
+
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  })
+}
 ---
 
-<GeneralLayout title={restaurant.name} />
-
-<style is:global>
-  #logo-container {
-    flex-grow: 1;
-    align-items: center;
-  }
-  main {
-    display: none;
-  }
-</style>
+<GeneralLayout title={restaurant?.name}>
+  <ButtonLinksContainer>
+    {zones?.map((zone) => <ButtonLink href={`/${zone.slug}`}>{zone.name}</ButtonLink>)}
+  </ButtonLinksContainer>
+</GeneralLayout>
