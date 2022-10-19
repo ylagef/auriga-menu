@@ -1,0 +1,11 @@
+---
+export interface Props {
+  order: number
+}
+
+const { order } = Astro.props
+
+const orderLabel = !order || order < 1 ? `-` : `${order}º`
+---
+
+<span class="absolute top-0 left-0 rounded-br rounded-tl border font-medium py-1 px-2 shadow-inner opacity-60 text-sm">{orderLabel}</span>

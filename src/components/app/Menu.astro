@@ -1,0 +1,36 @@
+---
+import { CategorySI, CourseSI } from 'src/types'
+
+import { translations } from '../../locales/translations'
+
+export interface Props {
+  courses: CourseSI[]
+  category: CategorySI
+}
+
+const { category, courses } = Astro.props
+---
+
+<div class="flex flex-col gap-8">
+  {
+    courses
+      ?.sort((a, z) => a.order - z.order)
+      .map((course) => (
+        <div class="flex flex-col gap-2">
+          <h2 class="text-center">{course.name}</h2>
+
+          <div class="flex flex-col gap-2 items-center">
+            {course.products.map((product) => (
+              <p class="text-center">{product}</p>
+            ))}
+          </div>
+        </div>
+      ))
+  }
+
+  <div class="flex flex-col gap-2 items-center">
+    {category.extraServices?.map((extraService) => <h5 class="text-center">{translations.extraServices[extraService]}</h5>)}
+  </div>
+
+  <h2 class="text-center text-4xl">{category.price}</h2>
+</div>

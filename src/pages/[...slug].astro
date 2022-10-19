@@ -1,20 +1,41 @@
 ---
-import Section from '@components/Section.astro'
-import Zone from '@components/Zone.astro'
-
-import Layout from '../layouts/Layout.astro'
-import { RESTAURANT } from '../mock/auriga'
-
-const { name } = RESTAURANT
+import Category from '@components/app/Category.astro'
+import Zone from '@components/app/Zone.astro'
+import GeneralLayout from '@layouts/GeneralLayout.astro'
+import { CategorySI, ZoneSI } from 'src/types'
+import { getCategoryBySlug, getRestaurant, getZoneBySlug, getZones } from 'src/utils/supabase'
 
 const { slug } = Astro.params
+
+if (slug === 'favicon.ico') return
+
 const [zoneSlug, sectionSlug] = slug.toString().split('/')
 
-const zone = RESTAURANT.zones[zoneSlug]
-const section = zone?.sections.find((section) => section.id === sectionSlug)
+let name: string, zones: ZoneSI[], zone: ZoneSI, category: CategorySI
+try {
+  name = (await getRestaurant())?.name
+  zones = await getZones()
+
+  if (!zones.find((z: ZoneSI) => z.slug === zoneSlug)) {
+    return Astro.redirect('/')
+  }
+
+  if (!sectionSlug) {
+    zone = await getZoneBySlug({ zoneSlug })
+  } else {
+    category = await getCategoryBySlug({ categorySlug: sectionSlug })
+  }
+} catch (e) {
+  console.error('ERR!', e.message)
+
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  })
+}
 ---
 
-<Layout title={name}>
-  {zone && !section && <Zone zone={zone} slug={slug.toString()} />}
-  {section && <Section section={section} />}
-</Layout>
+<GeneralLayout title={name}>
+  {zone && !sectionSlug && <Zone zone={zone} />}
+  {category && <Category category={category} />}
+</GeneralLayout>

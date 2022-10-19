@@ -1,0 +1,20 @@
+---
+import Allergen from '@components/app/Allergen'
+import { translations } from 'src/locales/translations'
+
+import type { ALLERGENS } from '../../types'
+
+export interface Props {
+  allergens: ALLERGENS[]
+}
+
+const { allergens } = Astro.props
+---
+
+<div class="flex flex-wrap gap-2">
+  {
+    allergens
+      .sort((a, b) => translations.allergens[a].localeCompare(translations.allergens[b]))
+      .map((allergen) => <Allergen client:load allergen={allergen} />)
+  }
+</div>

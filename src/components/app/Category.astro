@@ -1,0 +1,56 @@
+---
+import Card from '@components/app/Card.astro'
+import Divider from '@components/app/Divider.astro'
+import ExtraServices from '@components/app/ExtraServices.astro'
+import Menu from '@components/app/Menu.astro'
+import Products from '@components/app/Products.astro'
+import Sections from '@components/app/Sections.astro'
+import { CATEGORY_TYPES, CategorySI, CourseSI, ProductSI, SectionSI } from 'src/types'
+import { getCoursesByCategory, getProductsByCategory, getSectionsByCategory } from 'src/utils/supabase'
+
+import { translations } from '../../locales/translations'
+
+export interface Props {
+  category: CategorySI
+}
+
+const { category } = Astro.props
+const { id, schedules, categoryTitle, extraServices, type } = category
+
+let courses: CourseSI[], products: ProductSI[], sections: SectionSI[]
+switch (type) {
+  case CATEGORY_TYPES.MENU:
+    courses = await getCoursesByCategory({ categoryId: id })
+    break
+  case CATEGORY_TYPES.PRODUCTS:
+    products = await getProductsByCategory({ categoryId: id })
+    break
+  case CATEGORY_TYPES.SECTIONS:
+    sections = await getSectionsByCategory({ categoryId: id })
+    break
+}
+---
+
+<Card>
+  <h1 class="text-center">{categoryTitle}</h1>
+
+  {
+    schedules?.length > 0 && (
+      <div class="flex flex-col gap-1 py-4">
+        {schedules.map((schedule) => (
+          <small class="text-center">{translations.schedules[schedule]}</small>
+        ))}
+      </div>
+    )
+  }
+
+  {extraServices && !courses && <ExtraServices extraServices={extraServices} />}
+
+  <Divider theme="dark" />
+
+  {sections && <Sections sections={sections} />}
+
+  {products && <Products products={products} />}
+
+  {courses && <Menu category={category} courses={courses} />}
+</Card>

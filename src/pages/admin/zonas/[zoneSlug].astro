@@ -1,0 +1,64 @@
+---
+import Admin from '@components/admin/Admin.astro'
+import CategoryButtonLink from '@components/admin/CategoryButtonLink.astro'
+import CategoryForm from '@components/admin/CategoryForm'
+import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
+import LineCard from '@components/admin/LineCard'
+import ZoneForm from '@components/admin/ZoneForm'
+import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
+import { CategorySI, ZoneSI } from 'src/types'
+import { getCategoriesByZoneId, getZoneBySlug, supabase } from 'src/utils/supabase'
+
+const cookies = Astro.request.headers.get('cookie')
+
+const token = cookies
+  ?.split(';')
+  .find((c) => c.trim().startsWith('sup-access-token='))
+  ?.split('=')[1]
+
+if (!token) return Astro.redirect('/admin/login')
+
+const { data: user } = await supabase.auth.api.getUser(token)
+if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
+
+export interface Props {
+  zoneSlug: number
+}
+
+const { zoneSlug } = Astro.params
+
+let zone: ZoneSI, categories: CategorySI[]
+try {
+  zone = await getZoneBySlug({ zoneSlug: String(zoneSlug) })
+  categories = await getCategoriesByZoneId({ zoneId: zone.id })
+} catch (e) {
+  console.error('ERR!', e.message)
+
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  })
+}
+---
+
+<Admin user={user}>
+  <div class="flex flex-col gap-6">
+    <DetailSummaryContainer title="Zona">
+      <h3>{zone.name}</h3>
+    </DetailSummaryContainer>
+
+    <LineCard client:visible label="Editar datos zona">
+      <ZoneForm client:visible zone={zone} />
+    </LineCard>
+
+    <LineCard client:visible label="Categorías">
+      <ButtonLinksContainer>
+        {categories.sort((a, z) => a.order - z.order).map((category) => <CategoryButtonLink category={category} />)}
+      </ButtonLinksContainer>
+    </LineCard>
+
+    <LineCard client:visible label="Añadir categoría">
+      <CategoryForm client:visible zone={zone} />
+    </LineCard>
+  </div>
+</Admin>

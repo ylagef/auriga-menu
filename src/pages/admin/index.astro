@@ -1,27 +1,27 @@
 ---
-import Admin from '@components/Admin.astro'
-import Divider from '@components/Divider.astro'
-import SectionLink from '@components/SectionLink.astro'
+import Admin from '@components/admin/Admin.astro'
+import ButtonLink from '@components/ButtonLink.astro'
+import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
+import { translations } from 'src/locales/translations'
+import { supabase } from 'src/utils/supabase'
 
 const cookies = Astro.request.headers.get('cookie')
+
 const token = cookies
   ?.split(';')
-  .find((c) => c.trim().startsWith('netlify-token='))
-  .split('=')[1]
+  .find((c) => c.trim().startsWith('sup-access-token='))
+  ?.split('=')[1]
 
 if (!token) return Astro.redirect('/admin/login')
+
+const { data: user, error } = await supabase.auth.api.getUser(token)
+if (error) return Astro.redirect('/admin/login')
+
+const buttons = ['info', 'zonas']
 ---
 
-<Admin>
-  <div class="flex flex-col">
-    <h1 class="text-center text-light-text">Administración</h1>
-
-    <Divider theme="light" />
-
-    <div class="flex flex-col gap-4 items-center w-fit mx-auto">
-      <SectionLink link="/admin/zonas" text="Zonas" />
-      <SectionLink link="/admin/secciones" text="Secciones" />
-      <SectionLink link="/admin/categorias" text="Categorías" />
-    </div>
-  </div>
+<Admin user={user}>
+  <ButtonLinksContainer>
+    {buttons.map((button) => <ButtonLink href={`/admin/${button}`}>{translations.adminButtons[button]}</ButtonLink>)}
+  </ButtonLinksContainer>
 </Admin>

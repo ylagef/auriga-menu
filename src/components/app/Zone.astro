@@ -1,0 +1,21 @@
+---
+import ButtonLink from '@components/ButtonLink.astro'
+import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
+import { ZoneSI } from 'src/types'
+import { getCategoriesByZoneId } from 'src/utils/supabase'
+
+export interface Props {
+  zone: ZoneSI
+}
+
+const { zone } = Astro.props
+const categories = await getCategoriesByZoneId({ zoneId: zone.id })
+---
+
+<ButtonLinksContainer>
+  {
+    categories
+      .sort((a, z) => a.order - z.order)
+      .map((category) => <ButtonLink href={`/${zone.slug}/${category.slug}`}>{category.buttonText}</ButtonLink>)
+  }
+</ButtonLinksContainer>

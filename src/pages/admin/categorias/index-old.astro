@@ -1,0 +1,32 @@
+---
+import Admin from '@components/admin/Admin.astro'
+import CategoryButtonLink from '@components/admin/CategoryButtonLink.astro'
+import LineCard from '@components/admin/LineCard'
+import ButtonLink from '@components/ButtonLink.astro'
+import ButtonLinksContainer from '@components/ButtonLinksContainer.astro'
+import { getCategories, supabase } from 'src/utils/supabase'
+
+const cookies = Astro.request.headers.get('cookie')
+
+const token = cookies
+  ?.split(';')
+  .find((c) => c.trim().startsWith('sup-access-token='))
+  ?.split('=')[1]
+
+if (!token) return Astro.redirect('/admin/login')
+
+const { data: user } = await supabase.auth.api.getUser(token)
+if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
+
+const categories = await getCategories()
+---
+
+<Admin user={user}>
+  <div class="flex flex-col gap-6">
+    <LineCard client:visible label="Categorías">
+      <ButtonLinksContainer>
+        {categories.sort((a, z) => a.order - z.order).map((category) => <CategoryButtonLink category={category} />)}
+      </ButtonLinksContainer>
+    </LineCard>
+  </div>
+</Admin>

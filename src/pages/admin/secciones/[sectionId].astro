@@ -1,0 +1,63 @@
+---
+import Admin from '@components/admin/Admin.astro'
+import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
+import LineCard from '@components/admin/LineCard'
+import ProductForm from '@components/admin/ProductForm'
+import ProductsCardList from '@components/admin/ProductsCardList.astro'
+import SectionForm from '@components/admin/SectionForm'
+import SectionsCardList from '@components/admin/SectionsCardList.astro'
+import { SECTION_TYPES, SectionSI } from 'src/types'
+import { getSectionById, supabase } from 'src/utils/supabase'
+
+const cookies = Astro.request.headers.get('cookie')
+
+const token = cookies
+  ?.split(';')
+  .find((c) => c.trim().startsWith('sup-access-token='))
+  ?.split('=')[1]
+
+if (!token) return Astro.redirect('/admin/login')
+
+const { data: user } = await supabase.auth.api.getUser(token)
+
+if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
+
+let { sectionId } = Astro.params
+sectionId = sectionId as number
+
+let section: SectionSI, hasSubsections: boolean, isSubsection: boolean
+
+try {
+  section = await getSectionById({ sectionId })
+
+  hasSubsections = section.type === SECTION_TYPES.SUBSECTIONS
+  isSubsection = !!section.parentSectionId
+} catch (e) {
+  console.error('ERR!', e.message)
+
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  })
+}
+---
+
+<Admin user={user}>
+  <div class="flex flex-col gap-6">
+    <DetailSummaryContainer title={isSubsection ? 'Subección' : 'Sección'}>
+      <h3>{section.title}</h3>
+    </DetailSummaryContainer>
+
+    <LineCard client:visible label={`Datos ${isSubsection ? 'subección' : 'sección'}`}>
+      <SectionForm client:visible section={section} />
+    </LineCard>
+
+    {section.type === SECTION_TYPES.PRODUCTS && <ProductsCardList products={section.products} />}
+    {section.type === SECTION_TYPES.SUBSECTIONS && <SectionsCardList sections={section.subsections} hasSubsections />}
+
+    <LineCard client:visible label={`Añadir ${hasSubsections ? 'subsección' : 'producto'}`}>
+      {section.type === SECTION_TYPES.PRODUCTS && <ProductForm client:visible section={section} />}
+      {section.type === SECTION_TYPES.SUBSECTIONS && <SectionForm client:visible section={section} hasSubsections />}
+    </LineCard>
+  </div>
+</Admin>

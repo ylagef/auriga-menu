@@ -1,0 +1,30 @@
+---
+import Admin from '@components/admin/Admin.astro'
+import LineCard from '@components/admin/LineCard'
+import LoginForm from '@components/admin/LoginForm'
+import { User } from '@supabase/supabase-js'
+import { supabase } from 'src/utils/supabase'
+
+const cookies = Astro.request.headers.get('cookie')
+
+const token = cookies
+  ?.split(';')
+  .find((c) => c.trim().startsWith('sup-access-token='))
+  ?.split('=')[1]
+
+let user: User
+if (token) {
+  const { data, error } = await supabase.auth.api.getUser(token)
+  user = data
+  if (error) console.error(error)
+  if (user) return Astro.redirect('/admin')
+}
+---
+
+<Admin user={user}>
+  <div class="grid items-center mt-8">
+    <LineCard client:visible label="Inicio de sesión">
+      <LoginForm client:visible />
+    </LineCard>
+  </div>
+</Admin>

@@ -1,84 +1,126 @@
 export enum EXTRA_SERVICES {
-  BREAD = 'Servicio de pan 1,50€',
-  GLUTEN_FREE_BREAD = 'Servicio de pan sin gluten 1,50€',
-  RYE_BREAD = 'Opción de pan de centeno +1€',
-  GLUTEN_FREE_BUN = 'Bollo sin gluten +1€',
-  BREAD_WATER_COFFEE = 'Incluye servicio de pan, agua y café'
+  BREAD = 'bread',
+  GLUTEN_FREE_BREAD = 'glutenFreeBread',
+  RYE_BREAD = 'ryeBread',
+  GLUTEN_FREE_BUN = 'glutenFreeBun',
+  BREAD_WATER_COFFEE = 'breadWaterCoffee'
 }
 
 export enum SCHEDULES {
-  BREAKFAST = 'Horario de desayunos de 8:00 a 12:30',
-  SNACK = 'Horario de meriendas de 17:00 a 20:00',
-  UNINTERRUPTED = 'Cocina ininterrumpida de 8:00 a 23:30'
+  BREAKFAST = 'breakfast',
+  SNACK = 'snack',
+  UNINTERRUPTED = 'uninterrupted'
 }
 
 export enum ALLERGENS {
-  CELERY = 'celery',
-  CRUSTACEANS = 'crustaceans',
-  EGGS = 'eggs',
-  FISH = 'fish',
   GLUTEN = 'gluten',
   LACTOSE = 'lactose',
+  EGGS = 'eggs',
+  FISH = 'fish',
+  CELERY = 'celery',
+  CRUSTACEANS = 'crustaceans',
   LUPINS = 'lupins',
   MOLLUSCS = 'molluscs',
   MUSTARD = 'mustard',
   NUTS = 'nuts',
-  PEELING_FRUITS = 'peeling_fruits',
   SESAME = 'sesame',
   SOY = 'soy',
-  SULPHITES = 'sulphites'
+  SULPHITES = 'sulphites',
+  PEELING_FRUITS = 'peeling_fruits'
 }
 
-export interface ProductI {
-  id: string
+export enum CATEGORY_TYPES {
+  MENU = 'menu',
+  SECTIONS = 'sections',
+  PRODUCTS = 'products'
+}
+export enum SECTION_TYPES {
+  SUBSECTIONS = 'subsections',
+  PRODUCTS = 'products'
+}
+
+export interface ProductSI {
+  // fk
+  categoryId?: number
+  sectionId?: number
+
+  id?: number
   order: number
   name: string
   description?: string
   options?: string[]
-  price: number | string // String for "S/M"
+  price: string
   allergens?: ALLERGENS[]
+  customPrice?: boolean
 }
 
-export interface CategoryI {
-  id: string
-  order: number
+export interface SectionSI {
+  // fk
+  categoryId?: number
+  parentSectionId?: number
+
+  id?: number
+  order?: number
   title?: string
   extraServices?: EXTRA_SERVICES[]
-  products: ProductI[]
+  type?: SECTION_TYPES
+
+  // join
+  products?: ProductSI[]
+  subsections?: SectionSI[]
 }
 
-export interface Course {
-  id: string
+export interface CourseSI {
+  // fk
+  categoryId?: number
+
+  id?: number
   name: string
   products: string[]
-}
-
-export interface Menu {
-  courses: Course[]
-  extraServices: EXTRA_SERVICES[]
-  price: number
-}
-
-export interface SectionI {
-  id: string
   order: number
+}
+
+export interface ZoneSI {
+  // fk
+  restaurantId: number
+
+  id: number
+  slug: string
+  name?: string
+}
+
+export interface CategorySI {
+  id?: number
+  type: CATEGORY_TYPES
+  slug: string
   buttonText: string
-  sectionTitle?: string
+  categoryTitle: string
   schedules?: string[]
   extraServices?: EXTRA_SERVICES[]
-  categories?: CategoryI[]
-  products?: ProductI[]
-  menu?: Menu
+  price?: string // in case of menu
+
+  // join
+  order?: number
+  orders?: { order: number; zoneId: number }[]
+  zones?: { zone: ZoneSI }[]
+  sections?: SectionSI[]
 }
 
-export interface ZoneI {
-  name?: string
-  sections: SectionI[]
+export interface ZonesCategoriesSI {
+  // fk
+  zoneId: number
+  categoryId: number
+
+  id: number
+  order: number
+
+  // join
+  categories: CategorySI
+  category: CategorySI
 }
 
-export interface Restaurant {
-  id: string
+export interface RestaurantSI {
+  id: number
   name: string
   shortName?: string
-  zones: { [key: string]: ZoneI }
 }

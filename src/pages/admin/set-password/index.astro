@@ -1,0 +1,13 @@
+---
+import Admin from '@components/admin/Admin.astro'
+import LineCard from '@components/admin/LineCard'
+import SetPasswordForm from '@components/admin/SetPasswordForm'
+---
+
+<Admin>
+  <div class="grid items-center mt-8">
+    <LineCard client:visible label="Configuración de contraseña">
+      <SetPasswordForm client:visible />
+    </LineCard>
+  </div>
+</Admin>

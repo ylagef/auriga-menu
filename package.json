@@ -9,15 +9,24 @@
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky install",
-    "format:all": "eslint . --fix && prettier . --write"
+    "format:all": "eslint . --fix && prettier . --write",
+    "deploy:dev": "yarn build && netlify deploy",
+    "deploy:prod": "yarn build && netlify deploy --prod"
   },
   "dependencies": {
-    "astro": "^1.1.7"
+    "@supabase/supabase-js": "^1.35.6",
+    "@supabase/ui": "^0.36.5",
+    "@types/slug": "^5.0.3",
+    "astro": "^1.1.7",
+    "cookie": "^0.5.0",
+    "react-to-print": "^2.14.7",
+    "slug": "^8.0.0"
   },
   "devDependencies": {
     "@astrojs/netlify": "^1.0.2",
     "@astrojs/react": "^1.1.1",
     "@astrojs/tailwind": "^1.0.0",
+    "@types/node": "^18.7.16",
     "@types/react": "^18.0.18",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",

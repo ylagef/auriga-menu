@@ -1,0 +1,48 @@
+---
+import Admin from '@components/admin/Admin.astro'
+import CourseForm from '@components/admin/CourseForm'
+import DetailSummaryContainer from '@components/admin/DetailSummaryContainer'
+import LineCard from '@components/admin/LineCard'
+import { CategorySI, CourseSI } from 'src/types'
+import { getCategoryById, getCourseById, supabase } from 'src/utils/supabase'
+
+const cookies = Astro.request.headers.get('cookie')
+
+const token = cookies
+  ?.split(';')
+  .find((c) => c.trim().startsWith('sup-access-token='))
+  ?.split('=')[1]
+
+if (!token) return Astro.redirect('/admin/login')
+
+const { data: user } = await supabase.auth.api.getUser(token)
+
+if (user?.aud !== 'authenticated') return Astro.redirect('/admin/login')
+
+const { courseId } = Astro.params
+
+let course: CourseSI, category: CategorySI
+try {
+  course = await getCourseById({ courseId: Number(courseId) })
+  category = await getCategoryById({ categoryId: course.categoryId })
+} catch (e) {
+  console.error('ERR!', e.message)
+
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found'
+  })
+}
+---
+
+<Admin user={user}>
+  <div class="flex flex-col gap-6">
+    <DetailSummaryContainer title="Plato">
+      <h3>{course.name}</h3>
+    </DetailSummaryContainer>
+
+    <LineCard client:visible label="Datos plato">
+      <CourseForm client:visible category={category} course={course} defaultOpen />
+    </LineCard>
+  </div>
+</Admin>

@@ -1,0 +1,17 @@
+---
+import LineCard from '@components/admin/LineCard'
+import ProductButtonLink from '@components/admin/ProductButtonLink.astro'
+import { ProductSI } from 'src/types'
+
+export interface Props {
+  products: ProductSI[]
+}
+
+const { products } = Astro.props
+---
+
+<LineCard label="Productos">
+  {products.length === 0 && <span class="text-gray-600">Aún no hay productos</span>}
+
+  {products?.sort((a, z) => a.order - z.order).map((product) => <ProductButtonLink product={product} />)}
+</LineCard>

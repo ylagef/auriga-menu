@@ -1,0 +1,30 @@
+---
+import ButtonLink from '@components/ButtonLink.astro'
+import { CourseSI } from 'src/types'
+
+import OrderCorner from './OrderCorner.astro'
+
+export interface Props {
+  course: CourseSI
+}
+
+const { course } = Astro.props
+---
+
+<ButtonLink href={`/admin/platos/${course.id}`}>
+  <OrderCorner order={course.order} />
+  <div class="flex flex-col gap-2">
+    <p class="font-medium">{course.name}</p>
+    <div class="opacity-70 flex flex-col gap-2">
+      {
+        course.products?.length > 0 ? (
+          <small class="w-full">
+            {course.products.length} producto{course.products.length > 1 ? 's' : ''}
+          </small>
+        ) : (
+          <small class="w-full">Sin productos</small>
+        )
+      }
+    </div>
+  </div>
+</ButtonLink>

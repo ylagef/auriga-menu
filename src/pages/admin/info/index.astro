@@ -1,0 +1,38 @@
+---
+import Admin from '@components/admin/Admin.astro'
+import Button, { BUTTON_TYPES } from '@components/admin/Button'
+import Info from '@components/admin/Info'
+import { Input } from '@components/admin/Input'
+import LineCard from '@components/admin/LineCard'
+import { getRestaurant, supabase } from 'src/utils/supabase'
+
+const cookies = Astro.request.headers.get('cookie')
+
+const token = cookies
+  ?.split(';')
+  .find((c) => c.trim().startsWith('sup-access-token='))
+  ?.split('=')[1]
+
+if (!token) return Astro.redirect('/admin/login')
+
+const { data: user, error } = await supabase.auth.api.getUser(token)
+if (error) return Astro.redirect('/admin/login')
+
+const restaurant = await getRestaurant()
+---
+
+<Admin user={user}>
+  <!-- TODO form not working -->
+  <LineCard client:visible label="Restaurante">
+    <Info>
+      <p>El nombre se mostrará en la pestaña del navegador.</p>
+    </Info>
+
+    <form class="flex flex-col gap-6">
+      <Input id="name" label="Nombre" placeholder="Auriga gastrobar" defaultValue={restaurant?.name} required />
+      <Input id="shortName" label="Nombre corto" placeholder="Auriga" defaultValue={restaurant?.shortName} />
+
+      <Button type={BUTTON_TYPES.SUBMIT}>Guardar</Button>
+    </form>
+  </LineCard>
+</Admin>

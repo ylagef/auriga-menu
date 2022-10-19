@@ -1,0 +1,41 @@
+---
+import Button from '@components/admin/Button'
+import LineCard from '@components/admin/LineCard'
+import { CourseSI } from 'src/types'
+
+import CourseButtonLink from './CourseButtonLink.astro'
+
+export interface Props {
+  courses: CourseSI[]
+}
+
+const { courses } = Astro.props
+---
+
+<LineCard label="Platos">
+  <div class="flex flex-col items-center justify-center w-full gap-4">
+    {courses?.length === 0 && <span class="text-gray-600">Aún no hay platos</span>}
+
+    {
+      courses
+        ?.sort((a, z) => a.order - z.order)
+        ?.map((course) => (
+          <CourseButtonLink course={course} />
+          // <div class="flex flex-col gap-4 items-center p-2 w-full">
+          //   <div class="flex justify-between items-center w-full">
+          //     <h2>{course.name}</h2>
+          //     <Button href={`/admin/platos/${course.id}`}>Editar</Button>
+          //   </div>
+          //   <LineCard label="Opciones">
+          //     {course.products?.length === 0 && <span class="text-gray-600">Aún no hay productos</span>}
+          //     {course.products
+          //       ?.sort((a, z) => a.localeCompare(z))
+          //       ?.map((product) => (
+          //         <p>- {product}</p>
+          //       ))}
+          //   </LineCard>
+          // </div>
+        ))
+    }
+  </div>
+</LineCard>

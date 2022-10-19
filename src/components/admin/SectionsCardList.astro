@@ -1,0 +1,21 @@
+---
+import LineCard from '@components/admin/LineCard'
+import { SectionSI } from 'src/types'
+
+import SectionButtonLink from './SectionButtonLink.astro'
+
+export interface Props {
+  sections: SectionSI[]
+  hasSubsections?: boolean
+}
+
+const { sections, hasSubsections } = Astro.props
+---
+
+<LineCard label={hasSubsections ? 'Subsecciones' : 'Secciones'}>
+  <div class="flex flex-col items-center justify-center w-full gap-4">
+    {sections.length === 0 && <span class="text-gray-600">Aún no hay {`${hasSubsections ? 'subsecciones' : 'secciones'}`}</span>}
+
+    {sections?.sort((a, z) => a.order - z.order).map((section) => <SectionButtonLink section={section} />)}
+  </div>
+</LineCard>

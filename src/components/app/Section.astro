@@ -1,0 +1,28 @@
+---
+import ExtraServices from '@components/app/ExtraServices.astro'
+import Products from '@components/app/Products.astro'
+import { SectionSI } from 'src/types'
+
+import Sections from './Sections.astro'
+
+export interface Props {
+  section: SectionSI
+  isSubsection?: boolean
+}
+
+const {
+  section: { id, title, extraServices, type, products, subsections },
+  isSubsection
+} = Astro.props
+---
+
+<div class={`flex flex-col gap-${isSubsection ? '2' : '4'}`}>
+  <div class="flex flex-col gap-1">
+    {isSubsection ? <h4 class="text-center">{title}</h4> : <h2 class="text-center">{title}</h2>}
+
+    {extraServices && <ExtraServices extraServices={extraServices} />}
+  </div>
+
+  {products?.length > 0 && <Products products={products} />}
+  {subsections?.length > 0 && <Sections sections={subsections} isSubsections />}
+</div>
