@@ -1,6 +1,7 @@
 ---
 import BurgerMenu from '@components/app/BurgerMenu'
 import Footer from '@components/app/Footer.astro'
+import PostHog from '@components/app/PostHog'
 import slug from 'slug'
 import { getRestaurant } from 'src/utils/supabase'
 
@@ -23,6 +24,7 @@ const restaurant = await getRestaurant()
     <title>{title}</title>
   </head>
   <body class="m-0 relative bg-black z-10 flex flex-col overflow-y-auto">
+    <PostHog client:idle />
     <BurgerMenu client:load />
 
     <div id="logo-container" class="flex justify-center px-6 pt-6 pb-4">
