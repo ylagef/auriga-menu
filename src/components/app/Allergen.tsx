@@ -16,6 +16,7 @@ export default function Allergen({ allergen }: Props) {
     const timeout = setTimeout(() => {
       setAllergenOpen(null)
     }, 3000)
+
     return () => clearTimeout(timeout)
   }, [allergenOpen])
 
@@ -26,8 +27,8 @@ export default function Allergen({ allergen }: Props) {
         setAllergenOpen((prev) => (prev === allergen ? null : allergen))
       }}
     >
-      <img className="h-6" src={`/assets/images/allergens/${allergen}.png`} alt={translations.allergens[allergen]} />
-      <small className={`${allergenOpen === allergen ? 'w-screen pl-2' : 'w-0'} transition-all max-w-fit whitespace-nowrap`}>
+      <img className="h-6 w-6" src={`/assets/images/allergens/${allergen}.webp`} alt={translations.allergens[allergen]} />
+      <small className={`${allergenOpen === allergen ? 'w-auto pl-2' : 'w-0'} transition-all max-w-fit whitespace-nowrap`}>
         {translations.allergens[allergen]}
       </small>
     </div>
