@@ -25,7 +25,9 @@ export const translations = {
     glutenFreeBread: 'Servicio de pan sin gluten 1,50€',
     ryeBread: 'Opción de pan de centeno +1€',
     glutenFreeBun: 'Bollo sin gluten +1€',
-    breadWaterCoffee: 'Incluye servicio de pan, agua y café'
+    breadWaterCoffee: 'Incluye servicio de pan, agua y café',
+    intoleranceAdvice:
+      'Para cambios por intolerancias/alergias o hábitos alimentarios es necesario avisar con mínimo 24h de antelación, de lo contrario se aplicará un incremento de 2€'
   },
   adminButtons: {
     info: 'Info local',

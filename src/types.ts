@@ -3,7 +3,8 @@ export enum EXTRA_SERVICES {
   GLUTEN_FREE_BREAD = 'glutenFreeBread',
   RYE_BREAD = 'ryeBread',
   GLUTEN_FREE_BUN = 'glutenFreeBun',
-  BREAD_WATER_COFFEE = 'breadWaterCoffee'
+  BREAD_WATER_COFFEE = 'breadWaterCoffee',
+  INTOLERANCE_ADVICE = 'intoleranceAdvice'
 }
 
 export enum SCHEDULES {
