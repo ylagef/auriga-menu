@@ -18,7 +18,7 @@ export const translations = {
   schedules: {
     breakfast: 'Horario de desayunos de 8:00 a 12:30',
     snack: 'Horario de meriendas de 17:00 a 20:00',
-    uninterrupted: 'Cocina ininterrumpida de 8:00 a 23:00.<br/>Repostería hasta las 23:30.'
+    uninterrupted: 'Cocina ininterrumpida de 8:00 a 23:00<br/>Repostería hasta las 23:30'
   },
   extraServices: {
     bread: 'Servicio de pan 1,50€',
