@@ -37,8 +37,8 @@ switch (type) {
   {
     schedules?.length > 0 && (
       <div class="flex flex-col gap-1 py-4">
-        {schedules.map((schedule) => (
-          <small class="text-center">{translations.schedules[schedule]}</small>
+        {schedules.map((schedule: string) => (
+          <small class="text-center" set:html={translations.schedules[schedule]} />
         ))}
       </div>
     )

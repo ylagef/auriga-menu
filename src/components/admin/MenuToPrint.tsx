@@ -25,7 +25,7 @@ export default function MenuToPrint({ category }: { category: CategorySI }) {
         {category.schedules?.length > 0 && (
           <div className="flex flex-col gap-1 py-4">
             {category.schedules.map((schedule) => (
-              <small className="text-center">{translations.schedules[schedule]}</small>
+              <small className="text-center" dangerouslySetInnerHTML={{ __html: translations.schedules[schedule] }} />
             ))}
           </div>
         )}
